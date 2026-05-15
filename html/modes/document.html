@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document mode — SynapEditor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script src="../../dist/license.js"></script>
+    <script src="../../dist/synapeditor.config.js"></script>
+    <script src="../../dist/synapeditor.min.js"></script>
+    <link rel="stylesheet" href="../../dist/synapeditor.min.css">
+    <style>#editorWrapper { height: 700px; }</style>
+</head>
+<body>
+    <header class="site-header">
+        <a href="../../index.html" class="back">← Examples</a>
+        <a href="../../index.html" class="brand">
+            <span class="logo">S</span>
+            <span class="pname">SynapEditor</span>
+            <span class="ptag">DEMO</span>
+        </a>
+    </header>
+
+    <main class="demo-shell">
+        <div class="demo-head">
+            <span class="kicker">Editor Mode</span>
+            <h1>Document mode</h1>
+            <p class="desc">Displays content in A4 page units with headers, footers, margins, and page numbers — optimized for print output.</p>
+            <div class="demo-meta">
+                <span class="pill">mode: document</span>
+                <span class="pill">paginated</span>
+            </div>
+        </div>
+
+        <div id="editorWrapper">
+            <div id="synapEditor">
+                <h2>Document Mode</h2>
+                <p>Edit in paginated A4 paper format.</p>
+                <h3>1. Overview</h3>
+                <p>Document mode displays content in A4 page format, designed to work in the same layout as the printed output.</p>
+                <h3>2. Key Features</h3>
+                <ul>
+                    <li>Standard paper sizes including A4 and Letter</li>
+                    <li>Adjust margins and indentation directly from the ruler</li>
+                    <li>Automatic page numbers, headers, and footers</li>
+                    <li>Output that matches print preview 1:1</li>
+                </ul>
+                <h3>3. Use Cases</h3>
+                <p>Ideal for documents where print and PDF output matter: official documents, reports, contracts, and manuals.</p>
+            </div>
+        </div>
+
+        <section class="code-section" id="codeExample">
+            <div class="code-head">
+                <h3>Configuration</h3>
+                <span class="meta">mode: document</span>
+                <button class="copy-btn" type="button" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="5" y="5" width="9" height="9" rx="1.2"/>
+                        <path d="M3 11V3a1 1 0 0 1 1-1h7"/>
+                    </svg>
+                    <span class="label">Copy</span>
+                </button>
+            </div>
+            <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
+    <span class="str">'editor.license'</span><span class="punc">:</span> <span class="var">synapEditorLicense</span><span class="punc">,</span>
+    <span class="str">'editor.type'</span><span class="punc">:</span> <span class="str">'document'</span>
+<span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
+
+<span class="com">// Create editor instance</span>
+<span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditor'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="var">initialHtml</span><span class="punc">)</span><span class="punc">;</span></pre></div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span>© Synapsoft Corp. · SynapEditor</span>
+    </footer>
+
+    <script>
+        var config = Object.assign(synapEditorConfig, {
+            'editor.license': synapEditorLicense,
+            'editor.type': 'document'
+        });
+        window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
+
+        function copyCode(btn) {
+            var code = "var config = Object.assign(synapEditorConfig, {\n" +
+                "    'editor.license': synapEditorLicense,\n" +
+                "    'editor.type': 'document'\n" +
+                "});\n\n" +
+                "// Create editor instance\n" +
+                "var editor = new SynapEditor('synapEditor', config, initialHtml);";
+            navigator.clipboard.writeText(code).catch(function() {});
+            btn.classList.add('copied');
+            btn.querySelector('.label').textContent = 'Copied';
+            setTimeout(function() {
+                btn.classList.remove('copied');
+                btn.querySelector('.label').textContent = 'Copy';
+            }, 1400);
+        }
+    </script>
+</body>
+</html>

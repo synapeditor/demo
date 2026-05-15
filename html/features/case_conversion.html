@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Case Conversion — SynapEditor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script src="../../dist/license.js"></script>
+    <script src="../../dist/synapeditor.config.js"></script>
+    <script src="../../dist/synapeditor.min.js"></script>
+    <link rel="stylesheet" href="../../dist/synapeditor.min.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="../../index.html" class="back">← Examples</a>
+        <a href="../../index.html" class="brand">
+            <span class="logo">S</span>
+            <span class="pname">SynapEditor</span>
+            <span class="ptag">DEMO</span>
+        </a>
+    </header>
+
+    <main class="demo-shell">
+        <div class="demo-head">
+            <span class="kicker">Feature</span>
+            <h1>Case Conversion</h1>
+            <p class="desc">Convert selected text to uppercase, lowercase, capitalize each word, or sentence case.</p>
+            <div class="demo-meta">
+                <span class="pill">toolbar: conversion</span>
+            </div>
+        </div>
+
+        <div id="editorWrapper">
+            <div id="synapEditor">
+                <h2>Case Conversion</h2>
+                <p>Select the text below and click the <strong>Aa</strong> button in the toolbar to choose a conversion option.</p>
+                <p style="background:#e5f6f6;padding:10px 14px;border-radius:4px;border-left:3px solid #39b6b8;">synapeditor is a web-based wysiwyg html editor.</p>
+                <ul>
+                <li><strong>UPPERCASE</strong> — SYNAPEDITOR IS A WEB-BASED WYSIWYG HTML EDITOR.</li>
+                <li><strong>lowercase</strong> — synapeditor is a web-based wysiwyg html editor.</li>
+                <li><strong>Capitalize Each Word</strong> — Synapeditor Is A Web-based Wysiwyg Html Editor.</li>
+                <li><strong>Sentence case</strong> — Synapeditor is a web-based wysiwyg html editor.</li>
+                </ul>
+            </div>
+        </div>
+
+        <section class="code-section" id="codeExample">
+            <div class="code-head">
+                <h3>Configuration</h3>
+                <span class="meta">mode: classic · 1 button</span>
+                <button class="copy-btn" type="button" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="5" y="5" width="9" height="9" rx="1.2"/>
+                        <path d="M3 11V3a1 1 0 0 1 1-1h7"/>
+                    </svg>
+                    <span class="label">Copy</span>
+                </button>
+            </div>
+            <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
+    <span class="str">'editor.license'</span><span class="punc">:</span> <span class="var">synapEditorLicense</span><span class="punc">,</span>
+    <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span>
+        <span class="str">'new'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
+        <span class="str">'conversion'</span>
+    <span class="punc">]</span><span class="punc">,</span>
+    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span>
+<span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
+
+<span class="com">// Create editor instance</span>
+<span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditor'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="var">initialHtml</span><span class="punc">)</span><span class="punc">;</span></pre></div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span>© Synapsoft Corp. · SynapEditor</span>
+    </footer>
+
+    <script>
+        var config = Object.assign(synapEditorConfig, {
+            'editor.license': synapEditorLicense,
+            'editor.toolbar': [
+                'new', '|',
+                'conversion'
+            ],
+            'editor.menu.show': false
+        });
+        window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
+
+        function copyCode(btn) {
+            var code = "var config = Object.assign(synapEditorConfig, {\n" +
+                "    'editor.license': synapEditorLicense,\n" +
+                "    'editor.toolbar': [\n" +
+                "        'new', '|',\n" +
+                "        'conversion'\n" +
+                "    ],\n" +
+                "    'editor.menu.show': false\n" +
+                "});\n\n" +
+                "// Create editor instance\n" +
+                "var editor = new SynapEditor('synapEditor', config, initialHtml);";
+            navigator.clipboard.writeText(code).catch(function() {});
+            btn.classList.add('copied');
+            btn.querySelector('.label').textContent = 'Copied';
+            setTimeout(function() {
+                btn.classList.remove('copied');
+                btn.querySelector('.label').textContent = 'Copy';
+            }, 1400);
+        }
+    </script>
+</body>
+</html>

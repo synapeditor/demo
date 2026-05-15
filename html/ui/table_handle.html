@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Table Handle — SynapEditor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script src="../../dist/license.js"></script>
+    <script src="../../dist/synapeditor.config.js"></script>
+    <script src="../../dist/synapeditor.min.js"></script>
+    <link rel="stylesheet" href="../../dist/synapeditor.min.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="../../index.html" class="back">← Examples</a>
+        <a href="../../index.html" class="brand">
+            <span class="logo">S</span>
+            <span class="pname">SynapEditor</span>
+            <span class="ptag">DEMO</span>
+        </a>
+    </header>
+
+    <main class="demo-shell">
+        <div class="demo-head">
+            <span class="kicker">UI Setting</span>
+            <h1>Table Handle</h1>
+            <p class="desc">Configure the behavior and display of row and column handles that appear when hovering over a table.</p>
+            <div class="demo-meta">
+                <span class="pill">config: editor.table.handle · toolbar: new · table</span>
+            </div>
+        </div>
+
+        <div id="editorWrapper">
+            <div id="synapEditor">
+                <h2>What are Table Handles?</h2>
+                <p>When you hover over a table, handles appear for adding/deleting, resizing, and aligning rows and columns.</p>
+                <table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;width:100%;">
+                <thead><tr><th>Product</th><th>Version</th><th>Release</th></tr></thead>
+                <tbody>
+                <tr><td>SynapEditor</td><td>3.0.2</td><td>2026.05</td></tr>
+                <tr><td>SynapViewer</td><td>4.1.0</td><td>2026.04</td></tr>
+                <tr><td>SynapDocSwift</td><td>2.7.1</td><td>2026.03</td></tr>
+                </tbody>
+                </table>
+                <p>SynapEditor allows fine-grained control over the visibility and behavior of these handles.</p>
+            </div>
+        </div>
+
+        <section class="code-section" id="codeExample">
+            <div class="code-head">
+                <h3>Configuration</h3>
+                <span class="meta">mode: classic · table handle</span>
+                <button class="copy-btn" type="button" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="5" y="5" width="9" height="9" rx="1.2"/>
+                        <path d="M3 11V3a1 1 0 0 1 1-1h7"/>
+                    </svg>
+                    <span class="label">Copy</span>
+                </button>
+            </div>
+            <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
+    <span class="str">'editor.license'</span><span class="punc">:</span> <span class="var">synapEditorLicense</span><span class="punc">,</span>
+    <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span>
+        <span class="str">'new'</span><span class="punc">,</span> <span class="str">'table'</span>
+    <span class="punc">]</span><span class="punc">,</span>
+    <span class="str">'editor.table.handle'</span><span class="punc">:</span> <span class="bool">true</span>
+<span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
+
+<span class="com">// Create editor instance</span>
+<span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditor'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="var">initialHtml</span><span class="punc">)</span><span class="punc">;</span></pre></div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span>© Synapsoft Corp. · SynapEditor</span>
+    </footer>
+
+    <script>
+        var config = Object.assign(synapEditorConfig, {
+            'editor.license': synapEditorLicense,
+            'editor.toolbar': [
+                'new', 'table'
+            ],
+            'editor.table.handle': true
+        });
+        window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
+
+        function copyCode(btn) {
+            var code = "var config = Object.assign(synapEditorConfig, {\n" +
+                "    'editor.license': synapEditorLicense,\n" +
+                "    'editor.toolbar': [\n" +
+                "        'new', 'table'\n" +
+                "    ],\n" +
+                "    'editor.table.handle': true\n" +
+                "});\n\n" +
+                "// Create editor instance\n" +
+                "var editor = new SynapEditor('synapEditor', config, initialHtml);";
+            navigator.clipboard.writeText(code).catch(function() {});
+            btn.classList.add('copied');
+            btn.querySelector('.label').textContent = 'Copied';
+            setTimeout(function() {
+                btn.classList.remove('copied');
+                btn.querySelector('.label').textContent = 'Copy';
+            }, 1400);
+        }
+    </script>
+</body>
+</html>

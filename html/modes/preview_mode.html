@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Preview mode — SynapEditor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script src="../../dist/license.js"></script>
+    <script src="../../dist/synapeditor.config.js"></script>
+    <script src="../../dist/synapeditor.min.js"></script>
+    <link rel="stylesheet" href="../../dist/synapeditor.min.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="../../index.html" class="back">← Examples</a>
+        <a href="../../index.html" class="brand">
+            <span class="logo">S</span>
+            <span class="pname">SynapEditor</span>
+            <span class="ptag">DEMO</span>
+        </a>
+    </header>
+
+    <main class="demo-shell">
+        <div class="demo-head">
+            <span class="kicker">Editor Mode</span>
+            <h1>Preview mode</h1>
+            <p class="desc">A read-only mode that displays content without editing tools. Used for reviewing output or publishing content.</p>
+            <div class="demo-meta">
+                <span class="pill">mode: preview</span>
+                <span class="pill">read-only</span>
+            </div>
+        </div>
+
+        <div id="editorWrapper">
+            <div id="synapEditor">
+                <h2>SynapEditor 3.0 Release Notes</h2>
+                <p>SynapEditor 3.0, the web-based WYSIWYG HTML editor, has been officially released.</p>
+                <h3>Key Changes</h3>
+                <ol>
+                    <li>New table handle UI — instantly add, align, and resize rows/columns on hover.</li>
+                    <li>Document mode pagination performance improved (2.4x average)</li>
+                    <li>Improved context toolbar design in Inline mode</li>
+                    <li>Comprehensive accessibility (ARIA) review and keyboard navigation improvements</li>
+                </ol>
+                <h3>Compatibility</h3>
+                <p>Works on Chrome 110+, Edge 110+, Safari 16+, and Firefox 115+.</p>
+            </div>
+        </div>
+
+        <section class="code-section" id="codeExample">
+            <div class="code-head">
+                <h3>Configuration</h3>
+                <span class="meta">mode: preview</span>
+                <button class="copy-btn" type="button" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="5" y="5" width="9" height="9" rx="1.2"/>
+                        <path d="M3 11V3a1 1 0 0 1 1-1h7"/>
+                    </svg>
+                    <span class="label">Copy</span>
+                </button>
+            </div>
+            <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
+    <span class="str">'editor.license'</span><span class="punc">:</span> <span class="var">synapEditorLicense</span><span class="punc">,</span>
+    <span class="str">'editor.type'</span><span class="punc">:</span> <span class="str">'preview'</span>
+<span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
+
+<span class="com">// Create editor instance</span>
+<span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditor'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="var">initialHtml</span><span class="punc">)</span><span class="punc">;</span></pre></div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span>© Synapsoft Corp. · SynapEditor</span>
+    </footer>
+
+    <script>
+        var config = Object.assign(synapEditorConfig, {
+            'editor.license': synapEditorLicense,
+            'editor.type': 'preview'
+        });
+        window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
+
+        function copyCode(btn) {
+            var code = "var config = Object.assign(synapEditorConfig, {\n" +
+                "    'editor.license': synapEditorLicense,\n" +
+                "    'editor.type': 'preview'\n" +
+                "});\n\n" +
+                "// Create editor instance\n" +
+                "var editor = new SynapEditor('synapEditor', config, initialHtml);";
+            navigator.clipboard.writeText(code).catch(function() {});
+            btn.classList.add('copied');
+            btn.querySelector('.label').textContent = 'Copied';
+            setTimeout(function() {
+                btn.classList.remove('copied');
+                btn.querySelector('.label').textContent = 'Copy';
+            }, 1400);
+        }
+    </script>
+</body>
+</html>

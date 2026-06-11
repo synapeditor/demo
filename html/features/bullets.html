@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Bullets — SynapEditor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../assets/styles.css">
-    <script src="../../dist/license.js"></script>
-    <script src="../../dist/synapeditor.config.js"></script>
-    <script src="../../dist/synapeditor.min.js"></script>
-    <link rel="stylesheet" href="../../dist/synapeditor.min.css">
+    <script src="../../license.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/synapeditor.config.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
 </head>
+
 <body>
     <header class="site-header">
         <a href="../../index.html" class="back">← Examples</a>
@@ -26,7 +28,8 @@
             <h1>Bullets</h1>
             <p class="desc">Use bullet points, multi-level numbered lists, and custom start numbers.</p>
             <div class="demo-meta">
-                <span class="pill">toolbar: bulletList · numberedList · multiLevelList · decreaseIndent · increaseIndent · growFont · shrinkFont</span>
+                <span class="pill">toolbar: bulletList · numberedList · multiLevelList · decreaseIndent · increaseIndent
+                    · growFont · shrinkFont</span>
             </div>
         </div>
 
@@ -64,15 +67,18 @@
                 <h3>Configuration</h3>
                 <span class="meta">mode: classic · 7 buttons</span>
                 <button class="copy-btn" type="button" onclick="copyCode(this)">
-                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="5" y="5" width="9" height="9" rx="1.2"/>
-                        <path d="M3 11V3a1 1 0 0 1 1-1h7"/>
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <rect x="5" y="5" width="9" height="9" rx="1.2" />
+                        <path d="M3 11V3a1 1 0 0 1 1-1h7" />
                     </svg>
                     <span class="label">Copy</span>
                 </button>
             </div>
-            <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
+            <div class="code-block">
+                <pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
     <span class="str">'editor.license'</span><span class="punc">:</span> <span class="var">synapEditorLicense</span><span class="punc">,</span>
+    <span class="str">'editor.lang'</span><span class="punc">:</span> <span class="str">'en'</span><span class="punc">,</span>
     <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span>
         <span class="str">'new'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
         <span class="str">'bulletList'</span><span class="punc">,</span> <span class="str">'numberedList'</span><span class="punc">,</span> <span class="str">'multiLevelList'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'decreaseIndent'</span><span class="punc">,</span> <span class="str">'increaseIndent'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'growFont'</span><span class="punc">,</span> <span class="str">'shrinkFont'</span>
@@ -81,7 +87,8 @@
 <span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
 
 <span class="com">// Create editor instance</span>
-<span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditor'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="var">initialHtml</span><span class="punc">)</span><span class="punc">;</span></pre></div>
+<span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditor'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="var">initialHtml</span><span class="punc">)</span><span class="punc">;</span></pre>
+            </div>
         </section>
     </main>
 
@@ -92,6 +99,7 @@
     <script>
         var config = Object.assign(synapEditorConfig, {
             'editor.license': synapEditorLicense,
+            'editor.lang': 'en',
             'editor.toolbar': [
                 'new', '|',
                 'bulletList', 'numberedList', 'multiLevelList', '|', 'decreaseIndent', 'increaseIndent', '|', 'growFont', 'shrinkFont'
@@ -103,6 +111,7 @@
         function copyCode(btn) {
             var code = "var config = Object.assign(synapEditorConfig, {\n" +
                 "    'editor.license': synapEditorLicense,\n" +
+                "    'editor.lang': 'en',\n" +
                 "    'editor.toolbar': [\n" +
                 "        'new', '|',\n" +
                 "        'bulletList', 'numberedList', 'multiLevelList', '|', 'decreaseIndent', 'increaseIndent', '|', 'growFont', 'shrinkFont'\n" +
@@ -111,14 +120,15 @@
                 "});\n\n" +
                 "// Create editor instance\n" +
                 "var editor = new SynapEditor('synapEditor', config, initialHtml);";
-            navigator.clipboard.writeText(code).catch(function() {});
+            navigator.clipboard.writeText(code).catch(function () { });
             btn.classList.add('copied');
             btn.querySelector('.label').textContent = 'Copied';
-            setTimeout(function() {
+            setTimeout(function () {
                 btn.classList.remove('copied');
                 btn.querySelector('.label').textContent = 'Copy';
             }, 1400);
         }
     </script>
 </body>
+
 </html>

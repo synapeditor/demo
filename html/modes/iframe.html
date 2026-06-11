@@ -5,10 +5,10 @@
     <title>Iframe mode — SynapEditor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../assets/styles.css">
-    <script src="../../dist/license.js"></script>
-    <script src="../../dist/synapeditor.config.js"></script>
-    <script src="../../dist/synapeditor.min.js"></script>
-    <link rel="stylesheet" href="../../dist/synapeditor.min.css">
+    <script src="../../license.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/synapeditor.config.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
 </head>
 <body>
     <header class="site-header">
@@ -60,10 +60,11 @@
             </div>
             <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
     <span class="str">'editor.license'</span><span class="punc">:</span> <span class="var">synapEditorLicense</span><span class="punc">,</span>
+    <span class="str">'editor.lang'</span><span class="punc">:</span> <span class="str">'en'</span><span class="punc">,</span>
     <span class="str">'editor.mode.iframe'</span><span class="punc">:</span> <span class="punc">{</span>
         <span class="str">'enable'</span><span class="punc">:</span> <span class="bool">true</span><span class="punc">,</span>
-        <span class="str">'style.urls'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'../../dist/iframeMode/contentsEditStyle.css'</span><span class="punc">]</span><span class="punc">,</span>
-        <span class="str">'script.urls'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'../../dist/iframeMode/SEPolyfill.min.js'</span><span class="punc">]</span>
+        <span class="str">'style.urls'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'https://cdn.synapeditor.com/latest/iframeMode/contentsEditStyle.css'</span><span class="punc">]</span><span class="punc">,</span>
+        <span class="str">'script.urls'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'https://cdn.synapeditor.com/latest/iframeMode/SEPolyfill.min.js'</span><span class="punc">]</span>
     <span class="punc">}</span>
 <span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
 
@@ -79,10 +80,11 @@
     <script>
         var config = Object.assign(synapEditorConfig, {
             'editor.license': synapEditorLicense,
+            'editor.lang': 'en',
             'editor.mode.iframe': {
                 'enable': true,
-                'style.urls': ['../../dist/iframeMode/contentsEditStyle.css'],
-                'script.urls': ['../../dist/iframeMode/SEPolyfill.min.js']
+                'style.urls': ['https://cdn.synapeditor.com/latest/iframeMode/contentsEditStyle.css'],
+                'script.urls': ['https://cdn.synapeditor.com/latest/iframeMode/SEPolyfill.min.js']
             }
         });
         window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
@@ -90,10 +92,11 @@
         function copyCode(btn) {
             var code = "var config = Object.assign(synapEditorConfig, {\n" +
                 "    'editor.license': synapEditorLicense,\n" +
+                "    'editor.lang': 'en',\n" +
                 "    'editor.mode.iframe': {\n" +
                 "        'enable': true,\n" +
-                "        'style.urls': ['../../dist/iframeMode/contentsEditStyle.css'],\n" +
-                "        'script.urls': ['../../dist/iframeMode/SEPolyfill.min.js']\n" +
+                "        'style.urls': ['https://cdn.synapeditor.com/latest/iframeMode/contentsEditStyle.css'],\n" +
+                "        'script.urls': ['https://cdn.synapeditor.com/latest/iframeMode/SEPolyfill.min.js']\n" +
                 "    }\n" +
                 "});\n\n" +
                 "// Create editor instance\n" +

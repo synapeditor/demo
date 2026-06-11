@@ -1,0 +1,49 @@
+name: Publish to npm
+
+on:
+  push:
+    branches: [main]
+
+# Prevent overlapping publishes if several pushes land quickly.
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # required for npm OIDC trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing (OIDC) requires npm >= 11.5.1; Node 20 ships an older npm.
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+
+      # npm versions are immutable: skip if this exact version already exists,
+      # so re-pushing the same version to main is a no-op instead of a failure.
+      - name: Check whether this version is already published
+        id: check
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Resolved $NAME@$VERSION"
+          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::$NAME@$VERSION already on npm — skipping publish. Bump \"version\" in package.json to release."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # No NODE_AUTH_TOKEN: auth comes from the npm trusted publisher (OIDC),
+      # which also generates provenance automatically.
+      - name: Publish
+        if: steps.check.outputs.exists == 'false'
+        run: npm publish

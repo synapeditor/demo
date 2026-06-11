@@ -1,0 +1,30 @@
+{
+  "name": "@synap-editor/synap-editor",
+  "version": "3.3.1",
+  "description": "A powerful web-based WYSIWYG HTML editor by Synapsoft.",
+  "keywords": [
+    "synapeditor",
+    "synap-editor",
+    "wysiwyg",
+    "html",
+    "editor",
+    "rich-text-editor",
+    "javascript",
+    "web-editor",
+    "document-editor"
+  ],
+  "homepage": "https://www.synapeditor.com",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/synap-editor/synap-editor-demo.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "index.html",
+    "html",
+    "assets"
+  ]
+}

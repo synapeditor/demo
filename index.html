@@ -30,6 +30,29 @@
             <span>updated 2026.05</span>
         </div>
 
+        <section class="license-notice" aria-label="License setup guide">
+            <div class="ln-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="7.5" cy="15.5" r="5.5"/>
+                    <path d="m21 2-9.6 9.6"/>
+                    <path d="m15.5 7.5 3 3L22 7l-3-3"/>
+                </svg>
+            </div>
+            <div class="ln-body">
+                <h2 class="ln-title">A license is required to run the demos</h2>
+                <p class="ln-desc">Without a valid license, the editor will not appear. The bundled <code>license.js</code> ships only as a placeholder, so you need to set up your own before the demos work.</p>
+                <ol class="ln-steps">
+                    <li><b>Get a license</b> — visit <a href="https://www.synapeditor.com" target="_blank" rel="noopener">synapeditor.com</a>, or email <a href="mailto:editorglobal@synapsoft.co.kr">editorglobal@synapsoft.co.kr</a> for inquiries.</li>
+                    <li><b>Set it up</b> — place <code>license.js</code> at the project root and fill in your key. The <code>key</code> field is an array.</li>
+                </ol>
+                <div class="code-block ln-code"><pre><span class="com">// license.js — at the project root</span>
+<span class="kw">var</span> <span class="var">synapEditorLicense</span> <span class="punc">=</span> <span class="punc">{</span>
+    <span class="var">company</span><span class="punc">:</span> <span class="str">'Your Company'</span><span class="punc">,</span>
+    <span class="var">key</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'YOUR-LICENSE-KEY'</span><span class="punc">]</span>  <span class="com">// key is an array</span>
+<span class="punc">}</span><span class="punc">;</span></pre></div>
+            </div>
+        </section>
+
         <section class="toc">
             <div class="toc-grid">
                 <div class="cat" id="features">

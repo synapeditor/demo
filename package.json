@@ -1,10 +1,13 @@
 {
-  "name": "@synap-editor/synap-editor",
+  "name": "@synapeditor/demo",
   "version": "3.3.1",
-  "description": "A powerful web-based WYSIWYG HTML editor by Synapsoft.",
+  "description": "Interactive feature and mode demos for SynapEditor, the web-based WYSIWYG HTML editor by Synapsoft.",
   "keywords": [
     "synapeditor",
     "synap-editor",
+    "demo",
+    "example",
+    "examples",
     "wysiwyg",
     "html",
     "editor",
@@ -17,7 +20,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
-    "url": "https://github.com/synap-editor/synap-editor-demo.git"
+    "url": "https://github.com/synap-editor/demo.git"
   },
   "publishConfig": {
     "access": "public"

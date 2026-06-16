@@ -5,8 +5,7 @@
     <title>Document mode — SynapEditor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../assets/styles.css">
-    <script src="../../license.js"></script>
-    <script src="https://cdn.synapeditor.com/latest/synapeditor.config.js"></script>
+    <script src="../../license.config.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
     <style>#editorWrapper { height: 700px; }</style>
@@ -63,7 +62,6 @@
                 </button>
             </div>
             <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
-    <span class="str">'editor.license'</span><span class="punc">:</span> <span class="var">synapEditorLicense</span><span class="punc">,</span>
     <span class="str">'editor.lang'</span><span class="punc">:</span> <span class="str">'en'</span><span class="punc">,</span>
     <span class="str">'editor.type'</span><span class="punc">:</span> <span class="str">'document'</span>
 <span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
@@ -79,7 +77,6 @@
 
     <script>
         var config = Object.assign(synapEditorConfig, {
-            'editor.license': synapEditorLicense,
             'editor.lang': 'en',
             'editor.type': 'document'
         });
@@ -87,7 +84,6 @@
 
         function copyCode(btn) {
             var code = "var config = Object.assign(synapEditorConfig, {\n" +
-                "    'editor.license': synapEditorLicense,\n" +
                 "    'editor.lang': 'en',\n" +
                 "    'editor.type': 'document'\n" +
                 "});\n\n" +

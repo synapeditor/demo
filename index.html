@@ -40,15 +40,17 @@
             </div>
             <div class="ln-body">
                 <h2 class="ln-title">A license is required to run the demos</h2>
-                <p class="ln-desc">Without a valid license, the editor will not appear. The bundled <code>license.js</code> ships only as a placeholder, so you need to set up your own before the demos work.</p>
+                <p class="ln-desc">Without a valid license, the editor will not appear. Edit <code>license.config.js</code> at the project root and fill in your key before the demos work.</p>
                 <ol class="ln-steps">
                     <li><b>Get a license</b> — visit <a href="https://www.synapeditor.com" target="_blank" rel="noopener">synapeditor.com</a>, or email <a href="mailto:editorglobal@synapsoft.co.kr">editorglobal@synapsoft.co.kr</a> for inquiries.</li>
-                    <li><b>Set it up</b> — place <code>license.js</code> at the project root and fill in your key. The <code>key</code> field is an array.</li>
+                    <li><b>Set it up</b> — edit <code>license.config.js</code> at the project root and fill in your company name and key. The <code>key</code> field is an array.</li>
                 </ol>
-                <div class="code-block ln-code"><pre><span class="com">// license.js — at the project root</span>
-<span class="kw">var</span> <span class="var">synapEditorLicense</span> <span class="punc">=</span> <span class="punc">{</span>
-    <span class="var">company</span><span class="punc">:</span> <span class="str">'Your Company'</span><span class="punc">,</span>
-    <span class="var">key</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'YOUR-LICENSE-KEY'</span><span class="punc">]</span>  <span class="com">// key is an array</span>
+                <div class="code-block ln-code"><pre><span class="com">// license.config.js — at the project root</span>
+<span class="kw">var</span> <span class="var">synapEditorConfig</span> <span class="punc">=</span> <span class="punc">{</span>
+    <span class="str">'editor.license'</span><span class="punc">:</span> <span class="punc">{</span>
+        <span class="var">company</span><span class="punc">:</span> <span class="str">'Your Company'</span><span class="punc">,</span>
+        <span class="var">key</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'YOUR-LICENSE-KEY'</span><span class="punc">]</span>
+    <span class="punc">}</span>
 <span class="punc">}</span><span class="punc">;</span></pre></div>
             </div>
         </section>

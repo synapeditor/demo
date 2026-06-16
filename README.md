@@ -24,18 +24,19 @@ Then double-click `index.html` or open it in any modern browser.
 
 ## License Setup
 
-A valid SynapEditor license is required to run the demos. Place your license file at the project root:
-
-```
-license.js
-```
-
-The file should export a license object as a global variable:
+A valid SynapEditor license is required to run the demos. Edit `license.config.js` at the project root:
 
 ```javascript
-var synapEditorLicense = {
-    company: 'Your Company Name',
-    key: ['YOUR-LICENSE-KEY']
+var synapEditorConfig = {
+    'editor.license': {
+        company: 'Your Company Name',
+        key: ['YOUR-LICENSE-KEY']
+    },
+    // Optional: online load-check API (leave url empty to skip)
+    'editor.license.load.api': {
+        url: '',
+        apiKey: ''
+    }
 };
 ```
 
@@ -48,7 +49,7 @@ var synapEditorLicense = {
 ```
 demo/
 ├── index.html              # Main page with categorized example list
-├── license.js              # Your SynapEditor license
+├── license.config.js       # Your SynapEditor license (edit this)
 ├── assets/
 │   └── styles.css          # Shared design system
 └── html/
@@ -57,7 +58,7 @@ demo/
     └── ui/                 # UI setting demos (1)
 ```
 
-The SynapEditor library itself is loaded from the CDN (`https://cdn.synapeditor.com/latest/`), so only your `license.js` needs to live locally at the project root.
+The SynapEditor library itself is loaded from the CDN (`https://cdn.synapeditor.com/latest/`), so only `license.config.js` needs to live locally at the project root.
 
 
 
@@ -104,8 +105,7 @@ The SynapEditor library itself is loaded from the CDN (`https://cdn.synapeditor.
 
 ```html
 <!-- Include SynapEditor assets (library from CDN, license local) -->
-<script src="license.js"></script>
-<script src="https://cdn.synapeditor.com/latest/synapeditor.config.js"></script>
+<script src="license.config.js"></script>
 <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
 <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
 
@@ -117,7 +117,7 @@ The SynapEditor library itself is loaded from the CDN (`https://cdn.synapeditor.
 <!-- Initialize -->
 <script>
     var config = Object.assign(synapEditorConfig, {
-        'editor.license': synapEditorLicense
+        'editor.lang': 'en'
     });
     var editor = new SynapEditor('synapEditor', config);
 </script>
@@ -131,7 +131,6 @@ Set the editor UI language with `'editor.lang'` in the config. The demos in this
 
 ```javascript
 var config = Object.assign(synapEditorConfig, {
-    'editor.license': synapEditorLicense,
     'editor.lang': 'en'
 });
 ```

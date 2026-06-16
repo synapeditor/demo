@@ -18,12 +18,12 @@ mkdir my-synapeditor-app && cd my-synapeditor-app
 npm init -y
 npm install @synapeditor/demo
 
-# 3) Move into the installed demo (all HTML/assets and license.js live here)
+# 3) Move into the installed demo (all HTML/assets and license.config.js live here)
 cd node_modules/@synapeditor/demo
 ```
 
-The demo files and `license.js` live in this folder — this is the directory you
-serve in Quick start below. (Editing `license.js` here is fine for evaluation;
+The demo files and `license.config.js` live in this folder — this is the directory you
+serve in Quick start below. (Editing `license.config.js` here is fine for evaluation;
 note a re-`npm install` would overwrite it. If you plan to customize the demo,
 copy this folder out: `cp -r node_modules/@synapeditor/demo ../../my-demo`.)
 
@@ -63,34 +63,42 @@ Once the server is running, open:
 
 ## License setup
 
-The license lives in `license.js` (in this folder); every demo loads it.
+The license lives in `license.config.js` (in this folder); every demo loads it.
+Edit the `'editor.license'` and `'editor.license.load.api'` values inside
+`synapEditorConfig`:
 
 ```javascript
-var synapEditorLicense = {
-    company: 'Evaluation',
-    key: ['...']
-};
+var synapEditorConfig = {
 
-// Optional online license check. It does NOT block the editor from loading —
-// the offline key (company + key) above is enough on its own.
-var synapEditorLicenseLoadApi = {
-    url: 'http://localhost:12530/api/v1/load-check',
-    apiKey: '...'
+    // REQUIRED: fill in company and key
+    'editor.license': {
+        company: 'Evaluation',
+        key: [
+            'YOUR_LICENSE_KEY'
+        ]
+    },
+
+    // OPTIONAL: online load-check API — leave url empty ('') to skip
+    'editor.license.load.api': {
+        url: 'http://localhost:12530/api/v1/load-check',
+        apiKey: 'se_test_...'
+    }
+
 };
 ```
 
-Each demo's config injects them:
+> When a config object supplies both keys, map them directly into `synapEditorConfig`:
+> - `editor.license` → `synapEditorConfig['editor.license']`
+> - `editor.license.load.api` → `synapEditorConfig['editor.license.load.api']`
+
+Every demo's config merges `synapEditorConfig` at runtime with only runtime-specific
+options (e.g. `editor.lang`):
 
 ```javascript
 var config = Object.assign(synapEditorConfig, {
-    'editor.license': synapEditorLicense,
-    'editor.license.load.api': synapEditorLicenseLoadApi,  // optional
     'editor.lang': 'en'
 });
 ```
-
-> Note: the demo HTML files use **CRLF** line endings. If you batch-edit them
-> with a script, account for the trailing `\r`.
 
 ## Success checklist
 

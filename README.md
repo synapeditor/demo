@@ -12,8 +12,8 @@ Explore key features and editor modes through categorized, ready-to-run examples
 No build step or server required. Just open `index.html` in your browser.
 
 ```
-git clone https://github.com/synap-editor/synap-editor-demo.git
-cd synap-editor-demo
+git clone https://github.com/synap-editor/demo.git
+cd demo
 ```
 
 Then double-click `index.html` or open it in any modern browser.
@@ -46,7 +46,7 @@ var synapEditorLicense = {
 ## Project Structure
 
 ```
-synap-editor-demo/
+demo/
 ├── index.html              # Main page with categorized example list
 ├── license.js              # Your SynapEditor license
 ├── assets/

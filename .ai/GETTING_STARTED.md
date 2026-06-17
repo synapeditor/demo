@@ -8,7 +8,8 @@ This package contains the interactive feature and mode demos.
 
 ## Install
 
-> Prerequisite: Node.js 18+ (`node -v`).
+> Prerequisites: Node.js 18+ (`node -v`) · an internet connection (the editor
+> core, `synapeditor.min.js` / `.css`, loads from `cdn.synapeditor.com`).
 
 ```bash
 # 1) Create a project folder and enter it
@@ -30,12 +31,20 @@ copy this folder out: `cp -r node_modules/@synapeditor/demo ../../my-demo`.)
 ## Quick start
 
 ```bash
-# From inside node_modules/@synapeditor/demo
+# macOS / Linux — from inside node_modules/@synapeditor/demo
 # Start a static server on a FREE port (macOS: --bind :: is required)
 python3 -m http.server 8137 --bind :: --directory .
 
 # Then open it in your browser — use `localhost`, NOT 127.0.0.1
 open http://localhost:8137/
+```
+
+```powershell
+# Windows (PowerShell) — from inside node_modules\@synapeditor\demo
+# Omit --bind :: on Windows (binding IPv6-only can refuse IPv4 `localhost`),
+# and open the URL manually — there is no `open` command.
+python -m http.server 8137 --directory .
+# then browse to http://localhost:8137/  (use localhost, NOT 127.0.0.1)
 ```
 
 Once the server is running, open:
@@ -54,8 +63,10 @@ Once the server is running, open:
    open index.html" line — that uses `file://` and won't work with this license.)
 
 2. **Pick a free port.** Port `8080` is often already taken. Check with
-   `lsof -ti tcp:<port>`; if it's busy, **don't kill the other process** — just
-   use a different port. The license only checks the hostname, not the port.
+   `lsof -ti tcp:<port>` (Windows: `netstat -ano | findstr :<port>` or
+   `Get-NetTCPConnection -LocalPort <port>`); if it's busy, **don't kill the
+   other process** — just use a different port. The license only checks the
+   hostname, not the port.
 
 3. **macOS needs `--bind ::`.** `localhost` resolves to IPv6 (`::1`) first, so a
    server bound only to `127.0.0.1` won't accept `localhost` connections.
@@ -78,10 +89,12 @@ var synapEditorConfig = {
         ]
     },
 
-    // OPTIONAL: online load-check API — leave url empty ('') to skip
+    // OPTIONAL: self-hosted load-check server only. Fill `url` ONLY if you run one —
+    // pointing it at a dead address blocks the editor from loading. Leave both
+    // empty ('') to skip (the default).
     'editor.license.load.api': {
-        url: 'http://localhost:12530/api/v1/load-check',
-        apiKey: 'se_test_...'
+        url: '',
+        apiKey: ''
     }
 
 };

@@ -148,7 +148,7 @@ a { color: inherit; text-decoration: none; }
 .license-notice {
     box-sizing: border-box;
     width: calc(100% - 64px);
-    max-width: 1180px;
+    max-width: 1116px; /* align with the .toc card column (1180 − 32×2), not the full hero width */
     margin: 36px auto 0;
     padding: 22px 24px;
     display: flex;
@@ -215,6 +215,9 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 640px) {
     .license-notice { flex-direction: column; gap: 14px; }
 }
+/* Setup callout on demo pages: match #editorWrapper width (90% / 1180px) and leave a
+   consistent gap before the editor. Scoped to .demo-shell so index.html is unaffected. */
+.demo-shell .license-notice { width: 90%; max-width: 1180px; margin: 0 auto 28px; }
 
 .toc {
     max-width: 1180px;

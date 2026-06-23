@@ -59,8 +59,9 @@ Once the server is running, open:
 1. **The license is locked to the `localhost` hostname.** Opening via
    `127.0.0.1`, another IP, or `file://` makes the editor **fail silently** — no
    console error, just an empty editor box where `window.editor.isLoaded` stays
-   `false`. Always open `http://localhost:<port>`. (Ignore the README's "just
-   open index.html" line — that uses `file://` and won't work with this license.)
+   `false`. Always open `http://localhost:<port>` — the license checks the hostname,
+   not the port, so any free port works. Quick reference:
+   `http://localhost:<port>` ✅ · `http://127.0.0.1:<port>` ❌ · other IP/hostname ❌ · `file://` ❌.
 
 2. **Pick a free port.** Port `8080` is often already taken. Check with
    `lsof -ti tcp:<port>` (Windows: `netstat -ano | findstr :<port>` or

@@ -1,24 +1,67 @@
 # [SynapEditor](https://www.synapeditor.com) Demo
 
-A collection of interactive demos for **SynapEditor**, the web-based editor by [Synapsoft](https://www.synapsoft.co.kr).
+A collection of interactive demos for **SynapEditor**, the web-based WYSIWYG HTML editor by [Synapsoft](https://www.synapsoft.co.kr).
 
-Explore key features and editor modes through categorized, ready-to-run examples.
+This package is **not the editor library itself** — it is a set of categorized, ready-to-run examples that show how to use SynapEditor's features and editor modes.
 
-![SynapEditor Demo](https://img.shields.io/badge/SynapEditor-v3.3.0-39b6b8)
+![npm version](https://img.shields.io/npm/v/@synapeditor/demo?color=39b6b8&label=npm)
 
+
+## Contents
+
+- [Getting Started](#getting-started)
+- [Server-Dependent Demos](#server-dependent-demos)
+- [License Setup](#license-setup)
+- [Project Structure](#project-structure)
+- [Feature Demos](#feature-demos) · [Editor Modes](#editor-modes) · [UI Settings](#ui-settings)
+- [Basic Usage](#basic-usage) · [Language](#language)
 
 ## Getting Started
 
-No build step or server required. Just open `index.html` in your browser.
+The demos are published to npm as **[`@synapeditor/demo`](https://www.npmjs.com/package/@synapeditor/demo)**. Install the package, or clone the repository to work on the demos themselves:
 
-```
-git clone https://github.com/synap-editor/demo.git
+```bash
+# Install the published package…
+npm i @synapeditor/demo            # → node_modules/@synapeditor/demo/
+
+# …or clone the repo to develop the demos
+git clone https://github.com/synapeditor/demo.git
 cd demo
 ```
 
-Then double-click `index.html` or open it in any modern browser.
+Either way there is **no build step** — the SynapEditor library loads from the CDN (`https://cdn.synapeditor.com/latest/`). You only need to add your license and serve the files over `http://localhost`.
 
-> The **static demos** (Features, UI Settings, Editor Modes) run entirely client-side via the `file://` protocol.
+> **Important — serve over `http://localhost`.** The bundled license is locked to the
+> `localhost` hostname, so opening a file directly (`file://`), or via `127.0.0.1` or any
+> other IP, makes the editor **fail silently** — an empty box with no console error. Always
+> open `http://localhost:<port>`. There is no build step; "running" just means serving the
+> files. For the full step-by-step walkthrough and troubleshooting, see
+> **[`.ai/GETTING_STARTED.md`](.ai/GETTING_STARTED.md)**.
+
+> 🔑 A valid SynapEditor **license is required** to run the demos — get one at
+> **<https://www.synapeditor.com/>**, then add it to `license.config.js` (see [License Setup](#license-setup)).
+
+Serve the folder over HTTP, then open it with `localhost` (any free port works — the license
+checks the hostname, not the port):
+
+```bash
+# macOS / Linux  (--bind :: lets `localhost` resolve over IPv6)
+python3 -m http.server 8137 --bind :: --directory .
+
+# Windows (PowerShell) — omit --bind ::
+python -m http.server 8137 --directory .
+```
+
+Then open **http://localhost:8137/** — use `localhost`, **not** `127.0.0.1`.
+
+**Which URL works?**
+
+| You open… | Editor loads? |
+|---|---|
+| `http://localhost:<any free port>` | ✅ Yes |
+| `http://127.0.0.1:<port>` | ❌ No — the license is hostname-locked |
+| any other IP or hostname | ❌ No |
+| `file:///…/index.html` (double-click) | ❌ No |
 
 
 
@@ -43,10 +86,50 @@ npm install && npm start          # → http://localhost:3080
 
 Open [http://localhost:3080](http://localhost:3080) and choose **Server Features**. The demo
 server serves the whole site at the same origin and proxies each feature to its backend, using
-the same `license.config.js`. See [`server/README.md`](server/README.md) for
-per-feature config, ports, and the Windows/WSL2 converter note.
+the same `license.config.js`. See [`server/README.md`](server/README.md) for per-feature config
+and ports. It runs on **macOS, Linux, and Windows** — only the converter (Import) needs one extra
+WSL2 line on Windows, noted there.
 
-> The static demos remain server-free — there is no regression.
+> Only the **Server Features** above need this backend. The other demos — Features, Editor Modes,
+> UI Settings — run on just the static server from [Getting Started](#getting-started): any OS, no Docker.
+
+### AI Assistant
+
+The **AI Assistant** demo (`html/server-features/ai_assistant.html`) uses the demo
+server (no Docker backend) — it proxies AI calls. The page posts to same-origin
+endpoints; the server reads the key from `server/.env` and forwards the request, so the
+key never reaches the browser. A **text-provider toggle** (GPT-4o / Gemini)
+re-initializes the editor with the chosen provider and shows that provider's config
+live. Image generation always uses OpenAI `gpt-image-1`.
+
+```bash
+# server/.env  (KEY=value form — no quotes, no trailing comma)
+GPT_API_KEY=sk-...           # GPT-4o text + gpt-image-1 images (required for GPT)
+# GPT_IMAGE_API_KEY=sk-...   # optional; falls back to GPT_API_KEY
+# Gemini: full streaming URL with a CURRENT model + the key (gemini-1.5-flash is retired/404)
+GEMINI_URL=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse&key=...
+```
+
+Endpoints: `/requestGPT`, `/requestGemini` (text), `/requestGPTImage` (image),
+`/uploadFile` (image hosting). Generated/inserted images are uploaded via
+`editor.upload.image.api: '/uploadFile'`, so they are server-hosted (not base64).
+
+Then `cd server && npm start` and open the AI Assistant page. Get keys at
+[platform.openai.com](https://platform.openai.com/api-keys) (OpenAI) and
+[aistudio.google.com](https://aistudio.google.com/apikey) (Gemini).
+
+### OCR
+
+The **OCR** demo (`html/server-features/ocr.html`) extracts text/tables from an image.
+The page posts the image to same-origin `/ocr`; the server adds the Synap OCR key from
+`server/.env` and proxies to the OCR API, then returns the recognized result plus a
+masked preview image (served from `/tmp/work`).
+
+```bash
+# server/.env
+OCR_API_KEY=...              # required (Synap OCR key)
+# OCR_SDK_URL=https://ailab.synap.co.kr/sdk   # optional; this is the default
+```
 
 
 
@@ -80,10 +163,12 @@ demo/
 ├── license.config.js       # Your SynapEditor license (edit this)
 ├── assets/
 │   └── styles.css          # Shared design system
-└── html/
-    ├── features/           # Feature demos (12)
-    ├── modes/              # Editor mode demos (5)
-    └── ui/                 # UI setting demos (1)
+├── html/                   # all demo pages — included in the npm package
+│   ├── features/           # Feature demos (12)
+│   ├── modes/              # Editor mode demos (5)
+│   ├── ui/                 # UI setting demos (1)
+│   └── server-features/    # Server-dependent demo pages (6) — on npm; need the server/ backend running
+└── server/                 # Node demo server + Docker backends — source repo only, not in the npm package
 ```
 
 The SynapEditor library itself is loaded from the CDN (`https://cdn.synapeditor.com/latest/`), so only `license.config.js` needs to live locally at the project root.
@@ -132,7 +217,8 @@ The SynapEditor library itself is loaded from the CDN (`https://cdn.synapeditor.
 ## Basic Usage
 
 ```html
-<!-- Include SynapEditor assets (library from CDN, license local) -->
+<!-- Serve over http://localhost — the license is bound to the localhost hostname
+     (file:// and 127.0.0.1 fail silently). The editor core loads from the CDN. -->
 <script src="license.config.js"></script>
 <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
 <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">

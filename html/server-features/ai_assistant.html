@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Assistant — SynapEditor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <!-- Server-feature guard: shows a GitHub-download dialog if the demo server isn't running -->
+    <script defer src="../../assets/server-check.js"></script>
+    <script src="../../license.config.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
+    <!-- AI Write Supporter plugin — must load AFTER the core script -->
+    <script src="https://cdn.synapeditor.com/latest/plugins/aiWriteSupporter/aiWriteSupporter.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/plugins/aiWriteSupporter/aiWriteSupporter.min.css">
+    <style>
+        /* The AI prompt/preview panel renders as position:absolute inside the editor
+           (.se-container) and is clamped to the browser viewport, so it intentionally
+           overflows the editor box. The shared #editorWrapper { overflow:hidden } would
+           clip it at the bottom. This page is the only one loading the plugin, so the
+           override is scoped here (no effect on the other demos' rounded-corner clip). */
+        #editorWrapper { overflow: visible; }
+
+        /* Setup header: title on the left, provider toggle pinned top-right */
+        .ln-head {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 16px; flex-wrap: wrap; margin-bottom: 16px;
+        }
+        .ln-head .ln-title { margin: 0; }
+        /* Provider toggle — segmented control */
+        .aip-seg {
+            display: inline-flex; background: #fff;
+            border: 1px solid var(--se-border); border-radius: 10px;
+            overflow: hidden; box-shadow: var(--se-shadow);
+        }
+        .aip-opt {
+            display: flex; flex-direction: column; align-items: flex-start; gap: 1px;
+            padding: 6px 18px; border: 0; border-right: 1px solid var(--se-border);
+            background: #fff; cursor: pointer; font: inherit; line-height: 1.2;
+            transition: background 0.12s;
+        }
+        .aip-opt:last-child { border-right: 0; }
+        .aip-opt .aip-name { font-size: 13px; font-weight: 600; color: var(--se-text); }
+        .aip-opt .aip-vendor { font-size: 10px; color: var(--se-text-faint); }
+        .aip-opt:not(.is-active):hover { background: var(--se-primary-soft); }
+        .aip-opt.is-active { background: var(--se-primary); }
+        .aip-opt.is-active .aip-name { color: #fff; }
+        .aip-opt.is-active .aip-vendor { color: rgba(255, 255, 255, 0.85); }
+        /* per-provider snippets are shown/hidden together with the toggle */
+        .code-block [hidden] { display: none; }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <a href="../../index.html" class="back">← Examples</a>
+        <a href="../../index.html" class="brand">
+            <span class="logo">S</span>
+            <span class="pname">SynapEditor</span>
+            <span class="ptag">DEMO</span>
+        </a>
+    </header>
+
+    <main class="demo-shell">
+        <div class="demo-head">
+            <span class="kicker">Server Feature</span>
+            <h1>AI Assistant</h1>
+            <p class="desc">Generate and rewrite text, or create images, right inside the editor. Pick a provider in the setup box below — the key, the editor, and the configuration all follow your choice. Requests go through the demo server, which holds your key.</p>
+            <div class="demo-meta">
+                <span class="pill">Text generation</span>
+                <span class="pill" id="metaImagePill">Image generation (GPT-4o)</span>
+                <span class="pill">Runs through the demo server</span>
+            </div>
+        </div>
+
+        <section class="license-notice" aria-label="AI Assistant setup">
+            <div class="ln-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="7.5" cy="15.5" r="5.5"/>
+                    <path d="m21 2-9.6 9.6"/>
+                    <path d="m15.5 7.5 3 3L22 7l-3-3"/>
+                </svg>
+            </div>
+            <div class="ln-body">
+                <div class="ln-head">
+                    <h2 class="ln-title">Provider &amp; API key</h2>
+                    <div class="aip-seg" role="radiogroup" aria-label="AI text provider">
+                        <button class="aip-opt is-active" type="button" data-ai="gpt"><span class="aip-name">GPT-4o</span><span class="aip-vendor">text + image</span></button>
+                        <button class="aip-opt" type="button" data-ai="gemini"><span class="aip-name">Gemini</span><span class="aip-vendor">text only</span></button>
+                    </div>
+                </div>
+
+                <p class="ln-desc">You're already viewing this <em>through</em> the demo server, so it's running. The only thing AI needs is the selected provider's key in <code>server/.env</code> — restart the server (<code>cd server &amp;&amp; npm start</code>) after you add or change it.</p>
+                <div class="code-block ln-code"><pre><span class="setup-env" data-ai="gpt"><span class="com"># server/.env  —  GPT-4o (text) + gpt-image-1 (image)</span>
+<span class="var">GPT_API_KEY</span><span class="punc">=</span><span class="str">your-openai-key</span></span><span class="setup-env" data-ai="gemini" hidden><span class="com"># server/.env  —  Gemini (text only)</span>
+<span class="var">GEMINI_URL</span><span class="punc">=</span><span class="str">https://…/gemini-2.0-flash:streamGenerateContent?alt=sse&amp;key=…</span></span></pre></div>
+            </div>
+        </section>
+
+        <div id="editorWrapper">
+            <div id="synapEditor">
+                <h2>AI Assistant</h2>
+                <p>Click <strong>Text AI</strong> (✏️) in the toolbar to generate, rewrite, summarize, or translate — using the provider you picked above.</p>
+                <p>With <strong>GPT-4o</strong> you also get <strong>Image AI</strong> (🖼) to generate an image (uploaded to the server and inserted). <strong>Gemini is text-only here</strong>, so its image button is hidden.</p>
+                <p>Try it: select this paragraph, click <strong>Text AI</strong>, and ask for <em>"Summarize this in one sentence."</em></p>
+            </div>
+        </div>
+
+        <section class="code-section" id="codeExample">
+            <div class="code-head">
+                <h3>Configuration <span id="cfgProvider" style="font-weight:400; color:var(--se-text-faint);"></span></h3>
+                <span class="meta">matches the selected provider</span>
+                <button class="copy-btn" type="button" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="5" y="5" width="9" height="9" rx="1.2"/>
+                        <path d="M3 11V3a1 1 0 0 1 1-1h7"/>
+                    </svg>
+                    <span class="label">Copy</span>
+                </button>
+            </div>
+            <div class="code-block"><pre class="cfg-pre" data-ai="gpt"><span class="com">// Load from CDN after synapeditor.min.js:</span>
+<span class="com">//   plugins/aiWriteSupporter/aiWriteSupporter.min.js + .min.css</span>
+
+<span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
+    <span class="str">'editor.lang'</span><span class="punc">:</span> <span class="str">'en'</span><span class="punc">,</span>
+    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span><span class="punc">,</span>
+    <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'undo'</span><span class="punc">,</span> <span class="str">'redo'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'bold'</span><span class="punc">,</span> <span class="str">'italic'</span><span class="punc">,</span> <span class="str">'underline'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'image'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'openTextAI'</span><span class="punc">,</span> <span class="str">'openImageAI'</span><span class="punc">]</span><span class="punc">,</span>
+    <span class="str">'editor.upload.image.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
+    <span class="str">'aiWriteSupporter.config'</span><span class="punc">:</span> <span class="punc">{</span>
+        <span class="var">text</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">ai</span><span class="punc">:</span> <span class="str">'gpt'</span><span class="punc">,</span> <span class="var">url</span><span class="punc">:</span> <span class="str">'/requestGPT'</span><span class="punc">,</span> <span class="var">requestBody</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">model</span><span class="punc">:</span> <span class="str">'gpt-4o'</span> <span class="punc">}</span> <span class="punc">}</span><span class="punc">,</span>
+        <span class="var">image</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">url</span><span class="punc">:</span> <span class="str">'/requestGPTImage'</span> <span class="punc">}</span>   <span class="com">// gpt-image-1</span>
+    <span class="punc">}</span>
+<span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
+
+<span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditor'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="var">initialHtml</span><span class="punc">)</span><span class="punc">;</span></pre><pre class="cfg-pre" data-ai="gemini" hidden><span class="com">// Load from CDN after synapeditor.min.js:</span>
+<span class="com">//   plugins/aiWriteSupporter/aiWriteSupporter.min.js + .min.css</span>
+
+<span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
+    <span class="str">'editor.lang'</span><span class="punc">:</span> <span class="str">'en'</span><span class="punc">,</span>
+    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span><span class="punc">,</span>
+    <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'undo'</span><span class="punc">,</span> <span class="str">'redo'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'bold'</span><span class="punc">,</span> <span class="str">'italic'</span><span class="punc">,</span> <span class="str">'underline'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'openTextAI'</span><span class="punc">]</span><span class="punc">,</span>
+    <span class="str">'aiWriteSupporter.config'</span><span class="punc">:</span> <span class="punc">{</span>
+        <span class="var">text</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">ai</span><span class="punc">:</span> <span class="str">'gemini'</span><span class="punc">,</span> <span class="var">url</span><span class="punc">:</span> <span class="str">'/requestGemini'</span> <span class="punc">}</span>   <span class="com">// text only — no image channel</span>
+    <span class="punc">}</span>
+<span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
+
+<span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditor'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="var">initialHtml</span><span class="punc">)</span><span class="punc">;</span></pre></div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span>© Synapsoft Corp. · SynapEditor</span>
+    </footer>
+
+    <script>
+        // The text channel differs by provider; image generation is OpenAI-only (the
+        // plugin's image channel speaks the OpenAI images format), so Gemini drops the
+        // image button and the image config entirely. The matching server route injects
+        // the key from server/.env, so the browser never sees it.
+        var CONFIG = {
+            gpt: {
+                toolbar: ['undo', 'redo', '|', 'bold', 'italic', 'underline', '|', 'image', '|', 'openTextAI', 'openImageAI'],
+                upload: { 'editor.upload.image.api': '/uploadFile' },
+                ai: { text: { ai: 'gpt', url: '/requestGPT', requestBody: { model: 'gpt-4o' } }, image: { url: '/requestGPTImage' } }
+            },
+            gemini: {
+                toolbar: ['undo', 'redo', '|', 'bold', 'italic', 'underline', '|', 'openTextAI'],
+                upload: {},
+                ai: { text: { ai: 'gemini', url: '/requestGemini' } }
+            }
+        };
+
+        // Captured before the first init so each re-init starts from the same seed content.
+        var initialHtml = document.getElementById('synapEditor').innerHTML;
+
+        function createEditor(provider) {
+            var c = CONFIG[provider];
+            var config = Object.assign({}, synapEditorConfig, {
+                'editor.lang': 'en',
+                'editor.menu.show': false,
+                'editor.toolbar': c.toolbar,
+                'aiWriteSupporter.config': c.ai
+            }, c.upload);
+            return new SynapEditor('synapEditor', config, initialHtml);
+        }
+
+        // Switching provider updates everything: editor, the .env snippet, and the config code.
+        function applyProvider(provider) {
+            if (window.editor && typeof window.editor.destroy === 'function') {
+                try { window.editor.destroy(); } catch (e) {}
+            }
+            document.getElementById('synapEditor').innerHTML = initialHtml;
+            window.editor = createEditor(provider);
+
+            document.querySelectorAll('.aip-opt').forEach(function (b) {
+                b.classList.toggle('is-active', b.getAttribute('data-ai') === provider);
+            });
+            document.querySelectorAll('.setup-env, .cfg-pre').forEach(function (el) {
+                el.hidden = (el.getAttribute('data-ai') !== provider);
+            });
+            // The image channel is OpenAI-only, so the "Image generation" header pill
+            // belongs to GPT — hide it under Gemini (text only).
+            document.getElementById('metaImagePill').hidden = (provider !== 'gpt');
+            document.getElementById('cfgProvider').textContent = (provider === 'gemini') ? '— Gemini' : '— GPT-4o';
+        }
+
+        document.querySelectorAll('.aip-opt').forEach(function (b) {
+            b.addEventListener('click', function () { applyProvider(b.getAttribute('data-ai')); });
+        });
+
+        applyProvider('gpt');
+
+        function copyCode(btn) {
+            var p = document.querySelector('.aip-opt.is-active').getAttribute('data-ai');
+            var head = "// Load from CDN after synapeditor.min.js:\n" +
+                "//   plugins/aiWriteSupporter/aiWriteSupporter.min.js + .min.css\n\n";
+            var code = (p === 'gemini')
+                ? head +
+                    "var config = Object.assign(synapEditorConfig, {\n" +
+                    "    'editor.lang': 'en',\n" +
+                    "    'editor.menu.show': false,\n" +
+                    "    'editor.toolbar': ['undo', 'redo', '|', 'bold', 'italic', 'underline', '|', 'openTextAI'],\n" +
+                    "    'aiWriteSupporter.config': {\n" +
+                    "        text: { ai: 'gemini', url: '/requestGemini' }   // text only — no image channel\n" +
+                    "    }\n" +
+                    "});\n\n" +
+                    "var editor = new SynapEditor('synapEditor', config, initialHtml);"
+                : head +
+                    "var config = Object.assign(synapEditorConfig, {\n" +
+                    "    'editor.lang': 'en',\n" +
+                    "    'editor.menu.show': false,\n" +
+                    "    'editor.toolbar': ['undo', 'redo', '|', 'bold', 'italic', 'underline', '|', 'image', '|', 'openTextAI', 'openImageAI'],\n" +
+                    "    'editor.upload.image.api': '/uploadFile',\n" +
+                    "    'aiWriteSupporter.config': {\n" +
+                    "        text: { ai: 'gpt', url: '/requestGPT', requestBody: { model: 'gpt-4o' } },\n" +
+                    "        image: { url: '/requestGPTImage' }   // gpt-image-1\n" +
+                    "    }\n" +
+                    "});\n\n" +
+                    "var editor = new SynapEditor('synapEditor', config, initialHtml);";
+            navigator.clipboard.writeText(code).catch(function () {});
+            btn.classList.add('copied');
+            btn.querySelector('.label').textContent = 'Copied';
+            setTimeout(function () {
+                btn.classList.remove('copied');
+                btn.querySelector('.label').textContent = 'Copy';
+            }, 1400);
+        }
+    </script>
+</body>
+</html>

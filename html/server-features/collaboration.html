@@ -5,6 +5,8 @@
     <title>Collaboration — SynapEditor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../assets/styles.css">
+    <!-- Server-feature guard: shows a GitHub-download dialog if the demo server isn't running -->
+    <script defer src="../../assets/server-check.js"></script>
     <script src="../../license.config.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
@@ -77,6 +79,8 @@
             <div class="code-block"><pre><span class="com">// Requires plugins/collaboration to be loaded (see &lt;head&gt;).</span>
 <span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
     <span class="str">'editor.lang'</span><span class="punc">:</span> <span class="str">'en'</span><span class="punc">,</span>
+    <span class="str">'editor.size.width'</span><span class="punc">:</span> <span class="str">'100%'</span><span class="punc">,</span>
+    <span class="str">'editor.size.height'</span><span class="punc">:</span> <span class="str">'100%'</span><span class="punc">,</span>
     <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'bold'</span><span class="punc">,</span> <span class="str">'italic'</span><span class="punc">,</span> <span class="str">'underline'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'bulletList'</span><span class="punc">,</span> <span class="str">'numberedList'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'collaborator'</span><span class="punc">]</span><span class="punc">,</span>
     <span class="str">'collaboration.config'</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">wsUrl</span><span class="punc">:</span> <span class="str">'/collabo_ws'</span><span class="punc">,</span> <span class="var">useHistory</span><span class="punc">:</span> <span class="bool">true</span> <span class="punc">}</span><span class="punc">,</span>
     <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span>
@@ -166,6 +170,8 @@
             var code = "// Requires plugins/collaboration to be loaded (see <head>).\n" +
                 "var config = Object.assign({}, synapEditorConfig, {\n" +
                 "    'editor.lang': 'en',\n" +
+                "    'editor.size.width': '100%',\n" +
+                "    'editor.size.height': '100%',\n" +
                 "    'editor.toolbar': ['bold', 'italic', 'underline', '|', 'bulletList', 'numberedList', '|', 'collaborator'],\n" +
                 "    'collaboration.config': { wsUrl: '/collabo_ws', useHistory: true },\n" +
                 "    'editor.menu.show': false\n" +

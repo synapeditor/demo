@@ -3,20 +3,14 @@
 // Edit the values in this section to activate the editor.
 // =================================================================
 var synapEditorConfig = {
-
-    // REQUIRED: Offline license key issued by Synapsoft
-    'editor.license': {
-        company: 'YOUR_COMPANY_NAME',
-        key: [
-            'YOUR_LICENSE_KEY'
+    "editor.license": {
+        "company": "localhost",
+        "key": [
+            "U2FsdGVkX190ux+MhKDfCBGNtkQzoIBdCda4xTKxIUXC689S21cgqj8XX4kl0pIJZdVa9gvtE5USQTHdfhcv+es4xIMr+mn8TEmmKbzbHPeBCcyfpTsU7EKzVipaSWC+lUD8kE4rs+ogGbkuNZG8FIxSfO+RDGjK+VEGu7JiVAhCIE8t0VDVFkgCyQWehdrY"
         ]
     },
-
-    // OPTIONAL: Online load-check API.
-    // Leave url empty ('') to skip — the offline key above is sufficient.
-    'editor.license.load.api': {
-        url: '',
-        apiKey: ''
-    }
-
+    "editor.license.load.api": {
+        "url": "",
+        "apiKey": ""
+    },
 };

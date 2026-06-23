@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Collaboration — SynapEditor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script src="../../license.config.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
+    <script src="https://cdn.synapeditor.com/latest/externals/SEDocModelParser/SEDocModelParser.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/externals/SEShapeManager/SEShapeManager.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/externals/MIMEParser/MIMEParser.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/plugins/collaboration/collaboration.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/plugins/collaboration/collaboration.min.css">
+    <style>
+        .collabo-grid { display: flex; gap: 16px; width: 90%; max-width: 1180px; margin: 0 auto; }
+        .collabo-grid .pane { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .collabo-grid .pane-label { font-size: 13px; font-weight: 600; margin: 0 0 6px 2px; }
+        .collabo-grid .pane-box { height: 460px; border: 1px solid var(--se-border); border-radius: 8px; overflow: hidden; box-shadow: var(--se-shadow); }
+        @media (max-width: 760px) { .collabo-grid { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <a href="../../index.html" class="back">← Examples</a>
+        <a href="../../index.html" class="brand">
+            <span class="logo">S</span>
+            <span class="pname">SynapEditor</span>
+            <span class="ptag">DEMO</span>
+        </a>
+    </header>
+
+    <main class="demo-shell">
+        <div class="demo-head">
+            <span class="kicker">Server Feature</span>
+            <h1>Collaboration</h1>
+            <p class="desc">Two editors on this page join the <strong>same document</strong> as different users, so you can see real-time sync without opening a second browser. Type in one — it appears in the other.</p>
+            <div class="demo-meta">
+                <span class="pill">server: collabo-ws</span>
+                <span class="pill">ws: /collabo_ws</span>
+            </div>
+        </div>
+
+        <div class="server-status">
+            <span class="dot-led"></span>
+            <label class="msg">Document:
+                <input id="collaboDocName" type="text" value="demo-doc-1" style="margin-left:6px;padding:5px 8px;border:1px solid var(--se-border);border-radius:5px;">
+            </label>
+            <button id="collaboJoinBtn" class="open-btn" type="button">Join</button>
+            <span id="collaboStatus" class="msg">Loading editors…</span>
+        </div>
+
+        <div class="collabo-grid">
+            <div class="pane">
+                <div class="pane-label" style="color:#2a9a9c;">● User A</div>
+                <div class="pane-box"><div id="synapEditorA"></div></div>
+            </div>
+            <div class="pane">
+                <div class="pane-label" style="color:#c2410c;">● User B</div>
+                <div class="pane-box"><div id="synapEditorB"></div></div>
+            </div>
+        </div>
+
+        <section class="code-section" id="codeExample">
+            <div class="code-head">
+                <h3>Configuration</h3>
+                <span class="meta">server: collabo-ws · plugin: collaboration</span>
+                <button class="copy-btn" type="button" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="5" y="5" width="9" height="9" rx="1.2"/>
+                        <path d="M3 11V3a1 1 0 0 1 1-1h7"/>
+                    </svg>
+                    <span class="label">Copy</span>
+                </button>
+            </div>
+            <div class="code-block"><pre><span class="com">// Requires plugins/collaboration to be loaded (see &lt;head&gt;).</span>
+<span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
+    <span class="str">'editor.lang'</span><span class="punc">:</span> <span class="str">'en'</span><span class="punc">,</span>
+    <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'bold'</span><span class="punc">,</span> <span class="str">'italic'</span><span class="punc">,</span> <span class="str">'underline'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'bulletList'</span><span class="punc">,</span> <span class="str">'numberedList'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'collaborator'</span><span class="punc">]</span><span class="punc">,</span>
+    <span class="str">'collaboration.config'</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">wsUrl</span><span class="punc">:</span> <span class="str">'/collabo_ws'</span><span class="punc">,</span> <span class="var">useHistory</span><span class="punc">:</span> <span class="bool">true</span> <span class="punc">}</span><span class="punc">,</span>
+    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span>
+<span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
+
+<span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditorA'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="str">''</span><span class="punc">)</span><span class="punc">;</span>
+
+<span class="com">// When ready: identify the user and join a shared document</span>
+<span class="var">window</span><span class="punc">.</span><span class="var">SynapEditorInitialized</span> <span class="punc">=</span> <span class="kw">function</span> <span class="punc">(</span><span class="var">e</span><span class="punc">)</span> <span class="punc">{</span>
+    <span class="kw">var</span> <span class="var">collab</span> <span class="punc">=</span> <span class="var">e</span><span class="punc">.</span><span class="var">editor</span><span class="punc">.</span><span class="var">plugins</span><span class="punc">.</span><span class="var">collaboration</span><span class="punc">;</span>
+    <span class="var">collab</span><span class="punc">.</span><span class="fn">setUser</span><span class="punc">(</span><span class="punc">{</span> <span class="var">id</span><span class="punc">:</span> <span class="str">'user-a'</span><span class="punc">,</span> <span class="var">name</span><span class="punc">:</span> <span class="str">'User A'</span> <span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
+    <span class="var">collab</span><span class="punc">.</span><span class="fn">changeDocument</span><span class="punc">(</span><span class="str">'demo-doc-1'</span><span class="punc">)</span><span class="punc">;</span>
+<span class="punc">}</span><span class="punc">;</span></pre></div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span>© Synapsoft Corp. · SynapEditor</span>
+    </footer>
+
+    <script>
+        var DEFAULT_DOC = 'demo-doc-1';
+        var users = [
+            { id: 'user-a', name: 'User A', color: '#2a9a9c' },
+            { id: 'user-b', name: 'User B', color: '#c2410c' }
+        ];
+        var collabPlugins = [];
+        var initCount = 0;
+
+        function setStatus(msg) {
+            document.getElementById('collaboStatus').textContent = msg;
+        }
+        function currentDoc() {
+            return document.getElementById('collaboDocName').value.trim() || DEFAULT_DOC;
+        }
+
+        // SynapEditor calls this once per editor when it finishes initializing.
+        window.SynapEditorInitialized = function (e) {
+            var collab = e.editor.plugins && e.editor.plugins.collaboration;
+            if (!collab) {
+                setStatus('Collaboration plugin not available.');
+                return;
+            }
+            var user = users[initCount % users.length];
+            initCount++;
+            if (collab.setUser) collab.setUser(user);
+            if (collab.changeDocument) collab.changeDocument(currentDoc());
+            collabPlugins.push(collab);
+            setStatus(collabPlugins.length + ' editor(s) joined "' + currentDoc() + '" — type in one, watch the other.');
+        };
+
+        function makeConfig() {
+            return Object.assign({}, synapEditorConfig, {
+                'editor.lang': 'en',
+                'editor.size.width': '100%',
+                'editor.size.height': '100%',
+                'editor.toolbar': ['bold', 'italic', 'underline', '|', 'bulletList', 'numberedList', '|', 'collaborator'],
+                'collaboration.config': { wsUrl: '/collabo_ws', useHistory: true },
+                'editor.menu.show': false
+            });
+        }
+
+        window.editorA = new SynapEditor('synapEditorA', makeConfig(), '<p><br></p>');
+        window.editorB = new SynapEditor('synapEditorB', makeConfig(), '<p><br></p>');
+
+        document.getElementById('collaboJoinBtn').addEventListener('click', function () {
+            var doc = currentDoc();
+            collabPlugins.forEach(function (c) { if (c.changeDocument) c.changeDocument(doc); });
+            setStatus('Re-joined "' + doc + '" — type in one editor, watch the other.');
+        });
+
+        // Disconnect both editors when leaving/reloading the page, otherwise the
+        // collaboration server keeps the stale clients and the participant list grows.
+        function disconnectCollabo() {
+            collabPlugins.forEach(function (c) {
+                try {
+                    if (c.destroy) c.destroy();
+                    else if (c.disconnect) c.disconnect();
+                } catch (e) { /* ignore */ }
+            });
+            collabPlugins = [];
+        }
+        window.addEventListener('pagehide', disconnectCollabo);
+        window.addEventListener('beforeunload', disconnectCollabo);
+
+        function copyCode(btn) {
+            var code = "// Requires plugins/collaboration to be loaded (see <head>).\n" +
+                "var config = Object.assign({}, synapEditorConfig, {\n" +
+                "    'editor.lang': 'en',\n" +
+                "    'editor.toolbar': ['bold', 'italic', 'underline', '|', 'bulletList', 'numberedList', '|', 'collaborator'],\n" +
+                "    'collaboration.config': { wsUrl: '/collabo_ws', useHistory: true },\n" +
+                "    'editor.menu.show': false\n" +
+                "});\n\n" +
+                "var editor = new SynapEditor('synapEditorA', config, '');\n\n" +
+                "// When ready: identify the user and join a shared document\n" +
+                "window.SynapEditorInitialized = function (e) {\n" +
+                "    var collab = e.editor.plugins.collaboration;\n" +
+                "    collab.setUser({ id: 'user-a', name: 'User A' });\n" +
+                "    collab.changeDocument('demo-doc-1');\n" +
+                "};";
+            navigator.clipboard.writeText(code).catch(function() {});
+            btn.classList.add('copied');
+            btn.querySelector('.label').textContent = 'Copied';
+            setTimeout(function() {
+                btn.classList.remove('copied');
+                btn.querySelector('.label').textContent = 'Copy';
+            }, 1400);
+        }
+    </script>
+</body>
+</html>

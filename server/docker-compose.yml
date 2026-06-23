@@ -1,0 +1,50 @@
+services:
+  collabo-ws:
+    build:
+      context: ./docker
+      dockerfile: collabo.Dockerfile
+    image: collabo-ws-patched
+    container_name: collabo-ws
+    ports:
+      - "${COLLABO_PORT:-1234}:1234"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=1234
+      - REDIS_ENABLE=false
+
+  export-api:
+    image: export-api
+    container_name: export-api
+    ports:
+      - "${EXPORT_PORT:-9090}:9090"
+    environment:
+      - PORT=9090
+      - EXPORTER_PATH=/app/Exporter_exe
+      - WORK_ROOT=/app/workspaces
+      - EXPORTER_TIMEOUT=120000
+      # The browser embeds uploaded images as http://localhost:3080/... URLs.
+      # export-api runs inside a container, so it must rewrite that host to reach
+      # the demo runner on the Docker host. host.docker.internal works on Docker
+      # Desktop and (via extra_hosts) on Linux.
+      - REMOTE_SOURCE_PROXY_DOMAINS=${REMOTE_SOURCE_PROXY_DOMAINS:-localhost:3080}
+      - REMOTE_SOURCE_PROXY_TARGET=${REMOTE_SOURCE_PROXY_TARGET:-http://host.docker.internal:3080/}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  converter-api:
+    build:
+      context: ./docker
+      dockerfile: converter.Dockerfile
+    image: converter-api-patched
+    container_name: converter-api
+    ports:
+      - "${CONVERTER_PORT:-8080}:8080"
+    environment:
+      - PORT=8080
+      - CONVERTER_PATH=./sedocConverter_exe
+      - FONT_DIR=./fonts
+      - WORK_ROOT=./workspaces
+      - CONVERTER_TIMEOUT=30000
+    # WORK_ROOT shared with the runner so extracted media is served at /tmp/work/<id>/media.
+    volumes:
+      - ./tmp/work:/app/workspaces

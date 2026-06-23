@@ -18,7 +18,35 @@ cd demo
 
 Then double-click `index.html` or open it in any modern browser.
 
-> All demos run entirely client-side via the `file://` protocol.
+> The **static demos** (Features, UI Settings, Editor Modes) run entirely client-side via the `file://` protocol.
+
+
+
+## Server-Dependent Demos
+
+**Import**, **export**, **image upload**, and **collaboration** need SynapEditor's server
+modules, bundled under [`server/`](server/) as Docker images plus a small Node.js
+demo server:
+
+```bash
+# 1) Load the backend images (first time only)
+docker load -i server/docker/export-api.tar
+docker load -i server/docker/converter-api.tar
+docker load -i server/docker/collabo-ws.tar
+
+# 2) Start the backends (all at once, or one: docker compose up -d export-api)
+cd server && docker compose up -d
+
+# 3) Start the demo server
+npm install && npm start          # → http://localhost:3080
+```
+
+Open [http://localhost:3080](http://localhost:3080) and choose **Server Features**. The demo
+server serves the whole site at the same origin and proxies each feature to its backend, using
+the same `license.config.js`. See [`server/README.md`](server/README.md) for
+per-feature config, ports, and the Windows/WSL2 converter note.
+
+> The static demos remain server-free — there is no regression.
 
 
 

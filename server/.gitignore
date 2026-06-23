@@ -1,0 +1,15 @@
+node_modules/
+tmp/
+
+## delete log file
+*.log
+
+## delete license
+license.json
+license.js
+
+## env
+.env
+
+## python cache
+__pycache__/

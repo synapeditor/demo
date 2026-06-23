@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Import — SynapEditor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script src="../../license.config.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
+    <script src="https://cdn.synapeditor.com/latest/externals/SEDocModelParser/SEDocModelParser.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/externals/SEShapeManager/SEShapeManager.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/externals/MIMEParser/MIMEParser.min.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <a href="../../index.html" class="back">← Examples</a>
+        <a href="../../index.html" class="brand">
+            <span class="logo">S</span>
+            <span class="pname">SynapEditor</span>
+            <span class="ptag">DEMO</span>
+        </a>
+    </header>
+
+    <main class="demo-shell">
+        <div class="demo-head">
+            <span class="kicker">Server Feature</span>
+            <h1>Import</h1>
+            <p class="desc">Open Office documents into the editor. <strong>Open</strong> sends the file to <code>/importDoc</code> for conversion; images inside the document are uploaded via <code>/uploadFile</code> so they render — so the upload API is required for imported images to appear.</p>
+            <div class="demo-meta">
+                <span class="pill">server: converter-api</span>
+                <span class="pill">api: /importDoc · /uploadFile</span>
+            </div>
+        </div>
+
+        <div id="editorWrapper">
+            <div id="synapEditor">
+                <h2>Import a Document</h2>
+                <p>Click <strong>Open</strong> in the toolbar and choose a <code>.docx</code>, <code>.xlsx</code>, or <code>.pptx</code> file to load it here — including its images.</p>
+                <p>Requires the demo server and the <code>converter-api</code> container (HWP/HWPX is not supported by the converter).</p>
+            </div>
+        </div>
+
+        <section class="code-section" id="codeExample">
+            <div class="code-head">
+                <h3>Configuration</h3>
+                <span class="meta">import + upload · external: SEDocModelParser</span>
+                <button class="copy-btn" type="button" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="5" y="5" width="9" height="9" rx="1.2"/>
+                        <path d="M3 11V3a1 1 0 0 1 1-1h7"/>
+                    </svg>
+                    <span class="label">Copy</span>
+                </button>
+            </div>
+            <div class="code-block"><pre><span class="com">// Requires externals/SEDocModelParser to be loaded (see &lt;head&gt;).</span>
+<span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
+    <span class="str">'editor.lang'</span><span class="punc">:</span> <span class="str">'en'</span><span class="punc">,</span>
+    <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'new'</span><span class="punc">,</span> <span class="str">'open'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'image'</span><span class="punc">]</span><span class="punc">,</span>
+    <span class="str">'editor.import.api'</span><span class="punc">:</span> <span class="str">'/importDoc'</span><span class="punc">,</span>
+    <span class="str">'editor.import.extensions'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'docx'</span><span class="punc">,</span> <span class="str">'xlsx'</span><span class="punc">,</span> <span class="str">'pptx'</span><span class="punc">,</span> <span class="str">'html'</span><span class="punc">,</span> <span class="str">'txt'</span><span class="punc">]</span><span class="punc">,</span>
+    <span class="str">'editor.upload.image.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
+    <span class="str">'editor.upload.video.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
+    <span class="str">'editor.upload.file.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
+    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span>
+<span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
+
+<span class="com">// Create editor instance</span>
+<span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditor'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="var">initialHtml</span><span class="punc">)</span><span class="punc">;</span></pre></div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span>© Synapsoft Corp. · SynapEditor</span>
+    </footer>
+
+    <script>
+        var config = Object.assign(synapEditorConfig, {
+            'editor.lang': 'en',
+            'editor.toolbar': ['new', 'open', '|', 'image'],
+            'editor.import.api': '/importDoc',
+            'editor.import.extensions': ['docx', 'xlsx', 'pptx', 'html', 'txt'],
+            'editor.upload.image.api': '/uploadFile',
+            'editor.upload.video.api': '/uploadFile',
+            'editor.upload.file.api': '/uploadFile',
+            'editor.menu.show': false
+        });
+        window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
+
+        function copyCode(btn) {
+            var code = "// Requires externals/SEDocModelParser to be loaded (see <head>).\n" +
+                "var config = Object.assign(synapEditorConfig, {\n" +
+                "    'editor.lang': 'en',\n" +
+                "    'editor.toolbar': ['new', 'open', '|', 'image'],\n" +
+                "    'editor.import.api': '/importDoc',\n" +
+                "    'editor.import.extensions': ['docx', 'xlsx', 'pptx', 'html', 'txt'],\n" +
+                "    'editor.upload.image.api': '/uploadFile',\n" +
+                "    'editor.upload.video.api': '/uploadFile',\n" +
+                "    'editor.upload.file.api': '/uploadFile',\n" +
+                "    'editor.menu.show': false\n" +
+                "});\n\n" +
+                "// Create editor instance\n" +
+                "var editor = new SynapEditor('synapEditor', config, initialHtml);";
+            navigator.clipboard.writeText(code).catch(function() {});
+            btn.classList.add('copied');
+            btn.querySelector('.label').textContent = 'Copied';
+            setTimeout(function() {
+                btn.classList.remove('copied');
+                btn.querySelector('.label').textContent = 'Copy';
+            }, 1400);
+        }
+    </script>
+</body>
+</html>

@@ -13,7 +13,7 @@ services:
       - REDIS_ENABLE=false
 
   export-api:
-    image: export-api
+    image: ghcr.io/synapeditor/export-api:latest
     container_name: export-api
     ports:
       - "${EXPORT_PORT:-9090}:9090"

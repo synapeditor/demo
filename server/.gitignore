@@ -13,3 +13,6 @@ license.js
 
 ## python cache
 __pycache__/
+
+## docker image tarballs — distributed via ghcr.io/synapeditor/*, never committed
+docker/*.tar

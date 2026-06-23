@@ -8,15 +8,11 @@ study and configure them one at a time. The editor SDK is loaded from the CDN.
 ## Quick start (all features)
 
 ```bash
-# 1) Load the backend images (first time only)
-docker load -i docker/export-api.tar
-docker load -i docker/converter-api.tar
-docker load -i docker/collabo-ws.tar
-
-# 2) Start the backends (builds the patched collabo image on first run)
+# 1) Start the backends — first run pulls the base images from GHCR
+#    (public; no docker login needed) and builds the patched collabo/converter images
 docker compose up -d
 
-# 3) Start the demo server
+# 2) Start the demo server
 npm install && npm start            # → http://localhost:3080
 ```
 
@@ -53,8 +49,8 @@ the site and proxies each feature to its backend:
 server/
 ├── docker-compose.yml     # all: `docker compose up`,  one: `docker compose up <service>`
 ├── app/                   # demo server (Express): app.js · config.js · helpers.js · routes/
-└── docker/                # export-api.tar · converter-api.tar · collabo-ws.tar
-                           # collabo.Dockerfile + collabo-server.js  (collabo patch)
+└── docker/                # collabo.Dockerfile / converter.Dockerfile (+ *-server.js patches)
+                           # base images pulled from ghcr.io/synapeditor/* — not committed
 ```
 
 ## Notes
@@ -62,9 +58,12 @@ server/
 - **License** — uses the repo-root `license.config.js` (served at `/license.config.js`), same as the static demos.
 - **Ports** — defaults: collabo `1234`, export `9090`, converter `8080`. If `8080` is busy, put
   `CONVERTER_PORT=18080` and `CONVERTER_SERVER=http://localhost:18080` in `.env` (see `.env.example`).
-- **Collabo patch** — `docker compose up` builds `collabo-ws-patched` from `docker/collabo.Dockerfile`
-  so a disconnected collaborator disappears immediately (upstream waits ~30s). Local build only —
-  nothing is pushed to a registry.
+- **Backend images** — the base images (`collabo-ws`, `converter-api`, `export-api`) are pulled from
+  `ghcr.io/synapeditor/*` (public). `docker compose up` pulls them and builds the patched
+  `collabo-ws-patched` / `converter-api-patched` images locally. Maintainers republish the base
+  images with `docker/publish-base-images.sh`.
+- **Collabo patch** — the patched image makes a disconnected collaborator disappear immediately
+  (upstream waits ~30s); see `docker/collabo.Dockerfile`.
 - **Windows / WSL2** — the converter needs `vsyscall=emulate`. Add to `C:\Users\<you>\.wslconfig`:
   `[wsl2]` then `kernelCommandLine = vsyscall=emulate`, then `wsl --shutdown` and restart Docker Desktop.
 ```

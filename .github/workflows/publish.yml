@@ -42,6 +42,20 @@ jobs:
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
+      # npm shows whatever README.md exists at publish time. Swap in the npm-specific
+      # readme so the package page points users to GitHub for the server backend, while
+      # the full README.md stays GitHub-only. The checkout is ephemeral, so no restore.
+      - name: Use the npm-specific README
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          if [ -f npm-readme.md ]; then
+            mv -f npm-readme.md README.md
+            echo "::notice::Using npm-readme.md for the npm package (full README.md stays on GitHub)."
+          else
+            echo "::error::npm-readme.md not found — aborting to avoid publishing the full README to npm."
+            exit 1
+          fi
+
       # No NODE_AUTH_TOKEN: auth comes from the npm trusted publisher (OIDC),
       # which also generates provenance automatically.
       - name: Publish

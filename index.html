@@ -5,6 +5,24 @@
     <title>Synap Editor Examples</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="assets/styles.css">
+    <style>
+        /* Server-feature availability hints — added by the script at the bottom when a
+           required backend (or the demo server itself) isn't running. */
+        .toc .needs-server .kr { opacity: .45; }
+        .srv-warn { display:inline-flex; align-items:center; margin-left:7px; color:#e0a400;
+            cursor:help; position:relative; line-height:1; }
+        .srv-warn svg { width:14px; height:14px; }
+        .srv-warn::after { content: attr(data-tip); position:absolute; left:50%; bottom:calc(100% + 9px);
+            transform:translateX(-50%); background:#1b2227; color:#fff; font-size:12px; font-weight:400;
+            line-height:1.45; padding:8px 11px; border-radius:8px; width:max-content; max-width:240px;
+            white-space:normal; text-align:left; box-shadow:0 8px 22px rgba(0,0,0,.24);
+            opacity:0; visibility:hidden; transition:opacity .12s; z-index:60; }
+        .srv-warn::before { content:''; position:absolute; left:50%; bottom:calc(100% + 3px);
+            transform:translateX(-50%); border:5px solid transparent; border-top-color:#1b2227;
+            opacity:0; visibility:hidden; transition:opacity .12s; z-index:60; }
+        .srv-warn:hover::after, .srv-warn:focus::after,
+        .srv-warn:hover::before, .srv-warn:focus::before { opacity:1; visibility:visible; }
+    </style>
 </head>
 <body>
     <header class="site-header">
@@ -17,13 +35,13 @@
 
     <main>
         <section class="index-hero">
-            <span class="eyebrow">Examples · v3.0</span>
+            <span class="eyebrow">Examples · v3.3.2</span>
             <h1>Synap<b>Editor</b> Examples</h1>
             <p class="sub">A collection of demos for SynapEditor, the web-based WYSIWYG HTML editor. Explore key features and editor modes through categorized examples.</p>
         </section>
 
         <div class="index-meta">
-            <span>22 examples</span>
+            <span>24 examples</span>
             <span class="dot"></span>
             <span>4 categories</span>
             <span class="dot"></span>
@@ -44,13 +62,16 @@
                 <ol class="ln-steps">
                     <li><b>Get a license</b> — visit <a href="https://www.synapeditor.com" target="_blank" rel="noopener">synapeditor.com</a>, or email <a href="mailto:editorglobal@synapsoft.co.kr">editorglobal@synapsoft.co.kr</a> for inquiries.</li>
                     <li><b>Set it up</b> — edit <code>license.config.js</code> at the project root and fill in your company name and key. The <code>key</code> field is an array.</li>
+                    <li><b>Open over HTTP</b> — serve the folder and open <code>http://localhost:&lt;port&gt;</code>. The license is bound to the <code>localhost</code> hostname, so <code>file://</code>, <code>127.0.0.1</code>, or any other IP make the editor fail silently.</li>
                 </ol>
                 <div class="code-block ln-code"><pre><span class="com">// license.config.js — at the project root</span>
 <span class="kw">var</span> <span class="var">synapEditorConfig</span> <span class="punc">=</span> <span class="punc">{</span>
     <span class="str">'editor.license'</span><span class="punc">:</span> <span class="punc">{</span>
         <span class="var">company</span><span class="punc">:</span> <span class="str">'Your Company'</span><span class="punc">,</span>
         <span class="var">key</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'YOUR-LICENSE-KEY'</span><span class="punc">]</span>
-    <span class="punc">}</span>
+    <span class="punc">}</span><span class="punc">,</span>
+    <span class="com">// Optional online load-check — leave empty to skip (default)</span>
+    <span class="str">'editor.license.load.api'</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">url</span><span class="punc">:</span> <span class="str">''</span><span class="punc">,</span> <span class="var">apiKey</span><span class="punc">:</span> <span class="str">''</span> <span class="punc">}</span>
 <span class="punc">}</span><span class="punc">;</span></pre></div>
             </div>
         </section>
@@ -78,13 +99,19 @@
                     </ul>
                 </div>
 
-                <div class="cat" id="ui">
+                <div class="cat" id="server">
                     <div class="cat-head">
-                        <h2>UI Settings</h2>
-                        <span class="count">1 item</span>
+                        <h2>Server Features</h2>
+                        <span class="count">6 items</span>
+                        <span class="req">Server required</span>
                     </div>
                     <ul>
-                        <li><a href="./html/ui/table_handle.html"><span class="bullet"></span><span class="kr">Table Handle</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/server-features/ai_assistant.html"><span class="bullet"></span><span class="kr">AI Assistant</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/server-features/ocr.html"><span class="bullet"></span><span class="kr">OCR</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/server-features/import.html"><span class="bullet"></span><span class="kr">Import (docx/xlsx/pptx)</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/server-features/export.html"><span class="bullet"></span><span class="kr">Export (docx/hwpx/hwp)</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/server-features/image-upload.html"><span class="bullet"></span><span class="kr">Image &amp; File Upload</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/server-features/collaboration.html"><span class="bullet"></span><span class="kr">Collaboration</span><span class="arrow">→</span></a></li>
                     </ul>
                 </div>
 
@@ -102,16 +129,13 @@
                     </ul>
                 </div>
 
-                <div class="cat" id="server">
+                <div class="cat" id="ui">
                     <div class="cat-head">
-                        <h2>Server Features</h2>
-                        <span class="req">Server required</span>
+                        <h2>UI Settings</h2>
+                        <span class="count">1 item</span>
                     </div>
                     <ul>
-                        <li><a href="./html/server-features/import.html"><span class="bullet"></span><span class="kr">Import (docx/xlsx/pptx)</span><span class="arrow">→</span></a></li>
-                        <li><a href="./html/server-features/export.html"><span class="bullet"></span><span class="kr">Export (docx/hwpx/hwp)</span><span class="arrow">→</span></a></li>
-                        <li><a href="./html/server-features/image-upload.html"><span class="bullet"></span><span class="kr">Image &amp; File Upload</span><span class="arrow">→</span></a></li>
-                        <li><a href="./html/server-features/collaboration.html"><span class="bullet"></span><span class="kr">Collaboration</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/ui/table_handle.html"><span class="bullet"></span><span class="kr">Table Handle</span><span class="arrow">→</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -121,5 +145,59 @@
     <footer class="site-footer">
         <span>© Synapsoft Corp. · SynapEditor</span>
     </footer>
+
+    <script>
+    // Flag server-dependent demos whose backend isn't reachable. Asks the demo server
+    // (/__demo/health) which backends/keys are up; a 404 (= no demo server, e.g. opened
+    // statically from the npm package) flags all of them. Pure hint — links still work.
+    (function () {
+        var WARN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+        var NO_SERVER = 'Demo server not running — get the server stack from GitHub (not included in the npm package).';
+        // NOTE: this reasonFor() / NO_SERVER must stay identical to assets/server-check.js.
+        function reasonFor(file, h) {
+            if (!h) return NO_SERVER;
+            var b = h.backends || {}, k = h.keys || {};
+            switch (file) {
+                case 'import.html':        return b.converter ? null : 'Import needs the converter-api backend, which is not running.';
+                case 'export.html':        return (b.converter && b['export']) ? null : (!b.converter && !b['export']) ? 'Export needs converter-api + export-api, which are not running.' : !b.converter ? 'Export needs the converter-api backend, which is not running.' : 'Export needs the export-api backend, which is not running.';
+                case 'collaboration.html': return b.collabo ? null : 'Collaboration needs the collabo-ws backend, which is not running.';
+                case 'ai_assistant.html':  return (k.gpt || k.gemini) ? null : 'No AI key set in server/.env (GPT_API_KEY or GEMINI_URL).';
+                case 'ocr.html':           return k.ocr ? null : 'No OCR key set in server/.env (OCR_API_KEY).';
+                default:                   return null; /* image-upload needs only the demo server */
+            }
+        }
+        function apply(h) {
+            document.querySelectorAll('#server ul li a').forEach(function (a) {
+                var file = (a.getAttribute('href') || '').split('/').pop();
+                var reason = reasonFor(file, h);
+                if (!reason) return;
+                a.classList.add('needs-server');
+                var w = document.createElement('span');
+                w.className = 'srv-warn';
+                w.setAttribute('data-tip', reason);
+                w.setAttribute('tabindex', '0');
+                w.setAttribute('role', 'img');
+                w.setAttribute('aria-label', 'Warning: ' + reason);
+                w.innerHTML = WARN_SVG;
+                var arrow = a.querySelector('.arrow');
+                if (arrow) a.insertBefore(w, arrow); else a.appendChild(w);
+            });
+        }
+        function getHealth() {
+            var sim = null; try { sim = localStorage.getItem('seSimHealth'); } catch (e) {}
+            if (sim === 'off') return Promise.resolve(null);            // simulate: no demo server
+            if (sim) { try { return Promise.resolve(JSON.parse(sim)); } catch (e) {} } // simulate: given state
+            if (location.protocol === 'file:') return Promise.resolve(null);
+            var ctrl = ('AbortController' in window) ? new AbortController() : null;
+            var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 4000) : null;
+            return fetch('/__demo/health', { cache: 'no-store', signal: ctrl ? ctrl.signal : undefined })
+                .then(function (r) { if (timer) clearTimeout(timer); return r.ok ? r.json() : null; })
+                .then(function (h) { return (h && h.ok === true) ? h : null; })
+                .catch(function () { if (timer) clearTimeout(timer); return null; });
+        }
+        function run() { getHealth().then(apply); }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+    })();
+    </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Import — SynapEditor</title>
+    <title>OCR — SynapEditor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../assets/styles.css">
     <!-- Server-feature guard: shows a GitHub-download dialog if the demo server isn't running -->
@@ -10,9 +10,9 @@
     <script src="../../license.config.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
-    <script src="https://cdn.synapeditor.com/latest/externals/SEDocModelParser/SEDocModelParser.min.js"></script>
-    <script src="https://cdn.synapeditor.com/latest/externals/SEShapeManager/SEShapeManager.min.js"></script>
-    <script src="https://cdn.synapeditor.com/latest/externals/MIMEParser/MIMEParser.min.js"></script>
+    <!-- OCR plugin — must load AFTER the core script -->
+    <script src="https://cdn.synapeditor.com/latest/plugins/ocr/ocr.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/plugins/ocr/ocr.min.css">
 </head>
 <body>
     <header class="site-header">
@@ -27,26 +27,41 @@
     <main class="demo-shell">
         <div class="demo-head">
             <span class="kicker">Server Feature</span>
-            <h1>Import</h1>
-            <p class="desc">Open Office documents into the editor. <strong>Open</strong> sends the file to <code>/importDoc</code> for conversion; images inside the document are uploaded via <code>/uploadFile</code> so they render — so the upload API is required for imported images to appear.</p>
+            <h1>OCR</h1>
+            <p class="desc">Recognize the text and tables inside an image and insert them into the editor. Your image goes to the demo server, which calls Synap's OCR service and returns the result — your key stays on the server.</p>
             <div class="demo-meta">
-                <span class="pill">server: converter-api</span>
-                <span class="pill">api: /importDoc · /uploadFile</span>
+                <span class="pill">Image → text &amp; tables</span>
+                <span class="pill">Runs through the demo server</span>
             </div>
         </div>
 
+        <section class="license-notice" aria-label="OCR setup">
+            <div class="ln-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="7.5" cy="15.5" r="5.5"/>
+                    <path d="m21 2-9.6 9.6"/>
+                    <path d="m15.5 7.5 3 3L22 7l-3-3"/>
+                </svg>
+            </div>
+            <div class="ln-body">
+                <h2 class="ln-title">Your OCR key</h2>
+                <p class="ln-desc">You're already viewing this <em>through</em> the demo server, so it's running. OCR just needs your Synap OCR key in <code>server/.env</code> — restart the server (<code>cd server &amp;&amp; npm start</code>) after you add or change it. Then click the <b>OCR</b> button in the toolbar.</p>
+                <div class="code-block ln-code"><pre><span class="com"># server/.env</span>
+<span class="var">OCR_API_KEY</span><span class="punc">=</span><span class="str">your-synap-ocr-key</span></pre></div>
+            </div>
+        </section>
+
         <div id="editorWrapper">
             <div id="synapEditor">
-                <h2>Import a Document</h2>
-                <p>Click <strong>Open</strong> in the toolbar and choose a <code>.docx</code>, <code>.xlsx</code>, or <code>.pptx</code> file to load it here — including its images.</p>
-                <p>Requires the demo server and the <code>converter-api</code> container (HWP/HWPX is not supported by the converter).</p>
+                <h2>OCR</h2>
+                <p>Click the <strong>OCR</strong> button in the toolbar, choose an image (a scan, screenshot, or photo of a document), and run recognition. The extracted text and tables are inserted right here.</p>
             </div>
         </div>
 
         <section class="code-section" id="codeExample">
             <div class="code-head">
                 <h3>Configuration</h3>
-                <span class="meta">import + upload · external: SEDocModelParser</span>
+                <span class="meta">the editor sends the image to <code>/ocr</code> on the demo server</span>
                 <button class="copy-btn" type="button" onclick="copyCode(this)">
                     <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="5" y="5" width="9" height="9" rx="1.2"/>
@@ -55,19 +70,18 @@
                     <span class="label">Copy</span>
                 </button>
             </div>
-            <div class="code-block"><pre><span class="com">// Requires externals/SEDocModelParser to be loaded (see &lt;head&gt;).</span>
+            <div class="code-block"><pre><span class="com">// Load from CDN, after synapeditor.min.js:</span>
+<span class="com">//   plugins/ocr/ocr.min.js + ocr.min.css</span>
+
 <span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
     <span class="str">'editor.lang'</span><span class="punc">:</span> <span class="str">'en'</span><span class="punc">,</span>
-    <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'new'</span><span class="punc">,</span> <span class="str">'open'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'image'</span><span class="punc">]</span><span class="punc">,</span>
-    <span class="str">'editor.import.api'</span><span class="punc">:</span> <span class="str">'/importDoc'</span><span class="punc">,</span>
-    <span class="str">'editor.import.extensions'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'docx'</span><span class="punc">,</span> <span class="str">'xlsx'</span><span class="punc">,</span> <span class="str">'pptx'</span><span class="punc">,</span> <span class="str">'html'</span><span class="punc">,</span> <span class="str">'txt'</span><span class="punc">]</span><span class="punc">,</span>
+    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span><span class="punc">,</span>
+    <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'undo'</span><span class="punc">,</span> <span class="str">'redo'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'image'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'ocr'</span><span class="punc">]</span><span class="punc">,</span>
     <span class="str">'editor.upload.image.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
-    <span class="str">'editor.upload.video.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
-    <span class="str">'editor.upload.file.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
-    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span>
+    <span class="com">// the OCR button uploads the image here; the demo server adds the key</span>
+    <span class="str">'ocr.config'</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">url</span><span class="punc">:</span> <span class="str">'/ocr'</span> <span class="punc">}</span>
 <span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
 
-<span class="com">// Create editor instance</span>
 <span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditor'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="var">initialHtml</span><span class="punc">)</span><span class="punc">;</span></pre></div>
         </section>
     </main>
@@ -79,29 +93,24 @@
     <script>
         var config = Object.assign(synapEditorConfig, {
             'editor.lang': 'en',
-            'editor.toolbar': ['new', 'open', '|', 'image'],
-            'editor.import.api': '/importDoc',
-            'editor.import.extensions': ['docx', 'xlsx', 'pptx', 'html', 'txt'],
+            'editor.menu.show': false,
+            'editor.toolbar': ['undo', 'redo', '|', 'image', '|', 'ocr'],
             'editor.upload.image.api': '/uploadFile',
-            'editor.upload.video.api': '/uploadFile',
-            'editor.upload.file.api': '/uploadFile',
-            'editor.menu.show': false
+            'ocr.config': { url: '/ocr' }
         });
         window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
 
         function copyCode(btn) {
-            var code = "// Requires externals/SEDocModelParser to be loaded (see <head>).\n" +
+            var code = "// Load from CDN, after synapeditor.min.js:\n" +
+                "//   plugins/ocr/ocr.min.js + ocr.min.css\n\n" +
                 "var config = Object.assign(synapEditorConfig, {\n" +
                 "    'editor.lang': 'en',\n" +
-                "    'editor.toolbar': ['new', 'open', '|', 'image'],\n" +
-                "    'editor.import.api': '/importDoc',\n" +
-                "    'editor.import.extensions': ['docx', 'xlsx', 'pptx', 'html', 'txt'],\n" +
+                "    'editor.menu.show': false,\n" +
+                "    'editor.toolbar': ['undo', 'redo', '|', 'image', '|', 'ocr'],\n" +
                 "    'editor.upload.image.api': '/uploadFile',\n" +
-                "    'editor.upload.video.api': '/uploadFile',\n" +
-                "    'editor.upload.file.api': '/uploadFile',\n" +
-                "    'editor.menu.show': false\n" +
+                "    // the OCR button uploads the image here; the demo server adds the key\n" +
+                "    'ocr.config': { url: '/ocr' }\n" +
                 "});\n\n" +
-                "// Create editor instance\n" +
                 "var editor = new SynapEditor('synapEditor', config, initialHtml);";
             navigator.clipboard.writeText(code).catch(function() {});
             btn.classList.add('copied');

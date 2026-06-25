@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../assets/styles.css">
     <script src="../../license.config.js"></script>
+    <script src="../../synapeditor.config.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
 </head>
@@ -75,8 +76,7 @@
                 </button>
             </div>
             <div class="code-block">
-                <pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
-    <span class="str">'editor.lang'</span><span class="punc">:</span> <span class="str">'en'</span><span class="punc">,</span>
+                <pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
     <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span>
         <span class="str">'new'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
         <span class="str">'bulletList'</span><span class="punc">,</span> <span class="str">'numberedList'</span><span class="punc">,</span> <span class="str">'multiLevelList'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'decreaseIndent'</span><span class="punc">,</span> <span class="str">'increaseIndent'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'growFont'</span><span class="punc">,</span> <span class="str">'shrinkFont'</span>
@@ -95,8 +95,7 @@
     </footer>
 
     <script>
-        var config = Object.assign(synapEditorConfig, {
-            'editor.lang': 'en',
+        var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
             'editor.toolbar': [
                 'new', '|',
                 'bulletList', 'numberedList', 'multiLevelList', '|', 'decreaseIndent', 'increaseIndent', '|', 'growFont', 'shrinkFont'
@@ -106,8 +105,7 @@
         window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
 
         function copyCode(btn) {
-            var code = "var config = Object.assign(synapEditorConfig, {\n" +
-                "    'editor.lang': 'en',\n" +
+            var code = "var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {\n" +
                 "    'editor.toolbar': [\n" +
                 "        'new', '|',\n" +
                 "        'bulletList', 'numberedList', 'multiLevelList', '|', 'decreaseIndent', 'increaseIndent', '|', 'growFont', 'shrinkFont'\n" +

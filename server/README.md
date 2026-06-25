@@ -56,6 +56,7 @@ server/
 ## Notes
 
 - **License** — uses the repo-root `license.config.js` (served at `/license.config.js`), same as the static demos.
+- **Editor config** — the global editor defaults in `synapeditor.config.js` are served at `/synapeditor.config.js`, same as the static demos.
 - **Ports** — defaults: collabo `1234`, export `9090`, converter `8080`. If `8080` is busy, put
   `CONVERTER_PORT=18080` and `CONVERTER_SERVER=http://localhost:18080` in `.env` (see `.env.example`).
 - **Backend images** — the base images (`collabo-ws`, `converter-api`, `export-api`) are pulled from

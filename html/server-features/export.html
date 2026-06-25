@@ -8,6 +8,7 @@
     <!-- Server-feature guard: shows a GitHub-download dialog if the demo server isn't running -->
     <script defer src="../../assets/server-check.js"></script>
     <script src="../../license.config.js"></script>
+    <script src="../../synapeditor.config.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
     <script src="https://cdn.synapeditor.com/latest/externals/SEDocModelParser/SEDocModelParser.min.js"></script>
@@ -55,8 +56,7 @@
                 </button>
             </div>
             <div class="code-block"><pre><span class="com">// Requires externals/SEDocModelParser to be loaded (see &lt;head&gt;).</span>
-<span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
-    <span class="str">'editor.lang'</span><span class="punc">:</span> <span class="str">'en'</span><span class="punc">,</span>
+<span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
     <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'new'</span><span class="punc">,</span> <span class="str">'open'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'image'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'export'</span><span class="punc">]</span><span class="punc">,</span>
     <span class="str">'editor.import.api'</span><span class="punc">:</span> <span class="str">'/importDoc'</span><span class="punc">,</span>
     <span class="str">'editor.import.extensions'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'docx'</span><span class="punc">,</span> <span class="str">'xlsx'</span><span class="punc">,</span> <span class="str">'pptx'</span><span class="punc">,</span> <span class="str">'html'</span><span class="punc">,</span> <span class="str">'txt'</span><span class="punc">]</span><span class="punc">,</span>
@@ -79,8 +79,7 @@
     </footer>
 
     <script>
-        var config = Object.assign(synapEditorConfig, {
-            'editor.lang': 'en',
+        var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
             'editor.toolbar': ['new', 'open', '|', 'image', '|', 'export'],
             'editor.import.api': '/importDoc',
             'editor.import.extensions': ['docx', 'xlsx', 'pptx', 'html', 'txt'],
@@ -96,8 +95,7 @@
 
         function copyCode(btn) {
             var code = "// Requires externals/SEDocModelParser to be loaded (see <head>).\n" +
-                "var config = Object.assign(synapEditorConfig, {\n" +
-                "    'editor.lang': 'en',\n" +
+                "var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {\n" +
                 "    'editor.toolbar': ['new', 'open', '|', 'image', '|', 'export'],\n" +
                 "    'editor.import.api': '/importDoc',\n" +
                 "    'editor.import.extensions': ['docx', 'xlsx', 'pptx', 'html', 'txt'],\n" +

@@ -8,6 +8,7 @@
     <!-- Server-feature guard: shows a GitHub-download dialog if the demo server isn't running -->
     <script defer src="../../assets/server-check.js"></script>
     <script src="../../license.config.js"></script>
+    <script src="../../synapeditor.config.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
     <!-- OCR plugin — must load AFTER the core script -->
@@ -73,8 +74,7 @@
             <div class="code-block"><pre><span class="com">// Load from CDN, after synapeditor.min.js:</span>
 <span class="com">//   plugins/ocr/ocr.min.js + ocr.min.css</span>
 
-<span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
-    <span class="str">'editor.lang'</span><span class="punc">:</span> <span class="str">'en'</span><span class="punc">,</span>
+<span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
     <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span><span class="punc">,</span>
     <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'undo'</span><span class="punc">,</span> <span class="str">'redo'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'image'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'ocr'</span><span class="punc">]</span><span class="punc">,</span>
     <span class="str">'editor.upload.image.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
@@ -91,8 +91,7 @@
     </footer>
 
     <script>
-        var config = Object.assign(synapEditorConfig, {
-            'editor.lang': 'en',
+        var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
             'editor.menu.show': false,
             'editor.toolbar': ['undo', 'redo', '|', 'image', '|', 'ocr'],
             'editor.upload.image.api': '/uploadFile',
@@ -103,8 +102,7 @@
         function copyCode(btn) {
             var code = "// Load from CDN, after synapeditor.min.js:\n" +
                 "//   plugins/ocr/ocr.min.js + ocr.min.css\n\n" +
-                "var config = Object.assign(synapEditorConfig, {\n" +
-                "    'editor.lang': 'en',\n" +
+                "var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {\n" +
                 "    'editor.menu.show': false,\n" +
                 "    'editor.toolbar': ['undo', 'redo', '|', 'image', '|', 'ocr'],\n" +
                 "    'editor.upload.image.api': '/uploadFile',\n" +

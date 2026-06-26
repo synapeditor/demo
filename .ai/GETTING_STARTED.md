@@ -90,14 +90,16 @@ var synapEditorConfig = {
         ]
     },
 
-    // OPTIONAL: self-hosted load-check server only. Fill `url` ONLY if you run one —
-    // pointing it at a dead address blocks the editor from loading. Leave both
-    // empty ('') to skip (the default).
+    // editor.license.load.api — keep whatever your issued config provides:
+    //  • If load.api.url has a value (a load-metered / trial license, e.g. from
+    //    the homepage AI quickstart): paste it AS-IS — do NOT blank it, or the
+    //    editor fails to load silently.
+    //  • If load.api.url is empty (an offline / domain-validated license): leave
+    //    both '' — no load-check server is contacted.
     'editor.license.load.api': {
-        url: '',
-        apiKey: ''
+        url: '',      // keep the issued url here if your config provides one
+        apiKey: ''    // keep the issued apiKey here if your config provides one
     }
-
 };
 ```
 

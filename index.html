@@ -41,7 +41,7 @@
         </section>
 
         <div class="index-meta">
-            <span>24 examples</span>
+            <span>23 examples</span>
             <span class="dot"></span>
             <span>4 categories</span>
             <span class="dot"></span>
@@ -102,12 +102,11 @@
                 <div class="cat" id="server">
                     <div class="cat-head">
                         <h2>Server Features</h2>
-                        <span class="count">6 items</span>
+                        <span class="count">5 items</span>
                         <span class="req">Server required</span>
                     </div>
                     <ul>
                         <li><a href="./html/server-features/ai_assistant.html"><span class="bullet"></span><span class="kr">AI Assistant</span><span class="arrow">→</span></a></li>
-                        <li><a href="./html/server-features/ocr.html"><span class="bullet"></span><span class="kr">OCR</span><span class="arrow">→</span></a></li>
                         <li><a href="./html/server-features/import.html"><span class="bullet"></span><span class="kr">Import (docx/xlsx/pptx)</span><span class="arrow">→</span></a></li>
                         <li><a href="./html/server-features/export.html"><span class="bullet"></span><span class="kr">Export (docx/hwpx/hwp)</span><span class="arrow">→</span></a></li>
                         <li><a href="./html/server-features/image-upload.html"><span class="bullet"></span><span class="kr">Image &amp; File Upload</span><span class="arrow">→</span></a></li>
@@ -162,7 +161,6 @@
                 case 'export.html':        return (b.converter && b['export']) ? null : (!b.converter && !b['export']) ? 'Export needs converter-api + export-api, which are not running.' : !b.converter ? 'Export needs the converter-api backend, which is not running.' : 'Export needs the export-api backend, which is not running.';
                 case 'collaboration.html': return b.collabo ? null : 'Collaboration needs the collabo-ws backend, which is not running.';
                 case 'ai_assistant.html':  return (k.gpt || k.gemini) ? null : 'No AI key set in server/.env (GPT_API_KEY or GEMINI_URL).';
-                case 'ocr.html':           return k.ocr ? null : 'No OCR key set in server/.env (OCR_API_KEY).';
                 default:                   return null; /* image-upload needs only the demo server */
             }
         }

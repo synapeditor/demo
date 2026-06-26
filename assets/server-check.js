@@ -41,7 +41,6 @@
             case 'export.html':        return (b.converter && b['export']) ? null : (!b.converter && !b['export']) ? 'Export needs converter-api + export-api, which are not running.' : !b.converter ? 'Export needs the converter-api backend, which is not running.' : 'Export needs the export-api backend, which is not running.';
             case 'collaboration.html': return b.collabo ? null : 'Collaboration needs the collabo-ws backend, which is not running.';
             case 'ai_assistant.html':  return (k.gpt || k.gemini) ? null : 'No AI key set in server/.env (GPT_API_KEY or GEMINI_URL).';
-            case 'ocr.html':           return k.ocr ? null : 'No OCR key set in server/.env (OCR_API_KEY).';
             default:                   return null; // image-upload needs only the demo server (covered by !h)
         }
     }

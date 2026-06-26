@@ -9,7 +9,7 @@ Interactive demos for **SynapEditor**, the web-based WYSIWYG HTML editor by
 ships the runnable demo pages. No build step — "running" just means serving the files.
 
 > ### ⚠️ Server-dependent demos need a backend that is **not** in this npm package
-> **Import, Export, Image/File Upload, Collaboration, AI Assistant, and OCR** require the demo
+> **Import, Export, Image/File Upload, Collaboration, and AI Assistant** require the demo
 > server + Docker backends (~359 MB of Docker images — too large for npm). The demo **pages**
 > are included here, but to actually run them, clone the GitHub repository and follow its
 > `server/` setup:
@@ -58,7 +58,7 @@ A valid SynapEditor license is required — get one at **<https://www.synapedito
   format painter, fullscreen, preview, ruler, shortcuts, source view, table
 - **Editor Modes (5)** — classic, inline, document, preview, iframe
 - **UI Settings (1)** — table handle
-- **Server Features (6)** — AI assistant, OCR, import, export, image/file upload, collaboration
+- **Server Features (5)** — AI assistant, import, export, image/file upload, collaboration
   *(pages included; backend required — see the notice above)*
 
 ## Full docs & server stack

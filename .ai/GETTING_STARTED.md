@@ -122,6 +122,7 @@ var config = Object.assign(synapEditorConfig, {
 - [ ] Top menu bar (File / Edit / View …) and toolbar buttons are visible
 - [ ] The body is editable
 - [ ] `window.editor.isLoaded === true` in the console
+- [ ] If your issued config included a `load.api.url`, you kept it — clearing it makes the editor fail to load silently
 
 ---
 

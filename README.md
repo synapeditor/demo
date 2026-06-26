@@ -123,7 +123,7 @@ Then `cd server && npm start` and open the AI Assistant page. Get keys at
 A valid SynapEditor license is required to run the demos. Edit `license.config.js` at the project root:
 
 ```javascript
-var synapEditorConfig = {
+var synapEditorLicense = {
     'editor.license': {
         company: 'Your Company Name',
         key: ['YOUR-LICENSE-KEY']
@@ -140,12 +140,41 @@ var synapEditorConfig = {
 
 
 
+## Editor Config
+
+Shared editor defaults (e.g. the UI language and default font) live in `synapeditor.config.js`
+as a self-contained `synapEditorConfig` object — no license inside it. You normally don't
+need to edit it to run the demos.
+
+```javascript
+// synapeditor.config.js — global editor defaults, license-free
+var synapEditorConfig = {
+    'editor.lang': 'en',                // UI language shared by every demo
+    'editor.defaultStyle': {
+        'Body': 'font-family: Arial;'   // global default font
+    }
+};
+```
+
+Each demo composes the license, these defaults, and its own options at editor init — later
+sources win:
+
+```javascript
+var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
+    'editor.type': 'document'   // demo-specific options
+});
+var editor = new SynapEditor('synapEditor', config);
+```
+
+
+
 ## Project Structure
 
 ```
 demo/
 ├── index.html              # Main page with categorized example list
 ├── license.config.js       # Your SynapEditor license (edit this)
+├── synapeditor.config.js   # Global editor config — shared defaults, references the license
 ├── assets/
 │   └── styles.css          # Shared design system
 ├── html/                   # all demo pages — included in the npm package
@@ -156,7 +185,7 @@ demo/
 └── server/                 # Node demo server + Docker backends — source repo only, not in the npm package
 ```
 
-The SynapEditor library itself is loaded from the CDN (`https://cdn.synapeditor.com/latest/`), so only `license.config.js` needs to live locally at the project root.
+The SynapEditor library itself is loaded from the CDN (`https://cdn.synapeditor.com/latest/`), so only `license.config.js` and `synapeditor.config.js` need to live locally at the project root.
 
 
 
@@ -205,6 +234,7 @@ The SynapEditor library itself is loaded from the CDN (`https://cdn.synapeditor.
 <!-- Serve over http://localhost — the license is bound to the localhost hostname
      (file:// and 127.0.0.1 fail silently). The editor core loads from the CDN. -->
 <script src="license.config.js"></script>
+<script src="synapeditor.config.js"></script>
 <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
 <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
 
@@ -215,8 +245,10 @@ The SynapEditor library itself is loaded from the CDN (`https://cdn.synapeditor.
 
 <!-- Initialize -->
 <script>
-    var config = Object.assign(synapEditorConfig, {
-        'editor.lang': 'en'
+    // synapEditorConfig already carries the shared defaults (language, default font);
+    // pass only demo-specific options as the last argument.
+    var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
+        'editor.type': 'document'
     });
     var editor = new SynapEditor('synapEditor', config);
 </script>
@@ -226,12 +258,15 @@ The SynapEditor library itself is loaded from the CDN (`https://cdn.synapeditor.
 
 ## Language
 
-Set the editor UI language with `'editor.lang'` in the config. The demos in this repo use `'en'`.
+The UI language is set with `'editor.lang'`. All demos share `'en'`, so it lives once in the
+global `synapeditor.config.js` — change it there to switch every demo at once.
 
 ```javascript
-var config = Object.assign(synapEditorConfig, {
-    'editor.lang': 'en'
-});
+// synapeditor.config.js
+var synapEditorConfig = {
+    'editor.lang': 'en',
+    // ...
+};
 ```
 
 Supported languages:

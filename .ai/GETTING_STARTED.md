@@ -77,10 +77,10 @@ Once the server is running, open:
 
 The license lives in `license.config.js` (in this folder); every demo loads it.
 Edit the `'editor.license'` and `'editor.license.load.api'` values inside
-`synapEditorConfig`:
+`synapEditorLicense`:
 
 ```javascript
-var synapEditorConfig = {
+var synapEditorLicense = {
 
     // REQUIRED: fill in company and key
     'editor.license': {
@@ -101,16 +101,31 @@ var synapEditorConfig = {
 };
 ```
 
-> When a config object supplies both keys, map them directly into `synapEditorConfig`:
-> - `editor.license` → `synapEditorConfig['editor.license']`
-> - `editor.license.load.api` → `synapEditorConfig['editor.license.load.api']`
+> When a config object supplies both keys, map them directly into `synapEditorLicense`:
+> - `editor.license` → `synapEditorLicense['editor.license']`
+> - `editor.license.load.api` → `synapEditorLicense['editor.license.load.api']`
 
-Every demo's config merges `synapEditorConfig` at runtime with only runtime-specific
-options (e.g. `editor.lang`):
+## Editor config
+
+Shared editor defaults (e.g. the UI language and default font) live in `synapeditor.config.js`
+as a self-contained `synapEditorConfig` object — no license inside it:
 
 ```javascript
-var config = Object.assign(synapEditorConfig, {
-    'editor.lang': 'en'
+// synapeditor.config.js
+var synapEditorConfig = {
+    'editor.lang': 'en',                // UI language shared by every demo
+    'editor.defaultStyle': {
+        'Body': 'font-family: Arial;'   // global default font
+    }
+};
+```
+
+Every demo composes the license, these defaults, and its own demo-specific options
+(e.g. `editor.type`) at editor init — later sources win:
+
+```javascript
+var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
+    'editor.type': 'document'
 });
 ```
 

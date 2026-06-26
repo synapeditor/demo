@@ -52,6 +52,11 @@ A valid SynapEditor license is required — get one at **<https://www.synapedito
 > To obtain a license, visit [synapeditor.com](https://www.synapeditor.com) or email
 > editorglobal@synapsoft.co.kr.
 
+## Editor config
+
+Shared editor defaults (such as the UI language and default font) live in `synapeditor.config.js`
+at the package root — you don't normally need to touch it to run the demos.
+
 ## What's inside
 
 - **Features (12)** — bullets, case conversion, clear formatting, find & replace, font size,

@@ -98,6 +98,7 @@ app.use('/tmp', express.static(TEMP_ROOT));
 app.use('/assets', express.static(path.join(REPO_ROOT, 'assets')));
 app.use('/html', express.static(path.join(REPO_ROOT, 'html')));
 app.get('/license.config.js', (req, res) => res.sendFile(path.join(REPO_ROOT, 'license.config.js')));
+app.get('/synapeditor.config.js', (req, res) => res.sendFile(path.join(REPO_ROOT, 'synapeditor.config.js')));
 app.get(['/', '/index.html'], (req, res) => res.sendFile(path.join(REPO_ROOT, 'index.html')));
 
 // =============================================================================

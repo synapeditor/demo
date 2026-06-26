@@ -1,6 +1,6 @@
 {
   "name": "@synapeditor/demo",
-  "version": "3.3.4",
+  "version": "3.4.0",
   "description": "Interactive feature and mode demos for SynapEditor, the web-based WYSIWYG HTML editor by Synapsoft.",
   "keywords": [
     "synapeditor",

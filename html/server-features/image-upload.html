@@ -8,6 +8,7 @@
     <!-- Server-feature guard: shows a GitHub-download dialog if the demo server isn't running -->
     <script defer src="../../assets/server-check.js"></script>
     <script src="../../license.config.js"></script>
+    <script src="../../synapeditor.config.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
     <script src="https://cdn.synapeditor.com/latest/externals/SEDocModelParser/SEDocModelParser.min.js"></script>
@@ -54,8 +55,7 @@
                     <span class="label">Copy</span>
                 </button>
             </div>
-            <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
-    <span class="str">'editor.lang'</span><span class="punc">:</span> <span class="str">'en'</span><span class="punc">,</span>
+            <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
     <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'new'</span><span class="punc">,</span> <span class="str">'image'</span><span class="punc">,</span> <span class="str">'video'</span><span class="punc">,</span> <span class="str">'file'</span><span class="punc">]</span><span class="punc">,</span>
     <span class="str">'editor.upload.image.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
     <span class="str">'editor.upload.video.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
@@ -73,8 +73,7 @@
     </footer>
 
     <script>
-        var config = Object.assign(synapEditorConfig, {
-            'editor.lang': 'en',
+        var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
             'editor.toolbar': ['new', 'image', 'video', 'file'],
             'editor.upload.image.api': '/uploadFile',
             'editor.upload.video.api': '/uploadFile',
@@ -84,8 +83,7 @@
         window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
 
         function copyCode(btn) {
-            var code = "var config = Object.assign(synapEditorConfig, {\n" +
-                "    'editor.lang': 'en',\n" +
+            var code = "var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {\n" +
                 "    'editor.toolbar': ['new', 'image', 'video', 'file'],\n" +
                 "    'editor.upload.image.api': '/uploadFile',\n" +
                 "    'editor.upload.video.api': '/uploadFile',\n" +

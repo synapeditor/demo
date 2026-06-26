@@ -24,11 +24,7 @@ const CONFIG = {
     // Gemini — full streaming URL from server/.env; it already embeds both the model
     // and the key (…/models/gemini-2.0-flash:streamGenerateContent?alt=sse&key=…).
     // Use a current model in the URL; gemini-1.5-flash is retired (404).
-    GEMINI_URL: envClean(process.env.GEMINI_URL),
-
-    // OCR (Synap AI Lab) — key stays on the server; the page calls /ocr.
-    OCR_API_KEY: envClean(process.env.OCR_API_KEY),
-    OCR_SDK_URL: envClean(process.env.OCR_SDK_URL) || 'https://ailab.synap.co.kr/sdk'
+    GEMINI_URL: envClean(process.env.GEMINI_URL)
 };
 
 const BASE_DIR = path.resolve(__dirname, '..');

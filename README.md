@@ -118,21 +118,6 @@ Then `cd server && npm start` and open the AI Assistant page. Get keys at
 [platform.openai.com](https://platform.openai.com/api-keys) (OpenAI) and
 [aistudio.google.com](https://aistudio.google.com/apikey) (Gemini).
 
-### OCR
-
-The **OCR** demo (`html/server-features/ocr.html`) extracts text/tables from an image.
-The page posts the image to same-origin `/ocr`; the server adds the Synap OCR key from
-`server/.env` and proxies to the OCR API, then returns the recognized result plus a
-masked preview image (served from `/tmp/work`).
-
-```bash
-# server/.env
-OCR_API_KEY=...              # required (Synap OCR key)
-# OCR_SDK_URL=https://ailab.synap.co.kr/sdk   # optional; this is the default
-```
-
-
-
 ## License Setup
 
 A valid SynapEditor license is required to run the demos. Edit `license.config.js` at the project root:
@@ -167,7 +152,7 @@ demo/
 │   ├── features/           # Feature demos (12)
 │   ├── modes/              # Editor mode demos (5)
 │   ├── ui/                 # UI setting demos (1)
-│   └── server-features/    # Server-dependent demo pages (6) — on npm; need the server/ backend running
+│   └── server-features/    # Server-dependent demo pages (5) — on npm; need the server/ backend running
 └── server/                 # Node demo server + Docker backends — source repo only, not in the npm package
 ```
 

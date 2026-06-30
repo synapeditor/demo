@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Classic mode — SynapEditor</title>
+    <title>Classic mode — Synap Editor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../assets/synapeditor-icon.png">
     <link rel="stylesheet" href="../../assets/styles.css">
     <script src="../../license.config.js"></script>
     <script src="../../synapeditor.config.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/plugins/icons/basicColorIcons.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
 </head>
 <body>
     <header class="site-header">
         <a href="../../index.html" class="back">← Examples</a>
         <a href="../../index.html" class="brand">
-            <span class="logo">S</span>
-            <span class="pname">SynapEditor</span>
+            <img class="brand-logo" src="../../assets/synapeditor-logo.png" alt="Synap Editor">
             <span class="ptag">DEMO</span>
         </a>
     </header>
@@ -57,7 +58,7 @@
                     <span class="label">Copy</span>
                 </button>
             </div>
-            <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">)</span><span class="punc">;</span>
+            <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span> <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">true</span> <span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
 
 <span class="com">// Create editor instance</span>
 <span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditor'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="var">initialHtml</span><span class="punc">)</span><span class="punc">;</span></pre></div>
@@ -65,15 +66,15 @@
     </main>
 
     <footer class="site-footer">
-        <span>© Synapsoft Corp. · SynapEditor</span>
+        <span>© Synapsoft Corp. · Synap Editor</span>
     </footer>
 
     <script>
-        var config = Object.assign({}, synapEditorLicense, synapEditorConfig);
+        var config = Object.assign({}, synapEditorLicense, synapEditorConfig, { 'editor.menu.show': true });
         window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
 
         function copyCode(btn) {
-            var code = "var config = Object.assign({}, synapEditorLicense, synapEditorConfig);\n\n" +
+            var code = "var config = Object.assign({}, synapEditorLicense, synapEditorConfig, { 'editor.menu.show': true });\n\n" +
                 "// Create editor instance\n" +
                 "var editor = new SynapEditor('synapEditor', config, initialHtml);";
             navigator.clipboard.writeText(code).catch(function() {});
@@ -85,5 +86,6 @@
             }, 1400);
         }
     </script>
+    <script src="/assets/sidebar.js"></script>
 </body>
 </html>

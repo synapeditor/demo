@@ -2,20 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Preview — SynapEditor</title>
+    <title>Preview — Synap Editor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../assets/synapeditor-icon.png">
     <link rel="stylesheet" href="../../assets/styles.css">
     <script src="../../license.config.js"></script>
     <script src="../../synapeditor.config.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/plugins/icons/basicColorIcons.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/plugins/codeBlockHighlighter/codeBlockHighlighter.min.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
+    <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/plugins/codeBlockHighlighter/themes/github-dark.min.css">
 </head>
 <body>
     <header class="site-header">
         <a href="../../index.html" class="back">← Examples</a>
         <a href="../../index.html" class="brand">
-            <span class="logo">S</span>
-            <span class="pname">SynapEditor</span>
+            <img class="brand-logo" src="../../assets/synapeditor-logo.png" alt="Synap Editor">
             <span class="ptag">DEMO</span>
         </a>
     </header>
@@ -26,24 +29,88 @@
             <h1>Preview</h1>
             <p class="desc">Preview the final output in print layout and proceed directly to print or save as PDF.</p>
             <div class="demo-meta">
-                <span class="pill">toolbar: preview</span>
+                <span class="pill">toolbar: codeBlock · preview</span>
             </div>
         </div>
 
         <div id="editorWrapper">
             <div id="synapEditor">
-                <h2>Monthly Operations Report</h2>
-                <p style="color:#8b929a;font-size:13px;">May 2026 · Author: Operations Team</p>
-                <h3>Summary</h3>
-                <p>Active users increased by 12.4% compared to last month, and average session duration improved to 4 minutes 12 seconds.</p>
-                <p>You can print or save as PDF directly from the preview window.</p>
+                <h2>Synap Editor — Product One-Pager</h2>
+                <p style="color:#6b727b;font-size:13px;">Release 3.3 · Prepared by the Product Team · May 2026</p>
+                <p>This document deliberately mixes rich elements — a data table, a highlighted code block, a fill-in form, and a chart figure. Click <strong>Preview</strong> in the toolbar to see it composed for print, then print it or save as PDF.</p>
+
+                <blockquote style="margin:18px 0;padding:14px 20px;border-left:3px solid #39b6b8;background:#f1faf9;border-radius:0 10px 10px 0;color:#16181b;font-style:italic;">“What you see in the editor is exactly what you get on paper.”</blockquote>
+
+                <h3>1. Key metrics</h3>
+                <table style="border-collapse:collapse;width:100%;font-size:14px;">
+                    <thead>
+                        <tr>
+                            <th style="padding:11px 14px;text-align:left;font-weight:700;color:#16181b;border-bottom:2px solid #d7dce2;">Metric</th>
+                            <th style="padding:11px 14px;text-align:right;font-weight:700;color:#16181b;border-bottom:2px solid #d7dce2;">Q1</th>
+                            <th style="padding:11px 14px;text-align:right;font-weight:700;color:#16181b;border-bottom:2px solid #d7dce2;">Q2</th>
+                            <th style="padding:11px 14px;text-align:right;font-weight:700;color:#16181b;border-bottom:2px solid #d7dce2;">Trend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;">Active users</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;text-align:right;">18,240</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;text-align:right;">20,510</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;text-align:right;color:#157a52;font-weight:600;">+12.4%</td>
+                        </tr>
+                        <tr style="background:#f6f8fa;">
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;">Avg. session</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;text-align:right;">3m 48s</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;text-align:right;">4m 12s</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;text-align:right;color:#157a52;font-weight:600;">+10.5%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;">Documents saved</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;text-align:right;">9,120</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;text-align:right;">11,940</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;text-align:right;color:#157a52;font-weight:600;">+30.9%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>2. Embed snippet</h3>
+                <pre class="se-code-block"><code>// Initialize the editor and export to PDF
+const config = Object.assign({}, synapEditorLicense, synapEditorConfig);
+const editor = new SynapEditor('synapEditor', config);
+
+editor.setContents('&lt;p&gt;Hello, Synap Editor!&lt;/p&gt;');
+editor.exportDocument('pdf', { fileName: 'one-pager.pdf' });</code></pre>
+
+                <h3>3. Request a demo</h3>
+                <form style="border:1px solid #e9edf1;border-radius:14px;padding:18px 20px;background:#f6f8fa;">
+                    <p style="margin:0 0 12px;"><label>Name&nbsp; <input type="text" value="Jamie Park" style="padding:8px 12px;border:1px solid #dfe4ea;border-radius:10px;background:#fff;"></label></p>
+                    <p style="margin:0 0 12px;"><label>Plan&nbsp;
+                        <select style="padding:8px 12px;border:1px solid #dfe4ea;border-radius:10px;background:#fff;">
+                            <option>Starter</option>
+                            <option selected>Business</option>
+                            <option>Enterprise</option>
+                        </select></label></p>
+                    <p style="margin:0 0 14px;"><label>Notes<br><textarea rows="2" style="width:100%;margin-top:6px;padding:9px 12px;border:1px solid #dfe4ea;border-radius:10px;background:#fff;">We'd like a walkthrough of document mode.</textarea></label></p>
+                    <p style="margin:0;"><button type="button" style="background:#39b6b8;color:#fff;border:0;border-radius:100px;padding:9px 20px;font-weight:600;box-shadow:0 6px 14px -5px rgba(57,182,184,.7);">Submit request</button></p>
+                </form>
+
+                <h3>4. Quarterly trend</h3>
+                <figure style="margin:14px 0;text-align:center;">
+                    <div style="display:flex;align-items:flex-end;gap:16px;height:120px;justify-content:center;">
+                        <div style="width:46px;height:55%;background:#cdeceb;border-radius:10px 10px 0 0;"></div>
+                        <div style="width:46px;height:72%;background:#88d6d6;border-radius:10px 10px 0 0;"></div>
+                        <div style="width:46px;height:88%;background:#4cc4c6;border-radius:10px 10px 0 0;"></div>
+                        <div style="width:46px;height:100%;background:#279b9d;border-radius:10px 10px 0 0;"></div>
+                    </div>
+                    <figcaption style="color:#6b727b;font-size:12px;margin-top:8px;">Figure 1. Documents saved per quarter (relative)</figcaption>
+                </figure>
             </div>
         </div>
 
         <section class="code-section" id="codeExample">
             <div class="code-head">
                 <h3>Configuration</h3>
-                <span class="meta">mode: classic · 1 button</span>
+                <span class="meta">mode: classic · codeBlock + preview</span>
                 <button class="copy-btn" type="button" onclick="copyCode(this)">
                     <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="5" y="5" width="9" height="9" rx="1.2"/>
@@ -52,12 +119,18 @@
                     <span class="label">Copy</span>
                 </button>
             </div>
-            <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
+            <div class="code-block"><pre><span class="com">// Load the code-block highlighter plugin + a theme in &lt;head&gt; for syntax colors:</span>
+<span class="com">// .../plugins/codeBlockHighlighter/codeBlockHighlighter.js  +  themes/github-dark.min.css</span>
+<span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
     <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span>
         <span class="str">'new'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
+        <span class="str">'codeBlock'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
         <span class="str">'preview'</span>
     <span class="punc">]</span><span class="punc">,</span>
-    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span>
+    <span class="com">// Highlight code blocks in the Preview window too</span>
+    <span class="str">'editor.preview.style.urls'</span><span class="punc">:</span> <span class="punc">[</span>
+        <span class="str">'https://cdn.synapeditor.com/latest/plugins/codeBlockHighlighter/themes/github-dark.min.css'</span>
+    <span class="punc">]</span>
 <span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
 
 <span class="com">// Create editor instance</span>
@@ -66,16 +139,20 @@
     </main>
 
     <footer class="site-footer">
-        <span>© Synapsoft Corp. · SynapEditor</span>
+        <span>© Synapsoft Corp. · Synap Editor</span>
     </footer>
 
     <script>
         var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
             'editor.toolbar': [
                 'new', '|',
+                'codeBlock', '|',
                 'preview'
             ],
-            'editor.menu.show': false
+            // Highlight code blocks in the Preview window too — loads the theme into the preview output.
+            'editor.preview.style.urls': [
+                'https://cdn.synapeditor.com/latest/plugins/codeBlockHighlighter/themes/github-dark.min.css'
+            ]
         });
         window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
 
@@ -83,9 +160,12 @@
             var code = "var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {\n" +
                 "    'editor.toolbar': [\n" +
                 "        'new', '|',\n" +
+                "        'codeBlock', '|',\n" +
                 "        'preview'\n" +
                 "    ],\n" +
-                "    'editor.menu.show': false\n" +
+                "    'editor.preview.style.urls': [\n" +
+                "        'https://cdn.synapeditor.com/latest/plugins/codeBlockHighlighter/themes/github-dark.min.css'\n" +
+                "    ]\n" +
                 "});\n\n" +
                 "// Create editor instance\n" +
                 "var editor = new SynapEditor('synapEditor', config, initialHtml);";
@@ -98,5 +178,6 @@
             }, 1400);
         }
     </script>
+    <script src="/assets/sidebar.js"></script>
 </body>
 </html>

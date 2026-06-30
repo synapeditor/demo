@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Collaboration — SynapEditor</title>
+    <title>Collaboration — Synap Editor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../assets/synapeditor-icon.png">
     <link rel="stylesheet" href="../../assets/styles.css">
     <!-- Server-feature guard: shows a GitHub-download dialog if the demo server isn't running -->
     <script defer src="../../assets/server-check.js"></script>
     <script src="../../license.config.js"></script>
     <script src="../../synapeditor.config.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/plugins/icons/basicColorIcons.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
     <script src="https://cdn.synapeditor.com/latest/externals/SEDocModelParser/SEDocModelParser.min.js"></script>
     <script src="https://cdn.synapeditor.com/latest/externals/SEShapeManager/SEShapeManager.min.js"></script>
@@ -28,8 +30,7 @@
     <header class="site-header">
         <a href="../../index.html" class="back">← Examples</a>
         <a href="../../index.html" class="brand">
-            <span class="logo">S</span>
-            <span class="pname">SynapEditor</span>
+            <img class="brand-logo" src="../../assets/synapeditor-logo.png" alt="Synap Editor">
             <span class="ptag">DEMO</span>
         </a>
     </header>
@@ -56,7 +57,7 @@
 
         <div class="collabo-grid">
             <div class="pane">
-                <div class="pane-label" style="color:#2a9a9c;">● User A</div>
+                <div class="pane-label" style="color:#279b9d;">● User A</div>
                 <div class="pane-box"><div id="synapEditorA"></div></div>
             </div>
             <div class="pane">
@@ -82,8 +83,7 @@
     <span class="str">'editor.size.width'</span><span class="punc">:</span> <span class="str">'100%'</span><span class="punc">,</span>
     <span class="str">'editor.size.height'</span><span class="punc">:</span> <span class="str">'100%'</span><span class="punc">,</span>
     <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'bold'</span><span class="punc">,</span> <span class="str">'italic'</span><span class="punc">,</span> <span class="str">'underline'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'bulletList'</span><span class="punc">,</span> <span class="str">'numberedList'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'collaborator'</span><span class="punc">]</span><span class="punc">,</span>
-    <span class="str">'collaboration.config'</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">wsUrl</span><span class="punc">:</span> <span class="str">'/collabo_ws'</span><span class="punc">,</span> <span class="var">useHistory</span><span class="punc">:</span> <span class="bool">true</span> <span class="punc">}</span><span class="punc">,</span>
-    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span>
+    <span class="str">'collaboration.config'</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">wsUrl</span><span class="punc">:</span> <span class="str">'/collabo_ws'</span><span class="punc">,</span> <span class="var">useHistory</span><span class="punc">:</span> <span class="bool">true</span> <span class="punc">}</span>
 <span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
 
 <span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditorA'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="str">''</span><span class="punc">)</span><span class="punc">;</span>
@@ -98,13 +98,13 @@
     </main>
 
     <footer class="site-footer">
-        <span>© Synapsoft Corp. · SynapEditor</span>
+        <span>© Synapsoft Corp. · Synap Editor</span>
     </footer>
 
     <script>
         var DEFAULT_DOC = 'demo-doc-1';
         var users = [
-            { id: 'user-a', name: 'User A', color: '#2a9a9c' },
+            { id: 'user-a', name: 'User A', color: '#279b9d' },
             { id: 'user-b', name: 'User B', color: '#c2410c' }
         ];
         var collabPlugins = [];
@@ -137,8 +137,7 @@
                 'editor.size.width': '100%',
                 'editor.size.height': '100%',
                 'editor.toolbar': ['bold', 'italic', 'underline', '|', 'bulletList', 'numberedList', '|', 'collaborator'],
-                'collaboration.config': { wsUrl: '/collabo_ws', useHistory: true },
-                'editor.menu.show': false
+                'collaboration.config': { wsUrl: '/collabo_ws', useHistory: true }
             });
         }
 
@@ -171,8 +170,7 @@
                 "    'editor.size.width': '100%',\n" +
                 "    'editor.size.height': '100%',\n" +
                 "    'editor.toolbar': ['bold', 'italic', 'underline', '|', 'bulletList', 'numberedList', '|', 'collaborator'],\n" +
-                "    'collaboration.config': { wsUrl: '/collabo_ws', useHistory: true },\n" +
-                "    'editor.menu.show': false\n" +
+                "    'collaboration.config': { wsUrl: '/collabo_ws', useHistory: true }\n" +
                 "});\n\n" +
                 "var editor = new SynapEditor('synapEditorA', config, '');\n\n" +
                 "// When ready: identify the user and join a shared document\n" +
@@ -190,5 +188,6 @@
             }, 1400);
         }
     </script>
+    <script src="/assets/sidebar.js"></script>
 </body>
 </html>

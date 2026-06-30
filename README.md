@@ -1,8 +1,8 @@
-# [SynapEditor](https://www.synapeditor.com) Demo
+# [Synap Editor](https://www.synapeditor.com) Demo
 
-A collection of interactive demos for **SynapEditor**, the web-based WYSIWYG HTML editor by [Synapsoft](https://www.synapsoft.co.kr).
+A collection of interactive demos for **Synap Editor**, the web-based WYSIWYG HTML editor by [Synapsoft](https://www.synapsoft.co.kr).
 
-This package is **not the editor library itself** — it is a set of categorized, ready-to-run examples that show how to use SynapEditor's features and editor modes.
+This package is **not the editor library itself** — it is a set of categorized, ready-to-run examples that show how to use Synap Editor's features and editor modes.
 
 ![npm version](https://img.shields.io/npm/v/@synapeditor/demo?color=39b6b8&label=npm)
 
@@ -29,20 +29,22 @@ git clone https://github.com/synapeditor/demo.git
 cd demo
 ```
 
-Either way there is **no build step** — the SynapEditor library loads from the CDN (`https://cdn.synapeditor.com/latest/`). You only need to add your license and serve the files over `http://localhost`.
+Either way there is **no build step** — the Synap Editor library loads from the CDN (`https://cdn.synapeditor.com/latest/`). `license.config.js` ships **empty**: get a free **Evaluation** license at **[synapeditor.com](https://www.synapeditor.com/)**, add it to `license.config.js` (see [License Setup](#license-setup)), then serve the files on `http://localhost` and try the demos.
 
-> **Important — serve over `http://localhost`.** The bundled license is locked to the
-> `localhost` hostname, so opening a file directly (`file://`), or via `127.0.0.1` or any
-> other IP, makes the editor **fail silently** — an empty box with no console error. Always
-> open `http://localhost:<port>`. There is no build step; "running" just means serving the
-> files. For the full step-by-step walkthrough and troubleshooting, see
+> **Important — an Evaluation / Issue license is locked to the `localhost` hostname.** Once
+> you've added your license, opening a file directly (`file://`), or via `127.0.0.1` or any other
+> IP, makes the editor **fail silently** — an empty box with no console error. Always open
+> `http://localhost:<port>`. (A **Production** license is bound to your registered domain
+> instead — serve this demo from that domain and it works there too.) There is no build step;
+> "running" just means serving the files. For the full walkthrough and troubleshooting, see
 > **[`.ai/GETTING_STARTED.md`](.ai/GETTING_STARTED.md)**.
 
-> 🔑 A valid SynapEditor **license is required** to run the demos — get one at
-> **<https://www.synapeditor.com/>**, then add it to `license.config.js` (see [License Setup](#license-setup)).
+> 🔑 `license.config.js` ships **empty** — get a license at **<https://www.synapeditor.com/>**
+> and add it to `license.config.js` before running (see [License Setup](#license-setup)).
+> **Evaluation / Issue** licenses run on `localhost`; a **Production** license runs on its registered domain.
 
-Serve the folder over HTTP, then open it with `localhost` (any free port works — the license
-checks the hostname, not the port):
+Serve the folder over HTTP, then open it with `localhost` (any free port works — an Evaluation
+license checks the hostname, not the port):
 
 ```bash
 # macOS / Linux  (--bind :: lets `localhost` resolve over IPv6)
@@ -52,22 +54,22 @@ python3 -m http.server 8137 --bind :: --directory .
 python -m http.server 8137 --directory .
 ```
 
-Then open **http://localhost:8137/** — use `localhost`, **not** `127.0.0.1`.
+Then open **http://localhost:8137/** — use `localhost`, **not** `127.0.0.1`. This static server runs the **Features, Editor Modes, and UI Settings** demos only. The **Server Features** (Import / Export / Image & File Upload / Collaboration / AI Assistant) are **not** served here — they need the demo server on a **separate port, `http://localhost:3080`** (see [Server-Dependent Demos](#server-dependent-demos) below).
 
-**Which URL works?**
+**Which URL works?** (with an Evaluation / Issue license, which is locked to the `localhost` hostname)
 
 | You open… | Editor loads? |
 |---|---|
 | `http://localhost:<any free port>` | ✅ Yes |
-| `http://127.0.0.1:<port>` | ❌ No — the license is hostname-locked |
-| any other IP or hostname | ❌ No |
+| `http://127.0.0.1:<port>` | ❌ No — Evaluation license is hostname-locked |
+| any other IP or hostname | ❌ No (unless a Production license covers that domain) |
 | `file:///…/index.html` (double-click) | ❌ No |
 
 
 
 ## Server-Dependent Demos
 
-**Import**, **export**, **image upload**, and **collaboration** need SynapEditor's server
+**Import**, **export**, **image upload**, and **collaboration** need Synap Editor's server
 modules, bundled under [`server/`](server/) as Docker images plus a small Node.js
 demo server:
 
@@ -84,11 +86,12 @@ cd server && docker compose up -d
 npm install && npm start          # → http://localhost:3080
 ```
 
-Open [http://localhost:3080](http://localhost:3080) and choose **Server Features**. The demo
-server serves the whole site at the same origin and proxies each feature to its backend, using
-the same `license.config.js`. See [`server/README.md`](server/README.md) for per-feature config
-and ports. It runs on **macOS, Linux, and Windows** — only the converter (Import) needs one extra
-WSL2 line on Windows, noted there.
+Then connect to the demo server in a **new browser tab at [http://localhost:3080](http://localhost:3080)** —
+this is a **separate port from the static `:8137` server above**, and the Server Features only work here.
+Choose **Server Features**. The demo server serves the whole site at the same origin and proxies each
+feature to its backend, using the same `license.config.js`. See [`server/README.md`](server/README.md)
+for per-feature config and ports. It runs on **macOS, Linux, and Windows** — only the converter (Import)
+needs one extra WSL2 line on Windows, noted there.
 
 > Only the **Server Features** above need this backend. The other demos — Features, Editor Modes,
 > UI Settings — run on just the static server from [Getting Started](#getting-started): any OS, no Docker.
@@ -120,7 +123,7 @@ Then `cd server && npm start` and open the AI Assistant page. Get keys at
 
 ## License Setup
 
-A valid SynapEditor license is required to run the demos. Edit `license.config.js` at the project root:
+`license.config.js` ships **empty** — obtain a license and add it before the demos will run. Get an **Evaluation / Issue** license (for local testing on `localhost`) or a **Production** license (bound to your domain) at [synapeditor.com](https://www.synapeditor.com), then edit `license.config.js` at the project root:
 
 ```javascript
 var synapEditorLicense = {
@@ -136,7 +139,9 @@ var synapEditorLicense = {
 };
 ```
 
-> To obtain a license, contact [Synapsoft](https://www.synapeditor.com) or email editorglobal@synapsoft.co.kr.
+> To obtain a license, contact [Synapsoft](https://www.synapeditor.com) or email support@synapeditor.co.kr.
+>
+> **Evaluation / Issue** licenses are locked to the `localhost` hostname; **Production** licenses are bound to a registered domain. Serve the demo from the host your license covers.
 
 
 
@@ -150,6 +155,7 @@ need to edit it to run the demos.
 // synapeditor.config.js — global editor defaults, license-free
 var synapEditorConfig = {
     'editor.lang': 'en',                // UI language shared by every demo
+    'editor.menu.show': false,          // hide menu bar by default; Classic/Document/Table re-enable it per page
     'editor.defaultStyle': {
         'Body': 'font-family: Arial;'   // global default font
     }
@@ -173,7 +179,7 @@ var editor = new SynapEditor('synapEditor', config);
 ```
 demo/
 ├── index.html              # Main page with categorized example list
-├── license.config.js       # Your SynapEditor license (edit this)
+├── license.config.js       # Your Synap Editor license (edit this)
 ├── synapeditor.config.js   # Global editor config — shared defaults, references the license
 ├── assets/
 │   └── styles.css          # Shared design system
@@ -185,7 +191,7 @@ demo/
 └── server/                 # Node demo server + Docker backends — source repo only, not in the npm package
 ```
 
-The SynapEditor library itself is loaded from the CDN (`https://cdn.synapeditor.com/latest/`), so only `license.config.js` and `synapeditor.config.js` need to live locally at the project root.
+The Synap Editor library itself is loaded from the CDN (`https://cdn.synapeditor.com/latest/`), so only `license.config.js` and `synapeditor.config.js` need to live locally at the project root.
 
 
 
@@ -193,14 +199,14 @@ The SynapEditor library itself is loaded from the CDN (`https://cdn.synapeditor.
 
 | Demo | Description | Key Toolbar Buttons |
 |------|-------------|---------------------|
-| **Bullets** | Bullet points, multi-level numbered lists, and custom start numbers | `bulletList` `numberedList` `multiLevelList` |
-| **Case Conversion** | Convert selected text to uppercase, lowercase, capitalize, or sentence case | `conversion` |
+| **Bullets** | Bullet points, multi-level numbered lists, and list indentation | `bulletList` `numberedList` `multiLevelList` `decreaseIndent` `increaseIndent` |
+| **Case Conversion** | Convert selected text to UPPERCASE, lowercase, Title Case, or Toggle Case | `conversion` |
 | **Fullscreen** | Expand the editor to fill the entire browser window | `fullScreen` |
-| **Preview** | Preview final output in print layout; print or save as PDF | `preview` |
+| **Preview** | Preview final output in print layout; print or save as PDF | `codeBlock` `preview` |
 | **Source View** | View and edit content directly as HTML source code | `source` |
 | **Ruler** | Precisely adjust indentation, tab positions, and margins | `ruler` |
 | **Find & Replace** | Search text and replace individually or all at once | `find` |
-| **Table** | Insert tables, merge/split cells, edit borders, add/delete rows and columns | `table` |
+| **Table** | Insert and style tables — templates, captions, cell fills, borders, alignment, merge/split, and conditional formatting | `table` `tableStyle` `tableProperties` `conditionalFormatting` `fill` `mergeCell` |
 | **Format Painter** | Copy formatting (font, color, alignment) and apply it to other text | `copyRunStyle` `pasteRunStyle` |
 | **Clear Formatting** | Remove all inline formatting and revert to default style | `removeRunStyle` |
 | **Font Size Up/Down** | Increase or decrease font size one step at a time | `growFont` `shrinkFont` |
@@ -231,21 +237,24 @@ The SynapEditor library itself is loaded from the CDN (`https://cdn.synapeditor.
 ## Basic Usage
 
 ```html
-<!-- Serve over http://localhost — the license is bound to the localhost hostname
-     (file:// and 127.0.0.1 fail silently). The editor core loads from the CDN. -->
+<!-- Add your license to license.config.js first (get one at synapeditor.com). An Evaluation /
+     Issue license is bound to the localhost hostname (file:// and 127.0.0.1 fail silently);
+     a Production license is bound to your domain instead. The editor core loads from the CDN. -->
 <script src="license.config.js"></script>
 <script src="synapeditor.config.js"></script>
 <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+<!-- Optional color icon set the demos use — load after the core script -->
+<script src="https://cdn.synapeditor.com/latest/plugins/icons/basicColorIcons.js"></script>
 <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
 
 <!-- Create editor container -->
 <div id="synapEditor">
-    <p>Hello, SynapEditor!</p>
+    <p>Hello, Synap Editor!</p>
 </div>
 
 <!-- Initialize -->
 <script>
-    // synapEditorConfig already carries the shared defaults (language, default font);
+    // synapEditorConfig already carries the shared defaults (language, default font, menu visibility);
     // pass only demo-specific options as the last argument.
     var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
         'editor.type': 'document'
@@ -291,5 +300,5 @@ Supported languages:
 
 ## License
 
-SynapEditor is a commercial product. A valid license is required for use.
-For pricing and licensing options, please visit [synapeditor.com](https://www.synapeditor.com) or contact editorglobal@synapsoft.co.kr.
+Synap Editor is a commercial product. A valid license is required for use.
+For pricing and licensing options, please visit [synapeditor.com](https://www.synapeditor.com) or contact support@synapeditor.co.kr.

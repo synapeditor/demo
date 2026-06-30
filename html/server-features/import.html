@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Import — SynapEditor</title>
+    <title>Import — Synap Editor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../assets/synapeditor-icon.png">
     <link rel="stylesheet" href="../../assets/styles.css">
     <!-- Server-feature guard: shows a GitHub-download dialog if the demo server isn't running -->
     <script defer src="../../assets/server-check.js"></script>
     <script src="../../license.config.js"></script>
     <script src="../../synapeditor.config.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/plugins/icons/basicColorIcons.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
     <script src="https://cdn.synapeditor.com/latest/externals/SEDocModelParser/SEDocModelParser.min.js"></script>
     <script src="https://cdn.synapeditor.com/latest/externals/SEShapeManager/SEShapeManager.min.js"></script>
@@ -19,8 +21,7 @@
     <header class="site-header">
         <a href="../../index.html" class="back">← Examples</a>
         <a href="../../index.html" class="brand">
-            <span class="logo">S</span>
-            <span class="pname">SynapEditor</span>
+            <img class="brand-logo" src="../../assets/synapeditor-logo.png" alt="Synap Editor">
             <span class="ptag">DEMO</span>
         </a>
     </header>
@@ -63,8 +64,7 @@
     <span class="str">'editor.import.extensions'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'docx'</span><span class="punc">,</span> <span class="str">'xlsx'</span><span class="punc">,</span> <span class="str">'pptx'</span><span class="punc">,</span> <span class="str">'html'</span><span class="punc">,</span> <span class="str">'txt'</span><span class="punc">]</span><span class="punc">,</span>
     <span class="str">'editor.upload.image.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
     <span class="str">'editor.upload.video.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
-    <span class="str">'editor.upload.file.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
-    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span>
+    <span class="str">'editor.upload.file.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span>
 <span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
 
 <span class="com">// Create editor instance</span>
@@ -73,7 +73,7 @@
     </main>
 
     <footer class="site-footer">
-        <span>© Synapsoft Corp. · SynapEditor</span>
+        <span>© Synapsoft Corp. · Synap Editor</span>
     </footer>
 
     <script>
@@ -83,8 +83,7 @@
             'editor.import.extensions': ['docx', 'xlsx', 'pptx', 'html', 'txt'],
             'editor.upload.image.api': '/uploadFile',
             'editor.upload.video.api': '/uploadFile',
-            'editor.upload.file.api': '/uploadFile',
-            'editor.menu.show': false
+            'editor.upload.file.api': '/uploadFile'
         });
         window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
 
@@ -96,8 +95,7 @@
                 "    'editor.import.extensions': ['docx', 'xlsx', 'pptx', 'html', 'txt'],\n" +
                 "    'editor.upload.image.api': '/uploadFile',\n" +
                 "    'editor.upload.video.api': '/uploadFile',\n" +
-                "    'editor.upload.file.api': '/uploadFile',\n" +
-                "    'editor.menu.show': false\n" +
+                "    'editor.upload.file.api': '/uploadFile'\n" +
                 "});\n\n" +
                 "// Create editor instance\n" +
                 "var editor = new SynapEditor('synapEditor', config, initialHtml);";
@@ -110,5 +108,6 @@
             }, 1400);
         }
     </script>
+    <script src="/assets/sidebar.js"></script>
 </body>
 </html>

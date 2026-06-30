@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Format Painter — SynapEditor</title>
+    <title>Format Painter — Synap Editor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../assets/synapeditor-icon.png">
     <link rel="stylesheet" href="../../assets/styles.css">
     <script src="../../license.config.js"></script>
     <script src="../../synapeditor.config.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/plugins/icons/basicColorIcons.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
 </head>
 <body>
     <header class="site-header">
         <a href="../../index.html" class="back">← Examples</a>
         <a href="../../index.html" class="brand">
-            <span class="logo">S</span>
-            <span class="pname">SynapEditor</span>
+            <img class="brand-logo" src="../../assets/synapeditor-logo.png" alt="Synap Editor">
             <span class="ptag">DEMO</span>
         </a>
     </header>
@@ -33,19 +34,19 @@
         <div id="editorWrapper">
             <div id="synapEditor">
                 <h2>Try Format Painter</h2>
-                <p>Click the format painter button and the cursor changes to a brush. The formatting will be applied to the next text you select.</p>
-                <p style="font-family: Georgia, serif; font-size: 18px; color: #2a9a9c; font-weight: 600;">Source — Copy the formatting from this text.</p>
+                <p>Put the caret in the styled <strong>Source</strong> line and click <strong>Copy Run Style</strong>. Then select a target line and click <strong>Paste Run Style</strong> — the character formatting (font, size, color, weight) is copied over.</p>
+                <p style="font-family: Georgia, serif; font-size: 18px; color: #279b9d; font-weight: 600;"><span style="font-family: Georgia, serif; font-size: 13.5pt; color: #279b9d; font-weight: 600;">Source — copy the formatting from this text.</span></p>
                 <hr>
-                <p>Target 1 — Plain text. Try applying the formatting here.</p>
-                <p>Target 2 — Another plain text paragraph.</p>
-                <p>Target 3 — Double-click to apply formatting to multiple selections consecutively.</p>
+                <p><span>Target 1 — Plain text. Apply the copied formatting here.</span></p>
+                <p><span>Target 2 — Another plain paragraph to try.</span></p>
+                <p><span>Target 3 — One more line to practice on.</span></p>
             </div>
         </div>
 
         <section class="code-section" id="codeExample">
             <div class="code-head">
                 <h3>Configuration</h3>
-                <span class="meta">mode: classic · 12 buttons</span>
+                <span class="meta">mode: classic · format painter</span>
                 <button class="copy-btn" type="button" onclick="copyCode(this)">
                     <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="5" y="5" width="9" height="9" rx="1.2"/>
@@ -62,8 +63,7 @@
         <span class="str">'bold'</span><span class="punc">,</span> <span class="str">'italic'</span><span class="punc">,</span> <span class="str">'underline'</span><span class="punc">,</span> <span class="str">'strike'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
         <span class="str">'fontColor'</span><span class="punc">,</span> <span class="str">'fontBackgroundColor'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
         <span class="str">'copyRunStyle'</span><span class="punc">,</span> <span class="str">'pasteRunStyle'</span>
-    <span class="punc">]</span><span class="punc">,</span>
-    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span>
+    <span class="punc">]</span>
 <span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
 
 <span class="com">// Create editor instance</span>
@@ -72,7 +72,7 @@
     </main>
 
     <footer class="site-footer">
-        <span>© Synapsoft Corp. · SynapEditor</span>
+        <span>© Synapsoft Corp. · Synap Editor</span>
     </footer>
 
     <script>
@@ -84,8 +84,7 @@
                 'bold', 'italic', 'underline', 'strike', '|',
                 'fontColor', 'fontBackgroundColor', '|',
                 'copyRunStyle', 'pasteRunStyle'
-            ],
-            'editor.menu.show': false
+            ]
         });
         window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
 
@@ -98,8 +97,7 @@
                 "        'bold', 'italic', 'underline', 'strike', '|',\n" +
                 "        'fontColor', 'fontBackgroundColor', '|',\n" +
                 "        'copyRunStyle', 'pasteRunStyle'\n" +
-                "    ],\n" +
-                "    'editor.menu.show': false\n" +
+                "    ]\n" +
                 "});\n\n" +
                 "// Create editor instance\n" +
                 "var editor = new SynapEditor('synapEditor', config, initialHtml);";
@@ -112,5 +110,6 @@
             }, 1400);
         }
     </script>
+    <script src="/assets/sidebar.js"></script>
 </body>
 </html>

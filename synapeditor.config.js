@@ -7,6 +7,7 @@
 // =================================================================
 var synapEditorConfig = {
     "editor.lang": "en",
+    "editor.menu.show": false,
     "editor.defaultStyle": {
         "Body": "font-family: Arial;"
     }

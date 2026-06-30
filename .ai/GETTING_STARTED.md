@@ -1,6 +1,6 @@
-# Running the SynapEditor Demo locally
+# Running the Synap Editor Demo locally
 
-**SynapEditor** is a web-based WYSIWYG HTML editor by Synapsoft — it brings
+**Synap Editor** is a web-based WYSIWYG HTML editor by Synapsoft — it brings
 word-processor-grade editing (tables, images, styles, document mode, and more)
 to the browser. Learn more at **https://www.synapeditor.com**.
 
@@ -24,9 +24,10 @@ cd node_modules/@synapeditor/demo
 ```
 
 The demo files and `license.config.js` live in this folder — this is the directory you
-serve in Quick start below. (Editing `license.config.js` here is fine for evaluation;
-note a re-`npm install` would overwrite it. If you plan to customize the demo,
-copy this folder out: `cp -r node_modules/@synapeditor/demo ../../my-demo`.)
+serve in Quick start below. `license.config.js` ships **empty**: get a license at
+**https://www.synapeditor.com** and add it before the demos will run (see License setup below).
+(A re-`npm install` would overwrite your edit; if you plan to customize the demo, copy this
+folder out: `cp -r node_modules/@synapeditor/demo ../../my-demo`.)
 
 ## Quick start
 
@@ -54,14 +55,24 @@ Once the server is running, open:
 
 > Using a different port? Replace `8137` everywhere with your port.
 
+> **"Server required" demos won't run under this static flow.** Demos tagged *Server required*
+> on the index (Collaboration, Import, Export, AI Assistant, Image upload) talk to a separate
+> demo server, so they stay blank when served by `python -m http.server` alone. Everything else
+> works as-is. To run those, follow the demo-server setup in the project **README** — it is not
+> part of this static quick-start.
+
 ## 3 things to know (or you'll get stuck)
 
-1. **The license is locked to the `localhost` hostname.** Opening via
-   `127.0.0.1`, another IP, or `file://` makes the editor **fail silently** — no
+1. **You must add a license — `license.config.js` ships empty.** Get a license at
+   **https://www.synapeditor.com** and paste it into `license.config.js`; until then the editor
+   loads to an empty box. An **Evaluation / Issue** license is locked to the `localhost` hostname:
+   opening via `127.0.0.1`, another IP, or `file://` makes the editor **fail silently** — no
    console error, just an empty editor box where `window.editor.isLoaded` stays
    `false`. Always open `http://localhost:<port>` — the license checks the hostname,
    not the port, so any free port works. Quick reference:
    `http://localhost:<port>` ✅ · `http://127.0.0.1:<port>` ❌ · other IP/hostname ❌ · `file://` ❌.
+   (A **Production** license is bound to a **registered domain** instead, so serving the demo from
+   that same domain works there too.)
 
 2. **Pick a free port.** Port `8080` is often already taken. Check with
    `lsof -ti tcp:<port>` (Windows: `netstat -ano | findstr :<port>` or
@@ -75,16 +86,19 @@ Once the server is running, open:
 
 ## License setup
 
-The license lives in `license.config.js` (in this folder); every demo loads it.
-Edit the `'editor.license'` and `'editor.license.load.api'` values inside
-`synapEditorLicense`:
+The license lives in `license.config.js` (in this folder); every demo loads it. It ships
+**empty** — get a license at **https://www.synapeditor.com** and fill in the `'editor.license'`
+values inside `synapEditorLicense` before the demos will run. Use an **Evaluation / Issue**
+license for local testing on `localhost`, or a **Production** license bound to your registered
+domain:
 
 ```javascript
 var synapEditorLicense = {
 
-    // REQUIRED: fill in company and key
+    // Empty by default — paste the license you obtained at synapeditor.com here.
+    // An Evaluation / Issue key is localhost-locked; a Production key is bound to your domain.
     'editor.license': {
-        company: 'Evaluation',
+        company: 'Your Company Name',
         key: [
             'YOUR_LICENSE_KEY'
         ]
@@ -114,6 +128,7 @@ as a self-contained `synapEditorConfig` object — no license inside it:
 // synapeditor.config.js
 var synapEditorConfig = {
     'editor.lang': 'en',                // UI language shared by every demo
+    'editor.menu.show': false,          // hide menu bar by default; some demos re-enable it per page
     'editor.defaultStyle': {
         'Body': 'font-family: Arial;'   // global default font
     }
@@ -131,6 +146,7 @@ var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
 
 ## Success checklist
 
+- [ ] Added your license (from synapeditor.com) to `license.config.js`
 - [ ] Opened via `http://localhost:<port>` (not 127.0.0.1)
 - [ ] Top menu bar (File / Edit / View …) and toolbar buttons are visible
 - [ ] The body is editable

@@ -2,20 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Table — SynapEditor</title>
+    <title>Table — Synap Editor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../assets/synapeditor-icon.png">
     <link rel="stylesheet" href="../../assets/styles.css">
     <script src="../../license.config.js"></script>
     <script src="../../synapeditor.config.js"></script>
+    <!-- Advanced-table externals — required to build content with live formulas / number
+         formats / conditional formatting. Must load BEFORE synapeditor.min.js. -->
+    <script src="https://cdn.synapeditor.com/latest/externals/formulaParser/formula-parser.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/externals/SEDocModelParser/SEDocModelParser.min.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/plugins/icons/basicColorIcons.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
 </head>
 <body>
     <header class="site-header">
         <a href="../../index.html" class="back">← Examples</a>
         <a href="../../index.html" class="brand">
-            <span class="logo">S</span>
-            <span class="pname">SynapEditor</span>
+            <img class="brand-logo" src="../../assets/synapeditor-logo.png" alt="Synap Editor">
             <span class="ptag">DEMO</span>
         </a>
     </header>
@@ -24,34 +29,137 @@
         <div class="demo-head">
             <span class="kicker">Feature</span>
             <h1>Table</h1>
-            <p class="desc">Insert tables, merge and split cells, edit borders, and add or delete rows and columns.</p>
+            <p class="desc">Insert and style tables — templates, captions, cell fills, borders, padding, alignment, merge/split, and conditional formatting.</p>
             <div class="demo-meta">
-                <span class="pill">toolbar: table</span>
+                <span class="pill">toolbar: table · tableStyle · tableProperties · conditionalFormatting · fill · borderColor · mergeCell</span>
+                <span class="pill">config: editor.table.handle</span>
             </div>
         </div>
 
         <div id="editorWrapper">
             <div id="synapEditor">
-                <h2>Quarterly Revenue</h2>
-                <p>Click the table button in the toolbar to insert a new table, or hover over the example table below to use the handles.</p>
-                <table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;width:100%;">
-                <thead>
-                <tr><th>Product</th><th>Q1 Revenue</th><th>Q2 Revenue</th></tr>
-                </thead>
-                <tbody>
-                <tr><td>SynapEditor</td><td>₩ 320M</td><td>₩ 412M</td></tr>
-                <tr><td>SynapViewer</td><td>₩ 248M</td><td>₩ 271M</td></tr>
-                <tr><td>SynapDocSwift</td><td>₩ 196M</td><td>₩ 224M</td></tr>
-                </tbody>
+                <h2>Table Showcase</h2>
+                <p>Click inside any table to reveal the cell toolbar and hover-handles, or use the toolbar buttons above. The three tables below show what the editor can express — styles &amp; captions, cell formatting, and data emphasis.</p>
+
+                <h3>1. Table style &amp; caption</h3>
+                <table style="border-collapse:collapse;width:100%;font-size:14px;">
+                    <caption style="caption-side:top;text-align:left;font-weight:700;color:#16181b;padding:0 0 10px;font-size:14px;">Table 1 · Team roster — header row with banded rows</caption>
+                    <thead>
+                        <tr>
+                            <th style="padding:11px 14px;text-align:left;font-weight:700;color:#16181b;border-bottom:2px solid #d7dce2;">Name</th>
+                            <th style="padding:11px 14px;text-align:left;font-weight:700;color:#16181b;border-bottom:2px solid #d7dce2;">Role</th>
+                            <th style="padding:11px 14px;text-align:left;font-weight:700;color:#16181b;border-bottom:2px solid #d7dce2;">Team</th>
+                            <th style="padding:11px 14px;text-align:right;font-weight:700;color:#16181b;border-bottom:2px solid #d7dce2;">Years</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;">Jamie Park</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;">Engineer</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;">Editor Core</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;text-align:right;">6</td>
+                        </tr>
+                        <tr style="background:#f6f8fa;">
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;">Sora Kim</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;">Designer</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;">UX</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;text-align:right;">4</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;">Min Lee</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;">PM</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;">Platform</td>
+                            <td style="padding:11px 14px;border-bottom:1px solid #e9edf1;color:#565d65;text-align:right;">8</td>
+                        </tr>
+                    </tbody>
                 </table>
-                <p>Hover over the table to see handles for adding/deleting rows and columns, alignment, and cell merging.</p>
+                <p style="color:#6b727b;font-size:13px;">Try the <strong>Table Style</strong> button to swap templates, or <strong>Table Properties</strong> to edit the caption.</p>
+
+                <h3>2. Cell formatting — merge, borders, fills, alignment</h3>
+                <table style="border-collapse:collapse;width:100%;font-size:14px;">
+                    <tbody>
+                        <tr>
+                            <td colspan="3" style="border:2px dashed #808080;background:#646464;color:#fff;padding:10px;text-align:center;font-weight:600;">Merged header across three columns (colspan = 3)</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" style="border:1px solid #16181b;background:#39b6b8;color:#fff;padding:10px;text-align:center;vertical-align:middle;font-weight:600;">Merged down<br>(rowspan = 2)</td>
+                            <td style="border:1px solid #16181b;padding:8px 10px;text-align:left;vertical-align:top;">Solid border · top-left aligned</td>
+                            <td style="border:1px dotted #c0392b;padding:8px 10px;text-align:right;vertical-align:bottom;">Dotted red border · bottom-right aligned</td>
+                        </tr>
+                        <tr>
+                            <td style="border:1px solid #d7dce2;background:#fff4a3;padding:16px;text-align:center;">Yellow fill · extra padding · centered</td>
+                            <td style="border:1px solid #d7dce2;background:#e8f6f6;padding:8px 10px;text-align:center;vertical-align:middle;">Tinted fill · middle</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="color:#6b727b;font-size:13px;">Select cells and use <strong>Fill</strong>, <strong>Border Color</strong>, <strong>Line Style</strong>, <strong>Merge</strong>, and <strong>Split</strong> in the toolbar.</p>
+
+                <h3>3. Formulas, number formats &amp; conditional formatting</h3>
+                <table style="border-collapse: collapse; vertical-align: text-bottom; line-height: 1.4; width: 100%; display: inline-table; word-break: break-all;" data-conditional-formatting-list="N4IgbiBcCMA0IBsoG1QCcogC4FMAeWAkgM4CieAhgMZYICeI8AJlAHYCuCC8AZiiAHlWAAixpqAaxABdeAAdMwMBQTscAX2EAyYQB0Q+gLwByIaPFUJxxiGKYqAewQO0kYWgDmAIwAUAJj9YYWgABjhhAFY-AEoAbi9JDzQHdlYmAFpHZ1d3b38-EKC-KKKAZmg4mypMADFSyBqIkHVYdExcAhJyaloGZjZObhA+SGQQAEEsdwBLYilZEAVIECUVNU0dfSNjSZm563g7ZayXN09faAjSooB2W7iEyySUtMynU9zfYoAWIr8ANj+-0q8GqyzqDSa6mk6iAA" data-template-id="1">
+                    <colgroup>
+                        <col style="width: 24%;">
+                        <col style="width: 16%;">
+                        <col style="width: 16%;">
+                        <col style="width: 16%;">
+                        <col style="width: 14%;">
+                        <col style="width: 14%;">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td style="color: rgb(255, 255, 255); background-color: rgb(44, 150, 152); text-align: center; padding: 11px; border-color: rgb(44, 150, 152); border-style: solid; border-width: 1px;" colspan="6">
+                                <p style="margin: 0px;"><span style="font-size: 13pt; font-weight: 700;">2026 Regional Sales</span></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: rgb(234, 248, 248); text-align: center; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;"><p style="margin: 0px;"><span style="color: rgb(35, 123, 125); font-weight: 700;">Region</span></p></td>
+                            <td style="background-color: rgb(234, 248, 248); text-align: center; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;"><p style="margin: 0px;"><span style="color: rgb(35, 123, 125); font-weight: 700;">H1 ($K)</span></p></td>
+                            <td style="background-color: rgb(234, 248, 248); text-align: center; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;"><p style="margin: 0px;"><span style="color: rgb(35, 123, 125); font-weight: 700;">H2 ($K)</span></p></td>
+                            <td style="background-color: rgb(234, 248, 248); text-align: center; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;"><p style="margin: 0px;"><span style="color: rgb(35, 123, 125); font-weight: 700;">Total</span></p></td>
+                            <td style="background-color: rgb(234, 248, 248); text-align: center; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;"><p style="margin: 0px;"><span style="color: rgb(35, 123, 125); font-weight: 700;">YoY</span></p></td>
+                            <td style="background-color: rgb(234, 248, 248); text-align: center; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;"><p style="margin: 0px;"><span style="color: rgb(35, 123, 125); font-weight: 700;">Status</span></p></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;"><p style="margin: 0px;"><span>APAC</span></p></td>
+                            <td style="text-align: right; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="1200" data-formula-value="1200" data-number-format-code="#,##0" data-number-format-id="3"><p style="margin: 0px;"><span>1,200</span></p></td>
+                            <td style="text-align: right; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="1540" data-formula-value="1540" data-number-format-code="#,##0" data-number-format-id="3"><p style="margin: 0px;"><span>1,540</span></p></td>
+                            <td style="text-align: right; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="SUM(B3:C3)" data-formula-value="2740" data-number-format-code="#,##0" data-number-format-id="3"><p style="margin: 0px;"><span>2,740</span></p></td>
+                            <td style="text-align: right; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="0.123" data-formula-value="0.123" data-number-format-code="0.00%" data-number-format-id="10"><p style="margin: 0px;"><span style="color: rgb(22, 163, 74);">12.30%</span></p></td>
+                            <td style="background-color: rgb(220, 252, 231); text-align: center; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="IF(E3 &gt; 0, &quot;On track&quot;, &quot;At risk&quot;)" data-formula-value="On track" data-original-style="background-color: rgb(254, 226, 226);text-align: center;padding-top: 9px;padding-right: 9px;padding-bottom: 9px;padding-left: 9px;border-top-color: rgb(226, 232, 240);border-top-style: solid;border-top-width: 1px;border-bottom-color: rgb(226, 232, 240);border-bottom-style: solid;border-bottom-width: 1px;border-left-color: rgb(226, 232, 240);border-left-style: solid;border-left-width: 1px;border-right-color: rgb(226, 232, 240);border-right-style: solid;border-right-width: 1px;"><p style="margin: 0px;"><span style="color: rgb(22, 101, 52); background-color: rgb(220, 252, 231);" data-original-style="color: rgb(153, 27, 27);">On track</span></p></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;"><p style="margin: 0px;"><span>EMEA</span></p></td>
+                            <td style="text-align: right; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="980" data-formula-value="980" data-number-format-code="#,##0" data-number-format-id="3"><p style="margin: 0px;"><span>980</span></p></td>
+                            <td style="text-align: right; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="1110" data-formula-value="1110" data-number-format-code="#,##0" data-number-format-id="3"><p style="margin: 0px;"><span>1,110</span></p></td>
+                            <td style="text-align: right; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="SUM(B4:C4)" data-formula-value="2090" data-number-format-code="#,##0" data-number-format-id="3"><p style="margin: 0px;"><span>2,090</span></p></td>
+                            <td style="text-align: right; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="-0.041" data-formula-value="-0.041" data-number-format-code="0.00%" data-number-format-id="10"><p style="margin: 0px;"><span style="color: rgb(220, 38, 38);">-4.10%</span></p></td>
+                            <td style="background-color: rgb(254, 226, 226); text-align: center; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="IF(E4 &gt; 0, &quot;On track&quot;, &quot;At risk&quot;)" data-formula-value="At risk" data-original-style="background-color: rgb(220, 252, 231);text-align: center;padding-top: 9px;padding-right: 9px;padding-bottom: 9px;padding-left: 9px;border-top-color: rgb(226, 232, 240);border-top-style: solid;border-top-width: 1px;border-bottom-color: rgb(226, 232, 240);border-bottom-style: solid;border-bottom-width: 1px;border-left-color: rgb(226, 232, 240);border-left-style: solid;border-left-width: 1px;border-right-color: rgb(226, 232, 240);border-right-style: solid;border-right-width: 1px;"><p style="margin: 0px;"><span style="color: rgb(153, 27, 27); background-color: rgb(254, 226, 226);" data-original-style="color: rgb(153, 27, 27);">At risk</span></p></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;"><p style="margin: 0px;"><span>Americas</span></p></td>
+                            <td style="text-align: right; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="1760" data-formula-value="1760" data-number-format-code="#,##0" data-number-format-id="3"><p style="margin: 0px;"><span>1,760</span></p></td>
+                            <td style="text-align: right; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="1920" data-formula-value="1920" data-number-format-code="#,##0" data-number-format-id="3"><p style="margin: 0px;"><span>1,920</span></p></td>
+                            <td style="text-align: right; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="SUM(B5:C5)" data-formula-value="3680" data-number-format-code="#,##0" data-number-format-id="3"><p style="margin: 0px;"><span>3,680</span></p></td>
+                            <td style="text-align: right; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="0.087" data-formula-value="0.087" data-number-format-code="0.00%" data-number-format-id="10"><p style="margin: 0px;"><span style="color: rgb(22, 163, 74);">8.70%</span></p></td>
+                            <td style="background-color: rgb(220, 252, 231); text-align: center; padding: 9px; border-color: rgb(226, 232, 240); border-style: solid; border-width: 1px;" data-formula-text="IF(E5 &gt; 0, &quot;On track&quot;, &quot;At risk&quot;)" data-formula-value="On track" data-original-style="background-color: rgb(220, 252, 231);text-align: center;padding-top: 9px;padding-right: 9px;padding-bottom: 9px;padding-left: 9px;border-top-color: rgb(226, 232, 240);border-top-style: solid;border-top-width: 1px;border-bottom-color: rgb(226, 232, 240);border-bottom-style: solid;border-bottom-width: 1px;border-left-color: rgb(226, 232, 240);border-left-style: solid;border-left-width: 1px;border-right-color: rgb(226, 232, 240);border-right-style: solid;border-right-width: 1px;"><p style="margin: 0px;"><span style="color: rgb(22, 101, 52); background-color: rgb(220, 252, 231);" data-original-style="color: rgb(22, 101, 52);">On track</span></p></td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: rgb(248, 250, 252); padding: 9px; border-color: rgb(44, 150, 152) rgb(226, 232, 240) rgb(226, 232, 240); border-style: solid; border-width: 3px 1px 1px;"><p style="margin: 0px;"><span style="font-weight: 700;">Total</span></p></td>
+                            <td style="background-color: rgb(248, 250, 252); text-align: right; padding: 9px; border-color: rgb(44, 150, 152) rgb(226, 232, 240) rgb(226, 232, 240); border-style: solid; border-width: 3px 1px 1px;" data-formula-text="SUM(B3:B5)" data-formula-value="3940" data-number-format-code="#,##0" data-number-format-id="3"><p style="margin: 0px;"><span style="font-weight: 700;">3,940</span></p></td>
+                            <td style="background-color: rgb(248, 250, 252); text-align: right; padding: 9px; border-color: rgb(44, 150, 152) rgb(226, 232, 240) rgb(226, 232, 240); border-style: solid; border-width: 3px 1px 1px;" data-formula-text="SUM(C3:C5)" data-formula-value="4570" data-number-format-code="#,##0" data-number-format-id="3"><p style="margin: 0px;"><span style="font-weight: 700;">4,570</span></p></td>
+                            <td style="background-color: rgb(248, 250, 252); text-align: right; padding: 9px; border-color: rgb(44, 150, 152) rgb(226, 232, 240) rgb(226, 232, 240); border-style: solid; border-width: 3px 1px 1px;" data-formula-text="SUM(D3:D5)" data-formula-value="8510" data-number-format-code="#,##0" data-number-format-id="3"><p style="margin: 0px;"><span style="font-weight: 700;">8,510</span></p></td>
+                            <td style="background-color: rgb(248, 250, 252); padding: 9px; border-color: rgb(44, 150, 152) rgb(226, 232, 240) rgb(226, 232, 240); border-style: solid; border-width: 3px 1px 1px;"><p style="margin: 0px;"><br></p></td>
+                            <td style="background-color: rgb(248, 250, 252); padding: 9px; border-color: rgb(44, 150, 152) rgb(226, 232, 240) rgb(226, 232, 240); border-style: solid; border-width: 3px 1px 1px;"><p style="margin: 0px;"><br></p></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="color:#6b727b;font-size:13px;">The <strong>Total</strong> row and column use live <code>SUM</code> formulas; <strong>YoY</strong> uses a percent number format; and <strong>Status</strong> is driven by a <strong>conditional-formatting</strong> rule — green for <em>On track</em>, red for <em>At risk</em>. (Each status cell carries <code>data-formula-text</code>, <code>data-number-format-*</code>, and <code>data-original-style</code>.)</p>
             </div>
         </div>
 
         <section class="code-section" id="codeExample">
             <div class="code-head">
                 <h3>Configuration</h3>
-                <span class="meta">mode: classic · 1 button</span>
+                <span class="meta">mode: classic · table tools</span>
                 <button class="copy-btn" type="button" onclick="copyCode(this)">
                     <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="5" y="5" width="9" height="9" rx="1.2"/>
@@ -60,11 +168,19 @@
                     <span class="label">Copy</span>
                 </button>
             </div>
-            <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
+            <div class="code-block"><pre><span class="com">// Formulas / number formats / conditional formatting need these externals in &lt;head&gt;,</span>
+<span class="com">// loaded BEFORE synapeditor.min.js:</span>
+<span class="com">//   externals/formulaParser/formula-parser.min.js</span>
+<span class="com">//   externals/SEDocModelParser/SEDocModelParser.min.js</span>
+<span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
     <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span>
-        <span class="str">'new'</span><span class="punc">,</span> <span class="str">'table'</span>
+        <span class="str">'new'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
+        <span class="str">'table'</span><span class="punc">,</span> <span class="str">'tableStyle'</span><span class="punc">,</span> <span class="str">'tableProperties'</span><span class="punc">,</span> <span class="str">'conditionalFormatting'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
+        <span class="str">'fill'</span><span class="punc">,</span> <span class="str">'borderColor'</span><span class="punc">,</span> <span class="str">'lineStyle'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
+        <span class="str">'mergeCell'</span><span class="punc">,</span> <span class="str">'splitCell'</span>
     <span class="punc">]</span><span class="punc">,</span>
-    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span>
+    <span class="str">'editor.table.handle'</span><span class="punc">:</span> <span class="bool">true</span><span class="punc">,</span>
+    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">true</span>
 <span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
 
 <span class="com">// Create editor instance</span>
@@ -73,24 +189,32 @@
     </main>
 
     <footer class="site-footer">
-        <span>© Synapsoft Corp. · SynapEditor</span>
+        <span>© Synapsoft Corp. · Synap Editor</span>
     </footer>
 
     <script>
         var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
             'editor.toolbar': [
-                'new', 'table'
+                'new', '|',
+                'table', 'tableStyle', 'tableProperties', 'conditionalFormatting', '|',
+                'fill', 'borderColor', 'lineStyle', '|',
+                'mergeCell', 'splitCell'
             ],
-            'editor.menu.show': false
+            'editor.table.handle': true,
+            'editor.menu.show': true
         });
         window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
 
         function copyCode(btn) {
             var code = "var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {\n" +
                 "    'editor.toolbar': [\n" +
-                "        'new', 'table'\n" +
+                "        'new', '|',\n" +
+                "        'table', 'tableStyle', 'tableProperties', 'conditionalFormatting', '|',\n" +
+                "        'fill', 'borderColor', 'lineStyle', '|',\n" +
+                "        'mergeCell', 'splitCell'\n" +
                 "    ],\n" +
-                "    'editor.menu.show': false\n" +
+                "    'editor.table.handle': true,\n" +
+                "    'editor.menu.show': true\n" +
                 "});\n\n" +
                 "// Create editor instance\n" +
                 "var editor = new SynapEditor('synapEditor', config, initialHtml);";
@@ -103,5 +227,6 @@
             }, 1400);
         }
     </script>
+    <script src="/assets/sidebar.js"></script>
 </body>
 </html>

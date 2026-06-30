@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Find &amp; Replace — SynapEditor</title>
+    <title>Find &amp; Replace — Synap Editor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../assets/synapeditor-icon.png">
     <link rel="stylesheet" href="../../assets/styles.css">
     <script src="../../license.config.js"></script>
     <script src="../../synapeditor.config.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/plugins/icons/basicColorIcons.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
 </head>
 <body>
     <header class="site-header">
         <a href="../../index.html" class="back">← Examples</a>
         <a href="../../index.html" class="brand">
-            <span class="logo">S</span>
-            <span class="pname">SynapEditor</span>
+            <img class="brand-logo" src="../../assets/synapeditor-logo.png" alt="Synap Editor">
             <span class="ptag">DEMO</span>
         </a>
     </header>
@@ -26,24 +27,28 @@
             <h1>Find &amp; Replace</h1>
             <p class="desc">Quickly search for text in the document and replace it individually or all at once.</p>
             <div class="demo-meta">
-                <span class="pill">toolbar: find</span>
+                <span class="pill">toolbar: new · find</span>
                 <span class="pill">shortcut: Ctrl + F</span>
             </div>
         </div>
 
         <div id="editorWrapper">
             <div id="synapEditor">
-                <h2>Find &amp; Replace</h2>
-                <p>Try finding the word <strong>SynapEditor</strong> in the text below and replacing it with another word.</p>
-                <p>SynapEditor is a web-based WYSIWYG HTML editor. It works across various browsers and provides rich editing features.</p>
-                <p>Supports options including case-sensitive search, whole word matching, and regular expression search.</p>
+                <h2>Find &quot;Synap Editor&quot; in this article</h2>
+                <p>Open Find &amp; Replace with the toolbar button or <strong>Ctrl + F</strong>, then search for <strong>Synap Editor</strong>. The word appears many times below — step through each match, or replace them all at once with a different name.</p>
+                <h3>What is Synap Editor?</h3>
+                <p>Synap Editor is a web-based WYSIWYG HTML editor by Synapsoft. With Synap Editor, content authors write rich documents directly in the browser, and what they see on screen is what gets published. Because Synap Editor renders the same markup used for output, the editing view and the final page stay in sync.</p>
+                <h3>Why teams choose Synap Editor</h3>
+                <p>Synap Editor runs across modern browsers without plugins. Teams embed Synap Editor into content management systems, knowledge bases, and email composers. Whether you are drafting a report, a contract, or a help article, Synap Editor keeps tables, images, and styles intact from draft to delivery.</p>
+                <h3>Try it now</h3>
+                <p>Search for <strong>Synap Editor</strong> and replace the first match only, then replace the rest with <em>Replace All</em>. Turn on the case-sensitive option to match <strong>Synap Editor</strong> but skip a lowercase &quot;synap editor&quot;, or use whole-word matching and regular expressions for more precise searches.</p>
             </div>
         </div>
 
         <section class="code-section" id="codeExample">
             <div class="code-head">
                 <h3>Configuration</h3>
-                <span class="meta">mode: classic · 1 button</span>
+                <span class="meta">mode: classic · 2 buttons</span>
                 <button class="copy-btn" type="button" onclick="copyCode(this)">
                     <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="5" y="5" width="9" height="9" rx="1.2"/>
@@ -54,9 +59,9 @@
             </div>
             <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
     <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span>
+        <span class="str">'new'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
         <span class="str">'find'</span>
-    <span class="punc">]</span><span class="punc">,</span>
-    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span>
+    <span class="punc">]</span>
 <span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
 
 <span class="com">// Create editor instance</span>
@@ -65,24 +70,24 @@
     </main>
 
     <footer class="site-footer">
-        <span>© Synapsoft Corp. · SynapEditor</span>
+        <span>© Synapsoft Corp. · Synap Editor</span>
     </footer>
 
     <script>
         var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
             'editor.toolbar': [
+                'new', '|',
                 'find'
-            ],
-            'editor.menu.show': false
+            ]
         });
         window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
 
         function copyCode(btn) {
             var code = "var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {\n" +
                 "    'editor.toolbar': [\n" +
+                "        'new', '|',\n" +
                 "        'find'\n" +
-                "    ],\n" +
-                "    'editor.menu.show': false\n" +
+                "    ]\n" +
                 "});\n\n" +
                 "// Create editor instance\n" +
                 "var editor = new SynapEditor('synapEditor', config, initialHtml);";
@@ -95,5 +100,6 @@
             }, 1400);
         }
     </script>
+    <script src="/assets/sidebar.js"></script>
 </body>
 </html>

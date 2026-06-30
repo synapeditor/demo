@@ -2,9 +2,9 @@
      (.github/workflows/publish.yml) renames it to README.md right before `npm publish`,
      so npm shows this page while the full README.md stays GitHub-only. Keep it concise. -->
 
-# [SynapEditor](https://www.synapeditor.com) Demo
+# [Synap Editor](https://www.synapeditor.com) Demo
 
-Interactive demos for **SynapEditor**, the web-based WYSIWYG HTML editor by
+Interactive demos for **Synap Editor**, the web-based WYSIWYG HTML editor by
 [Synapsoft](https://www.synapsoft.co.kr). The editor core loads from the CDN; this package
 ships the runnable demo pages. No build step — "running" just means serving the files.
 
@@ -20,8 +20,10 @@ ships the runnable demo pages. No build step — "running" just means serving th
 
 ## Quick start
 
-> **Serve over `http://localhost`.** The bundled license is locked to the `localhost` hostname,
-> so `file://`, `127.0.0.1`, or any other IP make the editor **fail silently** (empty box, no error).
+> **Get a license, then serve over `http://localhost`.** `license.config.js` ships **empty** — get
+> a free **Evaluation** license at [synapeditor.com](https://www.synapeditor.com) and add it (see
+> [License](#license)). An Evaluation / Issue license is locked to the `localhost` hostname, so
+> `file://`, `127.0.0.1`, or any other IP make the editor **fail silently** (empty box, no error).
 
 ```bash
 npm install @synapeditor/demo
@@ -40,17 +42,21 @@ Then open **http://localhost:8137/** — use `localhost`, **not** `127.0.0.1`. A
 | You open… | Editor loads? |
 |---|---|
 | `http://localhost:<any free port>` | ✅ Yes |
-| `http://127.0.0.1:<port>` | ❌ No — the license is hostname-locked |
+| `http://127.0.0.1:<port>` | ❌ No — Evaluation / Issue licenses are hostname-locked |
 | `file:///…/index.html` (double-click) | ❌ No |
 
 ## License
 
-A valid SynapEditor license is required — get one at **<https://www.synapeditor.com/>**, then edit
-`license.config.js` at the package root: set `'editor.license'` → `company` + `key` (array). Leave
-`'editor.license.load.api'` `url`/`apiKey` empty unless you run a self-hosted load-check server.
+`license.config.js` ships **empty** — add a license before the demos will run. Get a free
+**Evaluation** license (or a Production license) at [synapeditor.com](https://www.synapeditor.com),
+then edit `license.config.js` at the package root: set `'editor.license'` → `company` + `key`
+(array). The `localhost` hostname lock applies to **Evaluation / Issue** licenses, so serve over
+`http://localhost`; a **Production** license is bound to a **registered domain** instead, so serve
+from that domain. Leave `'editor.license.load.api'` `url`/`apiKey` empty unless you run a
+self-hosted load-check server.
 
-> To obtain a license, visit [synapeditor.com](https://www.synapeditor.com) or email
-> editorglobal@synapsoft.co.kr.
+> To obtain your own license, visit [synapeditor.com](https://www.synapeditor.com) or email
+> support@synapeditor.co.kr.
 
 ## Editor config
 
@@ -59,8 +65,9 @@ at the package root — you don't normally need to touch it to run the demos.
 
 ## What's inside
 
-- **Features (12)** — bullets, case conversion, clear formatting, find & replace, font size,
-  format painter, fullscreen, preview, ruler, shortcuts, source view, table
+- **Features (12)** — bullets (bullet points, multi-level numbered lists, and list indentation),
+  case conversion (UPPERCASE, lowercase, Title Case, Toggle Case), clear formatting, find & replace,
+  font size, format painter, fullscreen, preview, ruler, shortcuts, source view, table
 - **Editor Modes (5)** — classic, inline, document, preview, iframe
 - **UI Settings (1)** — table handle
 - **Server Features (5)** — AI assistant, import, export, image/file upload, collaboration
@@ -74,4 +81,6 @@ the accurate step-by-step walkthrough, see the GitHub repository:
 
 ---
 
-© Synapsoft Corp. · SynapEditor is a commercial product; a valid license is required for use.
+© Synapsoft Corp. · Synap Editor is a commercial product. Add a license (free **Evaluation** available
+at synapeditor.com) to `license.config.js`; Evaluation / Issue licenses run on `http://localhost`,
+Production licenses on your registered domain.

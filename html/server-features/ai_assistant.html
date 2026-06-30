@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AI Assistant — SynapEditor</title>
+    <title>AI Assistant — Synap Editor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../assets/synapeditor-icon.png">
     <link rel="stylesheet" href="../../assets/styles.css">
     <!-- Server-feature guard: shows a GitHub-download dialog if the demo server isn't running -->
     <script defer src="../../assets/server-check.js"></script>
     <script src="../../license.config.js"></script>
     <script src="../../synapeditor.config.js"></script>
     <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/plugins/icons/basicColorIcons.js"></script>
     <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
     <!-- AI Write Supporter plugin — must load AFTER the core script -->
     <script src="https://cdn.synapeditor.com/latest/plugins/aiWriteSupporter/aiWriteSupporter.min.js"></script>
@@ -55,8 +57,7 @@
     <header class="site-header">
         <a href="../../index.html" class="back">← Examples</a>
         <a href="../../index.html" class="brand">
-            <span class="logo">S</span>
-            <span class="pname">SynapEditor</span>
+            <img class="brand-logo" src="../../assets/synapeditor-logo.png" alt="Synap Editor">
             <span class="ptag">DEMO</span>
         </a>
     </header>
@@ -122,7 +123,6 @@
 <span class="com">//   plugins/aiWriteSupporter/aiWriteSupporter.min.js + .min.css</span>
 
 <span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
-    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span><span class="punc">,</span>
     <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'undo'</span><span class="punc">,</span> <span class="str">'redo'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'bold'</span><span class="punc">,</span> <span class="str">'italic'</span><span class="punc">,</span> <span class="str">'underline'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'image'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'openTextAI'</span><span class="punc">,</span> <span class="str">'openImageAI'</span><span class="punc">]</span><span class="punc">,</span>
     <span class="str">'editor.upload.image.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
     <span class="str">'aiWriteSupporter.config'</span><span class="punc">:</span> <span class="punc">{</span>
@@ -135,7 +135,6 @@
 <span class="com">//   plugins/aiWriteSupporter/aiWriteSupporter.min.js + .min.css</span>
 
 <span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
-    <span class="str">'editor.menu.show'</span><span class="punc">:</span> <span class="bool">false</span><span class="punc">,</span>
     <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'undo'</span><span class="punc">,</span> <span class="str">'redo'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'bold'</span><span class="punc">,</span> <span class="str">'italic'</span><span class="punc">,</span> <span class="str">'underline'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span> <span class="str">'openTextAI'</span><span class="punc">]</span><span class="punc">,</span>
     <span class="str">'aiWriteSupporter.config'</span><span class="punc">:</span> <span class="punc">{</span>
         <span class="var">text</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">ai</span><span class="punc">:</span> <span class="str">'gemini'</span><span class="punc">,</span> <span class="var">url</span><span class="punc">:</span> <span class="str">'/requestGemini'</span> <span class="punc">}</span>   <span class="com">// text only — no image channel</span>
@@ -147,7 +146,7 @@
     </main>
 
     <footer class="site-footer">
-        <span>© Synapsoft Corp. · SynapEditor</span>
+        <span>© Synapsoft Corp. · Synap Editor</span>
     </footer>
 
     <script>
@@ -174,7 +173,6 @@
         function createEditor(provider) {
             var c = CONFIG[provider];
             var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
-                'editor.menu.show': false,
                 'editor.toolbar': c.toolbar,
                 'aiWriteSupporter.config': c.ai
             }, c.upload);
@@ -214,7 +212,6 @@
             var code = (p === 'gemini')
                 ? head +
                     "var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {\n" +
-                    "    'editor.menu.show': false,\n" +
                     "    'editor.toolbar': ['undo', 'redo', '|', 'bold', 'italic', 'underline', '|', 'openTextAI'],\n" +
                     "    'aiWriteSupporter.config': {\n" +
                     "        text: { ai: 'gemini', url: '/requestGemini' }   // text only — no image channel\n" +
@@ -223,7 +220,6 @@
                     "var editor = new SynapEditor('synapEditor', config, initialHtml);"
                 : head +
                     "var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {\n" +
-                    "    'editor.menu.show': false,\n" +
                     "    'editor.toolbar': ['undo', 'redo', '|', 'bold', 'italic', 'underline', '|', 'image', '|', 'openTextAI', 'openImageAI'],\n" +
                     "    'editor.upload.image.api': '/uploadFile',\n" +
                     "    'aiWriteSupporter.config': {\n" +
@@ -241,5 +237,6 @@
             }, 1400);
         }
     </script>
+    <script src="/assets/sidebar.js"></script>
 </body>
 </html>

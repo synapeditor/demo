@@ -30,7 +30,7 @@
         <div class="demo-head">
             <span class="kicker">Server Feature</span>
             <h1>Export</h1>
-            <p class="desc">Build content by <strong>importing</strong> a document or <strong>inserting images</strong>, then <strong>export</strong> it to Word/HWP to verify the result round-trips correctly.</p>
+            <p class="desc">Build content by <strong>importing</strong> a document or <strong>inserting images</strong>, then <strong>export</strong> it to Word (.docx) to verify the result round-trips correctly.</p>
             <div class="demo-meta">
                 <span class="pill">server: converter-api · export-api</span>
                 <span class="pill">api: /importDoc · /uploadFile · /exportFile</span>
@@ -65,7 +65,7 @@
     <span class="str">'editor.upload.video.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
     <span class="str">'editor.upload.file.api'</span><span class="punc">:</span> <span class="str">'/uploadFile'</span><span class="punc">,</span>
     <span class="str">'editor.export.api'</span><span class="punc">:</span> <span class="str">'/exportFile'</span><span class="punc">,</span>
-    <span class="str">'editor.export.extensions'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'docx'</span><span class="punc">,</span> <span class="str">'hwpx'</span><span class="punc">,</span> <span class="str">'hwp'</span><span class="punc">]</span><span class="punc">,</span>
+    <span class="str">'editor.export.extensions'</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'docx'</span><span class="punc">]</span><span class="punc">,</span>
     <span class="str">'editor.export.defaultExtension'</span><span class="punc">:</span> <span class="str">'docx'</span>
 <span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
 
@@ -81,13 +81,8 @@
     <script>
         var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
             'editor.toolbar': ['new', 'open', '|', 'image', '|', 'export'],
-            'editor.import.api': '/importDoc',
             'editor.import.extensions': ['docx', 'xlsx', 'pptx', 'html', 'txt'],
-            'editor.upload.image.api': '/uploadFile',
-            'editor.upload.video.api': '/uploadFile',
-            'editor.upload.file.api': '/uploadFile',
-            'editor.export.api': '/exportFile',
-            'editor.export.extensions': ['docx', 'hwpx', 'hwp'],
+            'editor.export.extensions': ['docx'],
             'editor.export.defaultExtension': 'docx'
         });
         window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
@@ -102,7 +97,7 @@
                 "    'editor.upload.video.api': '/uploadFile',\n" +
                 "    'editor.upload.file.api': '/uploadFile',\n" +
                 "    'editor.export.api': '/exportFile',\n" +
-                "    'editor.export.extensions': ['docx', 'hwpx', 'hwp'],\n" +
+                "    'editor.export.extensions': ['docx'],\n" +
                 "    'editor.export.defaultExtension': 'docx'\n" +
                 "});\n\n" +
                 "// Create editor instance\n" +

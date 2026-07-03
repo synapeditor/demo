@@ -6,6 +6,11 @@
 //     Object.assign({}, synapEditorLicense, synapEditorConfig, { ...demo... })
 // =================================================================
 var synapEditorConfig = {
+    "editor.upload.image.api": "/uploadFile",
+    "editor.upload.video.api": "/uploadFile",
+    "editor.upload.file.api": "/uploadFile",
+    "editor.import.api": "/importDoc",
+    "editor.export.api": "/exportFile",
     "editor.lang": "en",
     "editor.menu.show": false,
     "editor.defaultStyle": {

@@ -79,11 +79,7 @@
     <script>
         var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
             'editor.toolbar': ['new', 'open', '|', 'image'],
-            'editor.import.api': '/importDoc',
-            'editor.import.extensions': ['docx', 'xlsx', 'pptx', 'html', 'txt'],
-            'editor.upload.image.api': '/uploadFile',
-            'editor.upload.video.api': '/uploadFile',
-            'editor.upload.file.api': '/uploadFile'
+            'editor.import.extensions': ['docx', 'xlsx', 'pptx', 'html', 'txt']
         });
         window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
 

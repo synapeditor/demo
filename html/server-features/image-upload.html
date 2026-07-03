@@ -74,10 +74,7 @@
 
     <script>
         var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
-            'editor.toolbar': ['new', 'image', 'video', 'file'],
-            'editor.upload.image.api': '/uploadFile',
-            'editor.upload.video.api': '/uploadFile',
-            'editor.upload.file.api': '/uploadFile'
+            'editor.toolbar': ['new', 'image', 'video', 'file']
         });
         window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
 

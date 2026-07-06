@@ -12,8 +12,8 @@ survives reinstalls. The editor core loads from the CDN; there is no build step.
 ## Quick start
 
 ```bash
-npm create @synapeditor/demo@latest my-app
-cd my-app
+npm create @synapeditor/demo@latest my-synapeditor-app
+cd my-synapeditor-app
 # add your license to license.config.js (see below)
 npm start        # → http://localhost:8137/
 ```
@@ -33,7 +33,7 @@ footguns. It prints the exact `http://localhost:<port>` it bound to; open it wit
 | `http://127.0.0.1:<port>` | ❌ No — Evaluation / Issue licenses are hostname-locked |
 | `file:///…/index.html` (double-click) | ❌ No |
 
-> No npm? The same files are available via `npx degit synapeditor/demo my-app` or
+> No npm? The same files are available via `npx degit synapeditor/demo my-synapeditor-app` or
 > `git clone https://github.com/synapeditor/demo.git` (demo under `template/`).
 
 ## License

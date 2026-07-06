@@ -11,10 +11,10 @@ This package is **not the editor library itself** — it is a set of categorized
 
 - [Getting Started](#getting-started)
 - [Server-Dependent Demos](#server-dependent-demos)
-- [License Setup](#license-setup)
+- [License Setup](#license-setup) · [Editor Config](#editor-config)
 - [Project Structure](#project-structure)
 - [Feature Demos](#feature-demos) · [Editor Modes](#editor-modes) · [UI Settings](#ui-settings)
-- [Basic Usage](#basic-usage) · [Language](#language)
+- [Basic Usage](#basic-usage) · [Language](#language) · [Resources](#resources)
 
 ## Getting Started
 
@@ -24,11 +24,11 @@ files land in your project, **not** in `node_modules`, so `license.config.js` is
 and survives reinstalls:
 
 ```bash
-npm create @synapeditor/demo@latest my-app
-cd my-app
+npm create @synapeditor/demo@latest my-synapeditor-app
+cd my-synapeditor-app
 ```
 
-> No npm? The same files are available via `npx degit synapeditor/demo my-app`, or
+> No npm? The same files are available via `npx degit synapeditor/demo my-synapeditor-app`, or
 > `git clone https://github.com/synapeditor/demo.git` (the demo lives under
 > [`template/`](template/); this repo root is the scaffolder).
 
@@ -68,8 +68,8 @@ served here — they need the demo server on a **separate port, `http://localhos
 ## Server-Dependent Demos
 
 **Import**, **export**, **image upload**, and **collaboration** need Synap Editor's server
-modules, bundled under [`server/`](server/) as Docker images plus a small Node.js
-demo server:
+modules, provided under [`server/`](server/) as a Docker Compose stack (images pulled from
+GHCR) plus a small Node.js demo server:
 
 ```bash
 cd server

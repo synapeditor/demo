@@ -4,7 +4,7 @@ A collection of interactive demos for **Synap Editor**, the web-based WYSIWYG HT
 
 This package is **not the editor library itself** — it is a set of categorized, ready-to-run examples that show how to use Synap Editor's features and editor modes.
 
-![npm version](https://img.shields.io/npm/v/@synapeditor/demo?color=39b6b8&label=npm)
+![npm version](https://img.shields.io/npm/v/@synapeditor/create-demo?color=39b6b8&label=npm)
 
 
 ## Contents
@@ -18,43 +18,41 @@ This package is **not the editor library itself** — it is a set of categorized
 
 ## Getting Started
 
-The demos are published to npm as **[`@synapeditor/demo`](https://www.npmjs.com/package/@synapeditor/demo)**. Install the package, or clone the repository to work on the demos themselves:
+Scaffold the demos into a folder of your own with the npm initializer
+**[`@synapeditor/create-demo`](https://www.npmjs.com/package/@synapeditor/create-demo)** — the
+files land in your project, **not** in `node_modules`, so `license.config.js` is yours to edit
+and survives reinstalls:
 
 ```bash
-# Install the published package…
-npm i @synapeditor/demo            # → node_modules/@synapeditor/demo/
-
-# …or clone the repo to develop the demos
-git clone https://github.com/synapeditor/demo.git
-cd demo
+npm create @synapeditor/demo@latest my-app
+cd my-app
 ```
 
-Either way there is **no build step** — the Synap Editor library loads from the CDN (`https://cdn.synapeditor.com/latest/`). `license.config.js` ships **empty**: get a free **Evaluation** license at **[synapeditor.com](https://www.synapeditor.com/)**, add it to `license.config.js` (see [License Setup](#license-setup)), then serve the files on `http://localhost` and try the demos.
+> No npm? The same files are available via `npx degit synapeditor/demo my-app`, or
+> `git clone https://github.com/synapeditor/demo.git` (the demo lives under
+> [`template/`](template/); this repo root is the scaffolder).
+
+There is **no build step** — the Synap Editor library loads from the CDN (`https://cdn.synapeditor.com/latest/`). `license.config.js` ships **empty**: get a free **Evaluation** license at **[synapeditor.com](https://www.synapeditor.com/)**, add it to `license.config.js` (see [License Setup](#license-setup)), then `npm start` and try the demos.
 
 > **Important — an Evaluation / Issue license is locked to the `localhost` hostname.** Once
 > you've added your license, opening a file directly (`file://`), or via `127.0.0.1` or any other
 > IP, makes the editor **fail silently** — an empty box with no console error. Always open
 > `http://localhost:<port>`. (A **Production** license is bound to your registered domain
-> instead — serve this demo from that domain and it works there too.) There is no build step;
-> "running" just means serving the files. For the full walkthrough and troubleshooting, see
-> **[`.ai/GETTING_STARTED.md`](.ai/GETTING_STARTED.md)**.
+> instead — serve this demo from that domain and it works there too.) For the full walkthrough
+> and troubleshooting, see **[`.ai/GETTING_STARTED.md`](.ai/GETTING_STARTED.md)**.
 
-> 🔑 `license.config.js` ships **empty** — get a license at **<https://www.synapeditor.com/>**
-> and add it to `license.config.js` before running (see [License Setup](#license-setup)).
-> **Evaluation / Issue** licenses run on `localhost`; a **Production** license runs on its registered domain.
-
-Serve the folder over HTTP, then open it with `localhost` (any free port works — an Evaluation
-license checks the hostname, not the port):
+Start the bundled static server (a small zero-dependency Node server — no Python needed):
 
 ```bash
-# macOS / Linux  (--bind :: lets `localhost` resolve over IPv6)
-python3 -m http.server 8137 --bind :: --directory .
-
-# Windows (PowerShell) — omit --bind ::
-python -m http.server 8137 --directory .
+npm start          # → prints http://localhost:8137/  (auto-picks a free port if 8137 is busy)
 ```
 
-Then open **http://localhost:8137/** — use `localhost`, **not** `127.0.0.1`. This static server runs the **Features, Editor Modes, and UI Settings** demos only. The **Server Features** (Import / Export / Image & File Upload / Collaboration / AI Assistant) are **not** served here — they need the demo server on a **separate port, `http://localhost:3080`** (see [Server-Dependent Demos](#server-dependent-demos) below).
+Then open the printed URL with `localhost`, **not** `127.0.0.1` (any free port works — an
+Evaluation license checks the hostname, not the port; force one with `PORT=3000 npm start`). This
+static server runs the **Features, Editor Modes, and UI Settings** demos only. The **Server
+Features** (Import / Export / Image & File Upload / Collaboration / AI Assistant) are **not**
+served here — they need the demo server on a **separate port, `http://localhost:3080`** (see
+[Server-Dependent Demos](#server-dependent-demos) below).
 
 **Which URL works?** (with an Evaluation / Issue license, which is locked to the `localhost` hostname)
 
@@ -74,15 +72,13 @@ modules, bundled under [`server/`](server/) as Docker images plus a small Node.j
 demo server:
 
 ```bash
-# 1) Load the backend images (first time only)
-docker load -i server/docker/export-api.tar
-docker load -i server/docker/converter-api.tar
-docker load -i server/docker/collabo-ws.tar
+cd server
 
-# 2) Start the backends (all at once, or one: docker compose up -d export-api)
-cd server && docker compose up -d
+# 1) Start the backends — first run pulls the base images from GHCR
+#    (public; no docker login) and builds the patched collabo/converter images
+docker compose up -d
 
-# 3) Start the demo server
+# 2) Start the demo server
 npm install && npm start          # → http://localhost:3080
 ```
 
@@ -177,18 +173,22 @@ var editor = new SynapEditor('synapEditor', config);
 ## Project Structure
 
 ```
-demo/
-├── index.html              # Main page with categorized example list
-├── license.config.js       # Your Synap Editor license (edit this)
-├── synapeditor.config.js   # Global editor config — shared defaults, references the license
-├── assets/
-│   └── styles.css          # Shared design system
-├── html/                   # all demo pages — included in the npm package
-│   ├── features/           # Feature demos (12)
-│   ├── modes/              # Editor mode demos (5)
-│   ├── ui/                 # UI setting demos (1)
-│   └── server-features/    # Server-dependent demo pages (5) — on npm; need the server/ backend running
-└── server/                 # Node demo server + Docker backends — source repo only, not in the npm package
+demo/                       # repo root = the @synapeditor/create-demo scaffolder
+├── bin/
+│   └── index.js            # scaffolder CLI — copies template/ into the user's folder
+├── template/               # what a user gets from `npm create` (published to npm)
+│   ├── index.html          # Main page with categorized example list
+│   ├── license.config.js   # Your Synap Editor license (edit this) — ships empty
+│   ├── synapeditor.config.js   # Global editor config — shared defaults
+│   ├── server.js           # bundled zero-dependency static server (`npm start`)
+│   ├── package.json        # scaffolded project manifest ("start": node server.js)
+│   ├── assets/             # shared design system + icons
+│   └── html/               # all demo pages
+│       ├── features/       # Feature demos (12)
+│       ├── modes/          # Editor mode demos (5)
+│       ├── ui/             # UI setting demos (1)
+│       └── server-features/    # Server-dependent demo pages (5) — need the server/ backend
+└── server/                 # Node demo server + Docker backends — source repo only, not on npm
 ```
 
 The Synap Editor library itself is loaded from the CDN (`https://cdn.synapeditor.com/latest/`), so only `license.config.js` and `synapeditor.config.js` need to live locally at the project root.

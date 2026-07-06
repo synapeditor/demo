@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const { CONFIG, REPO_ROOT, TEMP_ROOT } = require('./config');
+const { CONFIG, STATIC_ROOT, TEMP_ROOT } = require('./config');
 
 const uploadRoutes = require('./routes/upload');
 const importRoutes = require('./routes/import');
@@ -93,13 +93,14 @@ app.use(aiRoutes);
 app.use('/tmp', express.static(TEMP_ROOT));
 
 // The main site at the SAME origin, so server-feature pages reuse the existing
-// assets and call same-origin APIs. Only known-safe paths are exposed — never the
-// repo root — so server-demo/.env, .git and node_modules stay private.
-app.use('/assets', express.static(path.join(REPO_ROOT, 'assets')));
-app.use('/html', express.static(path.join(REPO_ROOT, 'html')));
-app.get('/license.config.js', (req, res) => res.sendFile(path.join(REPO_ROOT, 'license.config.js')));
-app.get('/synapeditor.config.js', (req, res) => res.sendFile(path.join(REPO_ROOT, 'synapeditor.config.js')));
-app.get(['/', '/index.html'], (req, res) => res.sendFile(path.join(REPO_ROOT, 'index.html')));
+// assets and call same-origin APIs. The static site lives under template/
+// (STATIC_ROOT). Only known-safe paths are exposed — never the repo root — so
+// server/.env, .git and node_modules stay private.
+app.use('/assets', express.static(path.join(STATIC_ROOT, 'assets')));
+app.use('/html', express.static(path.join(STATIC_ROOT, 'html')));
+app.get('/license.config.js', (req, res) => res.sendFile(path.join(STATIC_ROOT, 'license.config.js')));
+app.get('/synapeditor.config.js', (req, res) => res.sendFile(path.join(STATIC_ROOT, 'synapeditor.config.js')));
+app.get(['/', '/index.html'], (req, res) => res.sendFile(path.join(STATIC_ROOT, 'index.html')));
 
 // =============================================================================
 // Start server

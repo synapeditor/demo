@@ -2,8 +2,8 @@
 
 A developer example for SynapEditor's **server-dependent** features —
 **import · export · image upload · collaboration**. Each feature has its own demo
-page under [`../html/server-features/`](../html/server-features) and its own server route, so you can
-study and configure them one at a time. The editor SDK is loaded from the CDN.
+page under [`../template/html/server-features/`](../template/html/server-features) and its own server
+route, so you can study and configure them one at a time. The editor SDK is loaded from the CDN.
 
 ## Quick start (all features)
 
@@ -55,8 +55,8 @@ server/
 
 ## Notes
 
-- **License** — uses the repo-root `license.config.js` (served at `/license.config.js`), same as the static demos.
-- **Editor config** — the global editor defaults in `synapeditor.config.js` are served at `/synapeditor.config.js`, same as the static demos.
+- **License** — uses `template/license.config.js` (served at `/license.config.js`), same as the static demos.
+- **Editor config** — the global editor defaults in `template/synapeditor.config.js` are served at `/synapeditor.config.js`, same as the static demos.
 - **Ports** — defaults: collabo `1234`, export `9090`, converter `8080`. If `8080` is busy, put
   `CONVERTER_PORT=18080` and `CONVERTER_SERVER=http://localhost:18080` in `.env` (see `.env.example`).
 - **Backend images** — the base images (`collabo-ws`, `converter-api`, `export-api`) are pulled from

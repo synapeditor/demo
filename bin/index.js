@@ -19,7 +19,7 @@ function main() {
     const args = process.argv.slice(2);
     const force = args.includes('--force');
     const positional = args.filter((a) => !a.startsWith('-'));
-    const targetName = positional[0] || 'synapeditor-demo';
+    const targetName = positional[0] || 'my-synapeditor-app';
     const targetDir = path.resolve(process.cwd(), targetName);
 
     if (fs.existsSync(targetDir)) {

@@ -35,7 +35,10 @@ jobs:
           NAME=$(node -p "require('./package.json').name")
           VERSION=$(node -p "require('./package.json').version")
           echo "Resolved $NAME@$VERSION"
-          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
+          # Assert on non-empty output (not just exit code): some npm builds exit 0
+          # with empty stdout for a missing version, which would wrongly skip publish.
+          EXISTING=$(npm view "$NAME@$VERSION" version 2>/dev/null || true)
+          if [ -n "$EXISTING" ]; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
             echo "::notice::$NAME@$VERSION already on npm — skipping publish. Bump \"version\" in package.json to release."
           else

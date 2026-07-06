@@ -4,64 +4,56 @@
 word-processor-grade editing (tables, images, styles, document mode, and more)
 to the browser. Learn more at **https://www.synapeditor.com**.
 
-This package contains the interactive feature and mode demos.
+This package scaffolds the interactive feature and mode demos into a folder of
+your own — **not** into `node_modules` — so `license.config.js` and the demo
+files are yours to edit and survive reinstalls.
 
-## Install
+## Create the demo
 
 > Prerequisites: Node.js 18+ (`node -v`) · an internet connection (the editor
 > core, `synapeditor.min.js` / `.css`, loads from `cdn.synapeditor.com`).
 
 ```bash
-# 1) Create a project folder and enter it
-mkdir my-synapeditor-app && cd my-synapeditor-app
+# Scaffold the demo into ./my-synapeditor-app (pick any folder name)
+npm create @synapeditor/demo@latest my-synapeditor-app
 
-# 2) Install the demo package
-npm init -y
-npm install @synapeditor/demo
-
-# 3) Move into the installed demo (all HTML/assets and license.config.js live here)
-cd node_modules/@synapeditor/demo
+cd my-synapeditor-app
 ```
 
-The demo files and `license.config.js` live in this folder — this is the directory you
-serve in Quick start below. `license.config.js` ships **empty**: get a license at
-**https://www.synapeditor.com** and add it before the demos will run (see License setup below).
-(A re-`npm install` would overwrite your edit; if you plan to customize the demo, copy this
-folder out: `cp -r node_modules/@synapeditor/demo ../../my-demo`.)
+This copies `index.html`, the demo pages, assets, and `license.config.js` into
+your folder. `license.config.js` ships **empty**: get a license at
+**https://www.synapeditor.com** and add it before the demos will run (see License
+setup below). Because the files are in your own folder, your license edit is never
+overwritten by a reinstall.
+
+> No npm? Two alternatives copy the same files: `npx degit synapeditor/demo my-synapeditor-app`,
+> or `git clone https://github.com/synapeditor/demo.git` (the demo lives under `template/`).
 
 ## Quick start
 
 ```bash
-# macOS / Linux — from inside node_modules/@synapeditor/demo
-# Start a static server on a FREE port (macOS: --bind :: is required)
-python3 -m http.server 8137 --bind :: --directory .
-
-# Then open it in your browser — use `localhost`, NOT 127.0.0.1
-open http://localhost:8137/
+# From inside your project folder — starts a static server (no Python needed).
+npm start
+# → http://localhost:8137/   (use localhost, NOT 127.0.0.1)
 ```
 
-```powershell
-# Windows (PowerShell) — from inside node_modules\@synapeditor\demo
-# Omit --bind :: on Windows (binding IPv6-only can refuse IPv4 `localhost`),
-# and open the URL manually — there is no `open` command.
-python -m http.server 8137 --directory .
-# then browse to http://localhost:8137/  (use localhost, NOT 127.0.0.1)
-```
+`npm start` runs a small bundled Node server (`server.js`, zero dependencies). It
+binds so that `http://localhost` works on macOS, Linux, and Windows alike, and if
+port `8137` is busy it automatically picks the next free port — it never kills
+another process. Watch the console for the exact URL.
 
 Once the server is running, open:
 
 - **Demo index (all examples):** http://localhost:8137/
 - **Editor (classic mode):** http://localhost:8137/html/modes/classic.html
 
-> Using a different port? Replace `8137` everywhere with your port.
-
 > **"Server required" demos won't run under this static flow.** Demos tagged *Server required*
 > on the index (Collaboration, Import, Export, AI Assistant, Image upload) talk to a separate
-> demo server, so they stay blank when served by `python -m http.server` alone. Everything else
+> demo server, so they stay blank when served by `npm start` alone. Everything else
 > works as-is. To run those, follow the demo-server setup in the project **README** — it is not
 > part of this static quick-start.
 
-## 3 things to know (or you'll get stuck)
+## 2 things to know (or you'll get stuck)
 
 1. **You must add a license — `license.config.js` ships empty.** Get a license at
    **https://www.synapeditor.com** and paste it into `license.config.js`; until then the editor
@@ -74,19 +66,13 @@ Once the server is running, open:
    (A **Production** license is bound to a **registered domain** instead, so serving the demo from
    that same domain works there too.)
 
-2. **Pick a free port.** Port `8080` is often already taken. Check with
-   `lsof -ti tcp:<port>` (Windows: `netstat -ano | findstr :<port>` or
-   `Get-NetTCPConnection -LocalPort <port>`); if it's busy, **don't kill the
-   other process** — just use a different port. The license only checks the
-   hostname, not the port.
-
-3. **macOS needs `--bind ::`.** `localhost` resolves to IPv6 (`::1`) first, so a
-   server bound only to `127.0.0.1` won't accept `localhost` connections.
-   `--bind ::` serves both `localhost` and `127.0.0.1`.
+2. **The port auto-picks; open the URL from the console.** `npm start` prints the
+   exact `http://localhost:<port>` it bound to. Use a different port with
+   `PORT=3000 npm start`. The license only checks the hostname, not the port.
 
 ## License setup
 
-The license lives in `license.config.js` (in this folder); every demo loads it. It ships
+The license lives in `license.config.js` (at your project root); every demo loads it. It ships
 **empty** — get a license at **https://www.synapeditor.com** and fill in the `'editor.license'`
 values inside `synapEditorLicense` before the demos will run. Use an **Evaluation / Issue**
 license for local testing on `localhost`, or a **Production** license bound to your registered
@@ -146,8 +132,9 @@ var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
 
 ## Success checklist
 
+- [ ] Scaffolded with `npm create @synapeditor/demo` and `cd`'d into the folder
 - [ ] Added your license (from synapeditor.com) to `license.config.js`
-- [ ] Opened via `http://localhost:<port>` (not 127.0.0.1)
+- [ ] Ran `npm start` and opened the printed `http://localhost:<port>` (not 127.0.0.1)
 - [ ] Top menu bar (File / Edit / View …) and toolbar buttons are visible
 - [ ] The body is editable
 - [ ] `window.editor.isLoaded === true` in the console

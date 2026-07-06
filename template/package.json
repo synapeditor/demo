@@ -1,0 +1,9 @@
+{
+  "name": "synapeditor-demo",
+  "version": "3.4.0",
+  "private": true,
+  "description": "Local Synap Editor demo — scaffolded by `npm create @synapeditor/demo`.",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

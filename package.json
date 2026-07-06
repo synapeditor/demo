@@ -1,10 +1,13 @@
 {
-  "name": "@synapeditor/demo",
-  "version": "3.4.2",
-  "description": "Interactive feature and mode demos for SynapEditor, the web-based WYSIWYG HTML editor by Synapsoft.",
+  "name": "@synapeditor/create-demo",
+  "version": "3.4.0",
+  "description": "Scaffolder for the SynapEditor demo — run `npm create @synapeditor/demo` to copy the interactive feature and mode demos into a new folder (not node_modules).",
   "keywords": [
     "synapeditor",
     "synap-editor",
+    "create",
+    "create-demo",
+    "scaffold",
     "demo",
     "example",
     "examples",
@@ -22,14 +25,17 @@
     "type": "git",
     "url": "https://github.com/synapeditor/demo.git"
   },
+  "bin": {
+    "create-demo": "bin/index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "index.html",
-    "html",
-    "assets",
-    "license.config.js",
-    "synapeditor.config.js"
+    "bin",
+    "template"
   ]
 }

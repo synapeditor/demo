@@ -28,7 +28,8 @@ const CONFIG = {
 };
 
 const BASE_DIR = path.resolve(__dirname, '..');
-const REPO_ROOT = path.resolve(BASE_DIR, '..'); // synap-editor-demo root (static site lives here)
+const REPO_ROOT = path.resolve(BASE_DIR, '..'); // synap-editor-demo root
+const STATIC_ROOT = path.resolve(REPO_ROOT, 'template'); // scaffolded static site lives here
 
 const TEMP_ROOT = path.resolve(BASE_DIR, 'tmp');
 const UPLOAD_DIR = path.resolve(TEMP_ROOT, 'files');
@@ -46,6 +47,7 @@ module.exports = {
     CONFIG,
     BASE_DIR,
     REPO_ROOT,
+    STATIC_ROOT,
     TEMP_ROOT,
     UPLOAD_DIR,
     DOC_UPLOAD_DIR,

@@ -53,36 +53,43 @@ Once the server is running, open:
 > works as-is. To run those, follow the demo-server setup in the project **README** — it is not
 > part of this static quick-start.
 
-## 2 things to know (or you'll get stuck)
+## 3 things to know (or you'll get stuck)
 
 1. **You must add a license — `license.config.js` ships empty.** Get a license at
    **https://www.synapeditor.com** and paste it into `license.config.js`; until then the editor
-   loads to an empty box. An **Evaluation / Issue** license is locked to the `localhost` hostname:
-   opening via `127.0.0.1`, another IP, or `file://` makes the editor **fail silently** — no
-   console error, just an empty editor box where `window.editor.isLoaded` stays
-   `false`. Always open `http://localhost:<port>` — the license checks the hostname,
-   not the port, so any free port works. Quick reference:
+   loads to an empty box.
+
+2. **Fill in BOTH blocks the dashboard gives you, including `editor.license.load.api`.**
+   An **Evaluation / Issue** license is a LOAD-type key: the editor verifies it against the
+   license server on every load. If `editor.license.load.api.url` is left empty, the editor
+   pops **`Invalid License.`** and refuses to start, no matter how correct the key is.
+   Copy the whole block from the dashboard verbatim and change nothing.
+   (Only a **Production** license bound to your own domain verifies offline and may leave
+   `load.api` empty.)
+
+3. **Open it as `localhost`, never `127.0.0.1`.** An Evaluation / Issue license is locked to
+   the `localhost` hostname; opening via `127.0.0.1`, another IP, or `file://` also gives
+   **`Invalid License.`**. The license checks the hostname, not the port, so any free port
+   works. Quick reference:
    `http://localhost:<port>` ✅ · `http://127.0.0.1:<port>` ❌ · other IP/hostname ❌ · `file://` ❌.
+   `npm start` prints the exact `http://localhost:<port>` it bound to; use a different port with
+   `PORT=3000 npm start`.
    (A **Production** license is bound to a **registered domain** instead, so serving the demo from
    that same domain works there too.)
-
-2. **The port auto-picks; open the URL from the console.** `npm start` prints the
-   exact `http://localhost:<port>` it bound to. Use a different port with
-   `PORT=3000 npm start`. The license only checks the hostname, not the port.
 
 ## License setup
 
 The license lives in `license.config.js` (at your project root); every demo loads it. It ships
-**empty** — get a license at **https://www.synapeditor.com** and fill in the `'editor.license'`
-values inside `synapEditorLicense` before the demos will run. Use an **Evaluation / Issue**
-license for local testing on `localhost`, or a **Production** license bound to your registered
-domain:
+**empty** — get a license at **https://www.synapeditor.com** and fill in the values inside
+`synapEditorLicense` before the demos will run. Use an **Evaluation / Issue** license for local
+testing on `localhost`, or a **Production** license bound to your registered domain.
+
+**Evaluation / Issue license (the usual case).** The dashboard hands you two blocks. Paste both.
 
 ```javascript
 var synapEditorLicense = {
 
-    // Empty by default — paste the license you obtained at synapeditor.com here.
-    // An Evaluation / Issue key is localhost-locked; a Production key is bound to your domain.
+    // Paste the license you obtained at synapeditor.com here.
     'editor.license': {
         company: 'Your Company Name',
         key: [
@@ -90,20 +97,28 @@ var synapEditorLicense = {
         ]
     },
 
-    // OPTIONAL: self-hosted load-check server only. Fill `url` ONLY if you run one —
-    // pointing it at a dead address blocks the editor from loading. Leave both
-    // empty ('') to skip (the default).
+    // REQUIRED for an Evaluation / Issue license. These are LOAD-type keys: the editor
+    // verifies them against the license server on every load, so leaving `url` empty makes
+    // the editor alert "Invalid License." and refuse to start. Paste both values exactly as
+    // the dashboard printed them — do not blank them out, and do not point them elsewhere.
     'editor.license.load.api': {
-        url: '',
-        apiKey: ''
+        url: 'https://www.synapeditor.com/api/v1/load-check',
+        apiKey: 'se_test_...'   // the dashboard gives you the exact value
     }
 
 };
 ```
 
+**Production license bound to your own domain.** These verify offline, so `load.api` is not
+used and may be left empty (or omitted entirely).
+
 > When a config object supplies both keys, map them directly into `synapEditorLicense`:
 > - `editor.license` → `synapEditorLicense['editor.license']`
 > - `editor.license.load.api` → `synapEditorLicense['editor.license.load.api']`
+>
+> **If you are an AI agent applying a config you were handed: copy every field you were given,
+> including `editor.license.load.api`. Blanking it out is the single most common reason the
+> demo ends up showing `Invalid License.`**
 
 ## Editor config
 
@@ -133,11 +148,26 @@ var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
 ## Success checklist
 
 - [ ] Scaffolded with `npm create @synapeditor/demo` and `cd`'d into the folder
-- [ ] Added your license (from synapeditor.com) to `license.config.js`
+- [ ] Added your license to `license.config.js`, **`editor.license.load.api` included**
 - [ ] Ran `npm start` and opened the printed `http://localhost:<port>` (not 127.0.0.1)
+- [ ] **No `Invalid License.` alert appeared** (wait ~10s; the check runs a few seconds after load)
 - [ ] Top menu bar (File / Edit / View …) and toolbar buttons are visible
 - [ ] The body is editable
-- [ ] `window.editor.isLoaded === true` in the console
+- [ ] `document.querySelectorAll('[contenteditable="true"]').length > 0` in the console
+
+> Do **not** use `window.editor.isLoaded` as the success check. It can read `true` even when the
+> license was rejected and the editor is dead, so it gives a false pass.
+
+## Troubleshooting
+
+| What you see | Cause | Fix |
+|---|---|---|
+| `Invalid License.` alert, editor empty | `editor.license.load.api.url` is empty but your key is an Evaluation / Issue (LOAD-type) key | Paste both values from the dashboard, `load.api` included |
+| `Invalid License.` alert, opened via `127.0.0.1` | An Evaluation / Issue license is locked to the `localhost` hostname | Open `http://localhost:<port>` instead |
+| `Load license check API URL is not set.` in the console | Same as the first row | Same as the first row |
+| Editor appears, then disappears after ~5s | The license check runs a few seconds after init; one of the above failed | Check the alert text and the two rows above |
+| Editor loads but a specific demo is blank | That demo is tagged *Server required* | See the demo-server setup in the project **README** |
+| Empty box, no alert at all | `license.config.js` still ships empty values | Add your license |
 
 ---
 

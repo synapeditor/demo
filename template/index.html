@@ -67,8 +67,8 @@
                 <p class="ln-desc"><code>license.config.js</code> ships <b>empty</b> — get a license at <a href="https://www.synapeditor.com" target="_blank" rel="noopener">synapeditor.com</a> and add it before the editors will load. A free <b>Evaluation</b> license runs on <code>http://localhost</code>; a <b>Production</b> license runs on your registered domain.</p>
                 <ol class="ln-steps">
                     <li><b>Get a license</b> — an <b>Evaluation / Issue</b> license for local testing, or a <b>Production</b> license bound to your domain. Visit <a href="https://www.synapeditor.com" target="_blank" rel="noopener">synapeditor.com</a> or email <a href="mailto:support@synapeditor.co.kr">support@synapeditor.co.kr</a>.</li>
-                    <li><b>Set it up</b> — edit <code>license.config.js</code> (the <code>synapEditorLicense</code> object) and fill in your company name and key. The <code>key</code> field is an array.</li>
-                    <li><b>Open over the right host</b> — an <b>Evaluation / Issue</b> license is locked to the <code>localhost</code> hostname, so <code>file://</code>, <code>127.0.0.1</code>, or any other IP make the editor fail silently. A <b>Production</b> license is bound to your registered domain — serve this demo from that same domain and it works there too.</li>
+                    <li><b>Set it up</b> — edit <code>license.config.js</code> (the <code>synapEditorLicense</code> object) and fill in your company name and key. The <code>key</code> field is an array. <b>Fill in <code>editor.license.load.api</code> too</b> — an Evaluation / Issue license is verified online on every load, so leaving it empty makes the editor alert <code>Invalid License.</code></li>
+                    <li><b>Open over the right host</b> — an <b>Evaluation / Issue</b> license is locked to the <code>localhost</code> hostname, so <code>file://</code>, <code>127.0.0.1</code>, or any other IP also give <code>Invalid License.</code> A <b>Production</b> license is bound to your registered domain — serve this demo from that same domain and it works there too.</li>
                 </ol>
                 <div class="code-block ln-code"><pre><span class="com">// license.config.js — at the project root</span>
 <span class="kw">var</span> <span class="var">synapEditorLicense</span> <span class="punc">=</span> <span class="punc">{</span>
@@ -76,8 +76,8 @@
         <span class="var">company</span><span class="punc">:</span> <span class="str">'Your Company'</span><span class="punc">,</span>
         <span class="var">key</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'YOUR-LICENSE-KEY'</span><span class="punc">]</span>
     <span class="punc">}</span><span class="punc">,</span>
-    <span class="com">// Optional online load-check — leave empty to skip (default)</span>
-    <span class="str">'editor.license.load.api'</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">url</span><span class="punc">:</span> <span class="str">''</span><span class="punc">,</span> <span class="var">apiKey</span><span class="punc">:</span> <span class="str">''</span> <span class="punc">}</span>
+    <span class="com">// Required for an Evaluation / Issue license — paste both from the dashboard</span>
+    <span class="str">'editor.license.load.api'</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">url</span><span class="punc">:</span> <span class="str">'https://www.synapeditor.com/api/v1/load-check'</span><span class="punc">,</span> <span class="var">apiKey</span><span class="punc">:</span> <span class="str">'se_test_...'</span> <span class="punc">}</span>
 <span class="punc">}</span><span class="punc">;</span></pre></div>
             </div>
         </section>

@@ -42,8 +42,12 @@ footguns. It prints the exact `http://localhost:<port>` it bound to; open it wit
 **Evaluation** license (or a Production license) at [synapeditor.com](https://www.synapeditor.com),
 then edit `license.config.js` in your project: set `'editor.license'` → `company` + `key`
 (array). The `localhost` hostname lock applies to **Evaluation / Issue** licenses, so serve over
-`http://localhost`; a **Production** license is bound to a **registered domain** instead. Leave
-`'editor.license.load.api'` `url`/`apiKey` empty unless you run a self-hosted load-check server.
+`http://localhost`; a **Production** license is bound to a **registered domain** instead.
+
+**Also fill in `'editor.license.load.api'` (`url` + `apiKey`) exactly as the dashboard gives it
+to you.** Evaluation / Issue licenses are LOAD-type keys that are verified online on every load,
+so leaving those empty makes the editor alert `Invalid License.` and refuse to start. Only a
+Production license bound to your own domain verifies offline and may leave them empty.
 
 > To obtain your own license, visit [synapeditor.com](https://www.synapeditor.com) or email
 > support@synapeditor.co.kr.

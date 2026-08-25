@@ -127,10 +127,13 @@ var synapEditorLicense = {
         company: 'Your Company Name',
         key: ['YOUR-LICENSE-KEY']
     },
-    // Optional: online load-check API (leave url empty to skip)
+    // REQUIRED for an Evaluation / Issue license (LOAD-type key, verified online on
+    // every load). Leaving url empty makes the editor alert "Invalid License." and
+    // refuse to start. Paste both values exactly as the dashboard printed them.
+    // A Production license verifies offline, so it may leave these empty.
     'editor.license.load.api': {
-        url: '',
-        apiKey: ''
+        url: 'https://www.synapeditor.com/api/v1/load-check',
+        apiKey: 'se_test_...'
     }
 };
 ```
@@ -138,6 +141,8 @@ var synapEditorLicense = {
 > To obtain a license, contact [Synapsoft](https://www.synapeditor.com) or email support@synapeditor.co.kr.
 >
 > **Evaluation / Issue** licenses are locked to the `localhost` hostname; **Production** licenses are bound to a registered domain. Serve the demo from the host your license covers.
+>
+> An `Invalid License.` alert means one of two things: `editor.license.load.api` was left empty on an Evaluation / Issue license, or you opened the demo over `127.0.0.1` instead of `localhost`.
 
 
 

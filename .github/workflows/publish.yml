@@ -20,12 +20,17 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # Raised from 20 to satisfy npm 12's engines. See "Upgrade npm" below.
+          node-version: 22
           registry-url: https://registry.npmjs.org
 
-      # Trusted publishing (OIDC) requires npm >= 11.5.1; Node 20 ships an older npm.
+      # Trusted publishing (OIDC) requires npm >= 11.5.1, and npm 12 requires Node
+      # ^22.22.2 || ^24.15.0 || >=26.0.0, which is why node-version is pinned to 22
+      # above. The npm major is pinned here as well: "latest" would silently pull the
+      # next breaking major into the release path (npm 12 turned dependency lifecycle
+      # scripts off by default, and dropped Node 20).
       - name: Upgrade npm
-        run: npm install -g npm@latest
+        run: npm install -g npm@12
 
       # npm versions are immutable: skip if this exact version already exists,
       # so re-pushing the same version to main is a no-op instead of a failure.

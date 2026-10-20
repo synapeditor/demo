@@ -26,8 +26,9 @@ your folder. `license.config.js` ships **empty**: get a license at
 setup below). Because the files are in your own folder, your license edit is never
 overwritten by a reinstall.
 
-> No npm? Two alternatives copy the same files: `npx degit synapeditor/demo my-synapeditor-app`,
-> or `git clone https://github.com/synapeditor/demo.git` (the demo lives under `template/`).
+> No npm? Two alternatives copy the same files: `npx degit synapeditor/demo/template my-synapeditor-app`,
+> or `git clone https://github.com/synapeditor/demo.git` (the demo lives under `template/`; run
+> `npm start` from inside that folder).
 
 ## Quick start
 
@@ -50,20 +51,22 @@ Once the server is running, open:
 
 > **"Server required" demos won't run under this static flow.** Demos under *Server Features*
 > in the sidebar (Collaboration, Import, Export, AI Assistant, Image upload) talk to a separate
-> demo server, so they stay blank when served by `npm start` alone. Everything else
-> works as-is. To run those, follow the demo-server setup in the project **README** — it is not
+> demo server. Under `npm start` alone they open a **"Server required"** notice instead of working.
+> Everything else works as-is. To run those, follow the demo-server setup in the project **README** — it is not
 > part of this static quick-start.
 
 ## 3 things to know (or you'll get stuck)
 
 1. **You must add a license — `license.config.js` ships empty.** Get a license at
-   **https://www.synapeditor.com** and paste it into `license.config.js`; until then the editor
-   loads to an empty box.
+   **https://www.synapeditor.com** and paste it into `license.config.js`; until then the demo index
+   shows "Add your license to `license.config.js`" where the editor should be, and every other demo
+   page pops an **`Invalid License.`** alert and no editor appears.
 
 2. **Fill in BOTH blocks the dashboard gives you, including `editor.license.load.api`.**
    An **Evaluation / Issue** license is a LOAD-type key: the editor verifies it against the
    license server on every load. If `editor.license.load.api.url` is left empty, the editor
-   pops **`Invalid License.`** and refuses to start, no matter how correct the key is.
+   **looks fine for about 5 seconds**, then pops **`Invalid License.`** and disappears, no
+   matter how correct the key is. Don't judge success in the first few seconds.
    Copy the whole block from the dashboard verbatim and change nothing.
    (Only a **Production** license bound to your own domain verifies offline and may leave
    `load.api` empty.)
@@ -100,7 +103,7 @@ var synapEditorLicense = {
 
     // REQUIRED for an Evaluation / Issue license. These are LOAD-type keys: the editor
     // verifies them against the license server on every load, so leaving `url` empty makes
-    // the editor alert "Invalid License." and refuse to start. Paste both values exactly as
+    // the editor alert "Invalid License." about 5 seconds after load and remove itself. Paste both values exactly as
     // the dashboard printed them — do not blank them out, and do not point them elsewhere.
     'editor.license.load.api': {
         url: 'https://www.synapeditor.com/api/v1/load-check',
@@ -162,14 +165,16 @@ var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
 
 ## Troubleshooting
 
+The `Invalid License.` alert is the only signal. The released editor writes nothing about the
+license to the browser console, so don't wait for a console error. (With `'editor.lang': 'ko'` the
+same alert reads `유효하지 않은 라이선스입니다.`)
+
 | What you see | Cause | Fix |
 |---|---|---|
-| `Invalid License.` alert, editor empty | `editor.license.load.api.url` is empty but your key is an Evaluation / Issue (LOAD-type) key | Paste both values from the dashboard, `load.api` included |
-| `Invalid License.` alert, opened via `127.0.0.1` | An Evaluation / Issue license is locked to the `localhost` hostname | Open `http://localhost:<port>` instead |
-| `Load license check API URL is not set.` in the console | Same as the first row | Same as the first row |
-| Editor appears, then disappears after ~5s | The license check runs a few seconds after init; one of the above failed | Check the alert text and the two rows above |
-| Editor loads but a specific demo is blank | That demo is tagged *Server required* | See the demo-server setup in the project **README** |
-| Empty box, no alert at all | `license.config.js` still ships empty values | Add your license |
+| `Invalid License.` alert right after the page opens, no editor | `license.config.js` is still empty, or the key was not pasted exactly | Add your license, copied verbatim from the dashboard |
+| `Invalid License.` alert right after the page opens, URL is `127.0.0.1`, another IP, or `file://` | An Evaluation / Issue license is locked to the `localhost` hostname | Open `http://localhost:<port>` instead |
+| Editor appears, then ~5s later an `Invalid License.` alert and the editor disappears | `editor.license.load.api` is empty but your key is an Evaluation / Issue (LOAD-type) key | Paste both values from the dashboard, `load.api` included |
+| A *Server required* demo opens a "Server required" notice | That demo needs the separate demo server | See the demo-server setup in the project **README** |
 
 ---
 

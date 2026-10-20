@@ -90,7 +90,7 @@ server.on('listening', () => {
     console.log('  Synap Editor demo running:');
     console.log('  → http://localhost:' + port + '/   (use localhost, NOT 127.0.0.1)');
     console.log('');
-    console.log('  Add your license to license.config.js if the editor loads empty.');
+    console.log('  An "Invalid License." alert means license.config.js needs your license.');
     console.log('  Stop with Ctrl+C.');
     console.log('');
 });

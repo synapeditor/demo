@@ -1,7 +1,9 @@
 /* SynapEditor demo — server-feature guard.
  *
- * Gates a server-dependent demo page when the server/backend it needs isn't available,
- * showing a short dialog whose message names the exact missing piece. The static
+ * When the server/backend a server-dependent demo page needs isn't available, shows a
+ * notice inside the page (right above the editor) that names the exact missing piece and
+ * links to the server on GitHub and to the same demo on synapeditor.com. It is part of
+ * the page, not a dialog, so nothing has to be dismissed on every page. The static
  * feature/mode/UI demos do NOT load this script, so they are never gated.
  *
  * Detection asks the demo server at /__demo/health which backends/keys are up. A
@@ -11,6 +13,15 @@
     'use strict';
 
     var GITHUB_URL = 'https://github.com/synapeditor/demo';
+    // The same feature as a hosted demo on synapeditor.com. Export and Image & File Upload
+    // have no demo of their own there; they go to the demos that cover them.
+    var HOSTED_DEMO = {
+        'ai_assistant.html':  'https://www.synapeditor.com/demos/ai-assistant',
+        'collaboration.html': 'https://www.synapeditor.com/demos/real-time-collaboration',
+        'import.html':        'https://www.synapeditor.com/demos/compatibility',
+        'export.html':        'https://www.synapeditor.com/demos/full-featured-demo',
+        'image-upload.html':  'https://www.synapeditor.com/demos/user-comfort'
+    };
     var NO_SERVER = 'Demo server not running — get the server stack from GitHub (not included in the npm package).';
     var WARN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" ' +
         'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
@@ -49,39 +60,35 @@
 
     function run() {
         getHealth().then(function (h) {
-            var reason = reasonFor(currentFile(), h);
-            if (reason) showDialog(reason);
+            var file = currentFile();
+            var reason = reasonFor(file, h);
+            if (reason) showNotice(reason, HOSTED_DEMO[file]);
         });
     }
 
-    function showDialog(reason) {
+    function showNotice(reason, hostedUrl) {
         if (document.getElementById('se-server-guard')) return;
         injectStyles();
 
-        var overlay = document.createElement('div');
-        overlay.id = 'se-server-guard';
-        overlay.className = 'se-guard-overlay';
-        overlay.setAttribute('role', 'dialog');
-        overlay.setAttribute('aria-modal', 'true');
-        overlay.setAttribute('aria-labelledby', 'se-guard-title');
-        overlay.innerHTML =
-            '<div class="se-guard-box">' +
-                '<h2 class="se-guard-title" id="se-guard-title">' + WARN_SVG + ' Server required</h2>' +
-                '<p class="se-guard-msg">' + escapeHtml(reason) + '</p>' +
-                '<p class="se-guard-sub">Get the server from GitHub and follow <code>server/README.md</code>.</p>' +
-                '<div class="se-guard-actions">' +
-                    '<a class="se-guard-btn primary" href="' + GITHUB_URL + '" target="_blank" rel="noopener">Get it on GitHub &rarr;</a>' +
-                    '<button class="se-guard-btn" type="button" id="se-guard-dismiss">Dismiss</button>' +
-                '</div>' +
+        var notice = document.createElement('section');
+        notice.id = 'se-server-guard';
+        notice.className = 'se-guard';
+        notice.setAttribute('role', 'status');
+        notice.setAttribute('aria-labelledby', 'se-guard-title');
+        notice.innerHTML =
+            '<h2 class="se-guard-title" id="se-guard-title">' + WARN_SVG + ' Server required</h2>' +
+            '<p class="se-guard-msg">' + escapeHtml(reason) + '</p>' +
+            '<p class="se-guard-sub">Get the server from GitHub and follow <code>server/README.md</code>.</p>' +
+            '<div class="se-guard-actions">' +
+                '<a class="se-guard-btn primary" href="' + GITHUB_URL + '" target="_blank" rel="noopener">Get it on GitHub &rarr;</a>' +
+                (hostedUrl ? '<a class="se-guard-btn" href="' + hostedUrl + '" target="_blank" rel="noopener">Try the demo on synapeditor.com &rarr;</a>' : '') +
             '</div>';
 
-        document.body.appendChild(overlay);
-
-        function onEsc(e) { if (e.key === 'Escape') dismiss(); }
-        var dismiss = function () { overlay.remove(); document.removeEventListener('keydown', onEsc); };
-        document.getElementById('se-guard-dismiss').addEventListener('click', dismiss);
-        overlay.addEventListener('click', function (e) { if (e.target === overlay) dismiss(); });
-        document.addEventListener('keydown', onEsc);
+        // Right above the editor (collaboration.html has two, in .collabo-grid); pages
+        // without either get it at the top of <main>.
+        var editor = document.querySelector('.demo-shell #editorWrapper, .demo-shell .collabo-grid');
+        if (editor) editor.insertAdjacentElement('beforebegin', notice);
+        else (document.querySelector('main') || document.body).prepend(notice);
     }
 
     function escapeHtml(s) {
@@ -93,16 +100,16 @@
     function injectStyles() {
         if (document.getElementById('se-guard-style')) return;
         var css =
-            '.se-guard-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;' +
-            'justify-content:center;padding:20px;background:rgba(17,24,28,.5);}' +
-            '.se-guard-box{max-width:430px;width:100%;background:#fff;border-radius:14px;padding:24px 24px 22px;' +
-            'box-shadow:0 18px 50px rgba(0,0,0,.28);font:14px/1.55 system-ui,-apple-system,Segoe UI,sans-serif;color:#1b2227;}' +
+            '.se-guard{box-sizing:border-box;width:90%;max-width:1180px;margin:0 auto 24px;padding:20px 22px;' +
+            'background:#fff8e6;border:1px solid #f0d79a;border-radius:14px;' +
+            'font:14px/1.55 system-ui,-apple-system,Segoe UI,sans-serif;color:#1b2227;}' +
+            '@media (max-width:640px){.se-guard{width:100%;}}' +
             '.se-guard-title{margin:0 0 10px;font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px;}' +
             '.se-guard-title svg{width:19px;height:19px;color:#e0a400;flex:none;}' +
             '.se-guard-msg{margin:0 0 8px;color:#39444b;}' +
             '.se-guard-sub{margin:0;color:#7b858c;font-size:13px;}' +
             '.se-guard-sub code,.se-guard-msg code{background:#eef2f4;padding:1px 5px;border-radius:4px;font-size:12px;}' +
-            '.se-guard-actions{display:flex;gap:9px;margin-top:18px;}' +
+            '.se-guard-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px;}' +
             '.se-guard-btn{appearance:none;border:1px solid #d3dade;background:#fff;color:#1b2227;' +
             'padding:9px 15px;border-radius:9px;font:inherit;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;}' +
             '.se-guard-btn.primary{background:#2a9a9c;border-color:#2a9a9c;color:#fff;}' +

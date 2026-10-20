@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 // page opened from the npm package) returns 404 here. It also reports which
 // backends are reachable (TCP) and which AI keys are set, so index.html can
 // flag the exact features whose server isn't running. Server-feature pages use it
-// (assets/server-check.js) to gate with a "get the server from GitHub" dialog.
+// (assets/server-check.js) to show a "get the server from GitHub" notice in the page.
 
 const net = require('net');
 

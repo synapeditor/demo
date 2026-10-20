@@ -2,13 +2,21 @@
    The navigation is NOT hardcoded here: it is extracted from index.html's category
    list (the single source of truth). This script fetches /index.html, reads its
    `.toc .cat` groups, and builds the sidebar from them — so editing index.html's
-   list is enough; the sidebar follows. index.html itself does NOT load this script.
+   list is enough; the sidebar follows. index.html loads this script too: there the
+   list is read from the page itself and the `.toc` cards are hidden behind the sidebar.
    Pure vanilla, no deps. Fixed positioning + body padding → never moves editor DOM. */
 (function () {
     'use strict';
 
     var HOME = '/index.html';
     var ICON = '/assets/synapeditor-icon.png';
+
+    // English PDFs on the CDN, listed under the category groups. The version in the path
+    // has to follow the demo's version, like the v3.4.0 badge on index.html.
+    var DOCS = [
+        { href: 'https://cdn.synapeditor.com/docs/3.4.0/synapeditor-manual-3.4.0-en.pdf', label: 'Manual (PDF)' },
+        { href: 'https://cdn.synapeditor.com/docs/3.4.0/synapeditor-userguide-3.4.0-en.pdf', label: 'User Guide (PDF)' }
+    ];
 
     var LINKS = [
         { key: 'npm', href: 'https://www.npmjs.com/package/@synapeditor/create-demo', label: 'npm',
@@ -37,8 +45,7 @@
         return href;
     }
 
-    function parseGroups(html) {
-        var doc = new DOMParser().parseFromString(html, 'text/html');
+    function parseGroups(doc) {
         var groups = [];
         doc.querySelectorAll('.toc .cat').forEach(function (cat) {
             var h2 = cat.querySelector('.cat-head h2');
@@ -69,6 +76,10 @@
         aside.appendChild(brand);
 
         var nav = el('nav', 'sb-nav');
+        // index.html itself (live editor + every example), above the category groups.
+        var overview = el('a', 'sb-group-title sb-home' + (isActive(HOME) ? ' active' : ''), 'Overview');
+        overview.href = HOME;
+        nav.appendChild(overview);
         groups.forEach(function (g) {
             var group = el('div', 'sb-group');
             var t = el('div', 'sb-group-title', g.title);
@@ -85,6 +96,18 @@
             group.appendChild(list);
             nav.appendChild(group);
         });
+        var docs = el('div', 'sb-group');
+        docs.appendChild(el('div', 'sb-group-title', 'Docs'));
+        var docList = el('div', 'sb-items');
+        DOCS.forEach(function (d) {
+            var a = el('a', 'sb-item sb-ext');
+            a.href = d.href; a.target = '_blank'; a.rel = 'noopener';
+            a.textContent = d.label;
+            a.title = d.label;
+            docList.appendChild(a);
+        });
+        docs.appendChild(docList);
+        nav.appendChild(docs);
         aside.appendChild(nav);
 
         var topbar = el('header', 'app-topbar');
@@ -130,24 +153,22 @@
         document.body.classList.add('has-sidebar');
         try { if (localStorage.getItem('seSidebarCollapsed') === '1') document.body.classList.add('sidebar-collapsed'); } catch (e) {}
 
-        // Match the sidebar's bottom + content padding to the (now fixed) footer's real height.
-        var foot = document.querySelector('.site-footer');
-        if (foot) {
-            var fh = Math.ceil(foot.getBoundingClientRect().height);
-            if (fh) document.documentElement.style.setProperty('--footer-h', fh + 'px');
-        }
-
         var active = aside.querySelector('.sb-item.active');
         if (active && active.scrollIntoView) active.scrollIntoView({ block: 'center' });
     }
 
     function init() {
         if (document.body.classList.contains('has-sidebar')) return;
+        if (isActive(HOME)) {   // on index.html the list is already in this page
+            var own = parseGroups(document);
+            if (own.length) buildShell(own);
+            return;
+        }
         fetch(HOME, { cache: 'no-store' })
             .then(function (r) { return r.ok ? r.text() : null; })
             .then(function (html) {
                 if (!html) return;
-                var groups = parseGroups(html);
+                var groups = parseGroups(new DOMParser().parseFromString(html, 'text/html'));
                 if (groups.length) buildShell(groups);
             })
             .catch(function () { /* offline / file:// — no sidebar, page still works */ });

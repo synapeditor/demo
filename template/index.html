@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Synap Editor Examples</title>
+    <title>Synap Editor Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="assets/synapeditor-icon.png">
     <link rel="stylesheet" href="assets/styles.css">
@@ -23,7 +23,33 @@
             opacity:0; visibility:hidden; transition:opacity .12s; z-index:60; }
         .srv-warn:hover::after, .srv-warn:focus::after,
         .srv-warn:hover::before, .srv-warn:focus::before { opacity:1; visibility:visible; }
+        /* Live editor right under the title — same width as .license-notice below it. */
+        .index-editor { box-sizing:border-box; width:calc(100% - 64px); max-width:1116px; margin:20px auto 0; }
+        .index-editor #editorWrapper { width:100%; max-width:none; }
+        .index-editor #editorWrapper:has(.editor-empty) { height:auto; }
+        .index-editor .editor-empty { margin:0; padding:28px 26px; font-size:14px; color:var(--se-text-muted); }
+        .index-editor .editor-empty code { font-family:var(--se-mono); font-size:12.5px; color:var(--se-primary-text); }
+        /* License guide folded into one line under the editor; the full steps open from "License setup guide". */
+        .license-notice.ln-compact { margin-top:16px; margin-bottom:48px; padding:10px 14px; align-items:flex-start; flex-direction:row; }
+        .ln-compact summary { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:4px 16px;
+            min-height:28px; font-size:13px; color:var(--se-text-muted); cursor:pointer; list-style:none; }
+        .ln-compact summary::-webkit-details-marker { display:none; }
+        .ln-compact .ln-title { margin:0; font-size:13px; }
+        .ln-compact .ln-toggle { color:var(--se-primary-text); font-weight:600; white-space:nowrap; }
+        .ln-compact .ln-toggle::before { content:'▸'; display:inline-block; margin-right:6px; transition:transform .12s; }
+        .ln-compact .ln-body[open] .ln-toggle::before { transform:rotate(90deg); }
+        .ln-compact .ln-body[open] summary { margin-bottom:14px; }
+        .ln-compact .ln-body[open] { padding-bottom:14px; }
+        .ln-compact code { white-space:nowrap; }
+        .license-notice.ln-compact summary code { background:none; padding:0; color:var(--se-primary-text); }
     </style>
+    <script src="license.config.js"></script>
+    <script src="synapeditor.config.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/externals/formulaParser/formula-parser.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/externals/SEDocModelParser/SEDocModelParser.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/plugins/icons/basicColorIcons.js"></script>
+    <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
 </head>
 <body>
     <header class="site-header">
@@ -41,34 +67,44 @@
 
     <main>
         <section class="index-hero">
-            <span class="eyebrow">Examples · v3.4.0</span>
-            <h1>Synap <b>Editor</b> Examples</h1>
-            <p class="sub">A collection of demos for Synap Editor, the web-based WYSIWYG HTML editor. Explore key features and editor modes through categorized examples.</p>
+            <h1>Synap <b>Editor</b> Demo</h1>
+            <span class="ver">v3.4.0</span>
         </section>
 
-        <div class="index-meta">
-            <span>23 examples</span>
-            <span class="dot"></span>
-            <span>4 categories</span>
-            <span class="dot"></span>
-            <span>updated 2026.06</span>
-        </div>
+        <section class="index-editor" aria-label="Live editor (Classic mode)">
+            <div id="editorWrapper">
+                <div id="synapEditor">
+                    <h1>Try it here 👋</h1>
+                    <p>A web-based <b>WYSIWYG HTML editor</b> for your app. This is <b>Classic mode</b> — type, format, or paste anything here to try it.</p>
+                    <h3>Things to try</h3>
+                    <ul>
+                        <li><b>Paste from Microsoft Word</b> — headings, lists, tables and images come along.</li>
+                        <li><b>Insert a table</b> and drag its borders to resize rows and columns.</li>
+                        <li><b>Open Source View</b> (&lt;/&gt;) to see the HTML behind this page.</li>
+                        <li><b>Import a .docx, .xlsx or .pptx file</b> from the File menu (needs the demo server).</li>
+                    </ul>
+                    <blockquote><i>Each example in the sidebar opens a focused demo of one feature or editor mode.</i></blockquote>
+                </div>
+            </div>
+        </section>
 
-        <section class="license-notice" aria-label="License setup guide">
+        <section class="license-notice ln-plain ln-compact" aria-label="License setup guide">
             <div class="ln-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="7.5" cy="15.5" r="5.5"/>
                     <path d="m21 2-9.6 9.6"/>
                     <path d="m15.5 7.5 3 3L22 7l-3-3"/>
                 </svg>
             </div>
-            <div class="ln-body">
-                <h2 class="ln-title">Licensing &amp; how to run</h2>
-                <p class="ln-desc"><code>license.config.js</code> ships <b>empty</b> — get a license at <a href="https://www.synapeditor.com" target="_blank" rel="noopener">synapeditor.com</a> and add it before the editors will load. A free <b>Evaluation</b> license runs on <code>http://localhost</code>; a <b>Production</b> license runs on your registered domain.</p>
+            <details class="ln-body" id="licenseHelp">
+                <summary>
+                    <span class="ln-line"><b class="ln-title">License</b> · Loaded from <code>license.config.js</code>, already filled in if you set up via synapeditor.com.</span>
+                    <span class="ln-toggle">License setup guide</span>
+                </summary>
                 <ol class="ln-steps">
-                    <li><b>Get a license</b> — an <b>Evaluation / Issue</b> license for local testing, or a <b>Production</b> license bound to your domain. Visit <a href="https://www.synapeditor.com" target="_blank" rel="noopener">synapeditor.com</a> or email <a href="mailto:support@synapeditor.co.kr">support@synapeditor.co.kr</a>.</li>
-                    <li><b>Set it up</b> — edit <code>license.config.js</code> (the <code>synapEditorLicense</code> object) and fill in your company name and key. The <code>key</code> field is an array. <b>Fill in <code>editor.license.load.api</code> too</b> — an Evaluation / Issue license is verified online on every load, so leaving it empty makes the editor alert <code>Invalid License.</code></li>
-                    <li><b>Open over the right host</b> — an <b>Evaluation / Issue</b> license is locked to the <code>localhost</code> hostname, so <code>file://</code>, <code>127.0.0.1</code>, or any other IP also give <code>Invalid License.</code> A <b>Production</b> license is bound to your registered domain — serve this demo from that same domain and it works there too.</li>
+                    <li><b>Get a license</b> — an Evaluation / Issue license for local testing, or a Production license for your own domain.<br>Visit <a href="https://www.synapeditor.com" target="_blank" rel="noopener">synapeditor.com</a> or email <a href="mailto:support@synapeditor.co.kr">support@synapeditor.co.kr</a>.</li>
+                    <li><b>Fill in <code>license.config.js</code></b> — your company name, your key, and the <code>editor.license.load.api</code> block, all copied from the dashboard.<br>An Evaluation / Issue license is checked online on every load, so without that block the editor shows "Invalid License."</li>
+                    <li><b>Open it on localhost</b> — an Evaluation / Issue license works only on localhost; file://, 127.0.0.1 or another IP shows "Invalid License."<br>A Production license works on the domain it is registered to.</li>
                 </ol>
                 <div class="code-block ln-code"><pre><span class="com">// license.config.js — at the project root</span>
 <span class="kw">var</span> <span class="var">synapEditorLicense</span> <span class="punc">=</span> <span class="punc">{</span>
@@ -79,7 +115,7 @@
     <span class="com">// Required for an Evaluation / Issue license — paste both from the dashboard</span>
     <span class="str">'editor.license.load.api'</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">url</span><span class="punc">:</span> <span class="str">'https://www.synapeditor.com/api/v1/load-check'</span><span class="punc">,</span> <span class="var">apiKey</span><span class="punc">:</span> <span class="str">'se_test_...'</span> <span class="punc">}</span>
 <span class="punc">}</span><span class="punc">;</span></pre></div>
-            </div>
+            </details>
         </section>
 
         <section class="toc">
@@ -148,9 +184,27 @@
     </main>
 
     <footer class="site-footer">
-        <span>© Synapsoft Corp. · Synap Editor</span>
+        <span>© Synapsoft Corp. Synap Editor</span>
     </footer>
 
+    <script>
+        // Same setup as html/modes/classic.html — but only once a license key is filled in.
+        // license.config.js ships empty, and this is the page people read to set it up, so an
+        // empty key shows a note here instead of the editor's "Invalid License." alert, and
+        // opens the license guide below, which is folded by default.
+        (function () {
+            var lic = synapEditorLicense['editor.license'] || {};
+            var hasKey = (lic.key || []).some(function (k) { return typeof k === 'string' && k.trim() !== ''; });
+            if (!hasKey) {
+                document.getElementById('editorWrapper').innerHTML =
+                    '<p class="editor-empty">Add your license to <code>license.config.js</code> (see below) and reload — the editor appears here.</p>';
+                document.getElementById('licenseHelp').open = true;
+                return;
+            }
+            var config = Object.assign({}, synapEditorLicense, synapEditorConfig, { 'editor.menu.show': true });
+            window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
+        })();
+    </script>
     <script>
     // Flag server-dependent demos whose backend isn't reachable. Asks the demo server
     // (/__demo/health) which backends/keys are up; a 404 (= no demo server, e.g. opened
@@ -203,5 +257,6 @@
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
     })();
     </script>
+    <script src="/assets/sidebar.js"></script>
 </body>
 </html>

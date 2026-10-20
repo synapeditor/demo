@@ -1,6 +1,6 @@
 {
   "name": "@synapeditor/create-demo",
-  "version": "3.4.3",
+  "version": "3.4.4",
   "description": "Scaffolder for the SynapEditor demo — run `npm create @synapeditor/demo` to copy the interactive feature and mode demos into a new folder (not node_modules).",
   "keywords": [
     "synapeditor",

@@ -28,15 +28,15 @@ npm create @synapeditor/demo@latest my-synapeditor-app
 cd my-synapeditor-app
 ```
 
-> No npm? The same files are available via `npx degit synapeditor/demo my-synapeditor-app`, or
+> No npm? The same files are available via `npx degit synapeditor/demo/template my-synapeditor-app`, or
 > `git clone https://github.com/synapeditor/demo.git` (the demo lives under
-> [`template/`](template/); this repo root is the scaffolder).
+> [`template/`](template/); this repo root is the scaffolder, so run `npm start` from inside `template/`).
 
 There is **no build step** — the Synap Editor library loads from the CDN (`https://cdn.synapeditor.com/latest/`). `license.config.js` ships **empty**: get a free **Evaluation** license at **[synapeditor.com](https://www.synapeditor.com/)**, add it to `license.config.js` (see [License Setup](#license-setup)), then `npm start` and try the demos.
 
 > **Important — an Evaluation / Issue license is locked to the `localhost` hostname.** Once
 > you've added your license, opening a file directly (`file://`), or via `127.0.0.1` or any other
-> IP, makes the editor **fail silently** — an empty box with no console error. Always open
+> IP, makes the editor pop an **`Invalid License.`** alert and not appear. Always open
 > `http://localhost:<port>`. (A **Production** license is bound to your registered domain
 > instead — serve this demo from that domain and it works there too.) For the full walkthrough
 > and troubleshooting, see **[`.ai/GETTING_STARTED.md`](.ai/GETTING_STARTED.md)**.
@@ -128,8 +128,8 @@ var synapEditorLicense = {
         key: ['YOUR-LICENSE-KEY']
     },
     // REQUIRED for an Evaluation / Issue license (LOAD-type key, verified online on
-    // every load). Leaving url empty makes the editor alert "Invalid License." and
-    // refuse to start. Paste both values exactly as the dashboard printed them.
+    // every load). Leaving url empty lets the editor show for about 5 seconds, then
+    // it alerts "Invalid License." and disappears. Paste both values exactly as the dashboard printed them.
     // A Production license verifies offline, so it may leave these empty.
     'editor.license.load.api': {
         url: 'https://www.synapeditor.com/api/v1/load-check',
@@ -142,7 +142,12 @@ var synapEditorLicense = {
 >
 > **Evaluation / Issue** licenses are locked to the `localhost` hostname; **Production** licenses are bound to a registered domain. Serve the demo from the host your license covers.
 >
-> An `Invalid License.` alert means one of two things: `editor.license.load.api` was left empty on an Evaluation / Issue license, or you opened the demo over `127.0.0.1` instead of `localhost`.
+> **What an `Invalid License.` alert means.** The alert is the only signal: the released editor logs nothing about the license to the console. (The demo index is the one exception: with an empty `license.config.js` it shows "Add your license to `license.config.js`" in place of the editor instead of the alert.)
+>
+> | When the alert appears | Cause |
+> |---|---|
+> | Right after the page opens | `license.config.js` is still empty, the key was not pasted exactly, or you opened the demo over `127.0.0.1`, another IP, or `file://` instead of `localhost` |
+> | About 5 seconds later, and the editor disappears | `editor.license.load.api` was left empty on an Evaluation / Issue license |
 
 
 
@@ -243,7 +248,7 @@ The Synap Editor library itself is loaded from the CDN (`https://cdn.synapeditor
 
 ```html
 <!-- Add your license to license.config.js first (get one at synapeditor.com). An Evaluation /
-     Issue license is bound to the localhost hostname (file:// and 127.0.0.1 fail silently);
+     Issue license is bound to the localhost hostname (file:// and 127.0.0.1 show an "Invalid License." alert);
      a Production license is bound to your domain instead. The editor core loads from the CDN. -->
 <script src="license.config.js"></script>
 <script src="synapeditor.config.js"></script>

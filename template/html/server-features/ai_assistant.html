@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="../../assets/synapeditor-icon.png">
     <link rel="stylesheet" href="../../assets/styles.css">
-    <!-- Server-feature guard: shows a GitHub-download dialog if the demo server isn't running -->
+    <!-- Server-feature guard: shows a GitHub-download notice in the page if the demo server isn't running -->
     <script defer src="../../assets/server-check.js"></script>
     <script src="../../license.config.js"></script>
     <script src="../../synapeditor.config.js"></script>
@@ -30,6 +30,8 @@
             gap: 16px; flex-wrap: wrap; margin-bottom: 16px;
         }
         .ln-head .ln-title { margin: 0; }
+        /* Setup box sits under the editor here, so it needs space above instead of below. */
+        .demo-shell #editorWrapper + .license-notice { margin: 24px auto 0; }
         /* Provider toggle — segmented control */
         .aip-seg {
             display: inline-flex; background: #fff;
@@ -74,7 +76,16 @@
             </div>
         </div>
 
-        <section class="license-notice" aria-label="AI Assistant setup">
+        <div id="editorWrapper">
+            <div id="synapEditor">
+                <h2>AI Assistant</h2>
+                <p>Click <strong>Text AI</strong> (✏️) in the toolbar to generate, rewrite, summarize, or translate — using the provider picked in the setup box below the editor.</p>
+                <p>With <strong>GPT-4o</strong> you also get <strong>Image AI</strong> (🖼) to generate an image (uploaded to the server and inserted). <strong>Gemini is text-only here</strong>, so its image button is hidden.</p>
+                <p>Try it: select this paragraph, click <strong>Text AI</strong>, and ask for <em>"Summarize this in one sentence."</em></p>
+            </div>
+        </div>
+
+        <section class="license-notice ln-plain" aria-label="AI Assistant setup">
             <div class="ln-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="7.5" cy="15.5" r="5.5"/>
@@ -97,15 +108,6 @@
 <span class="var">GEMINI_URL</span><span class="punc">=</span><span class="str">https://…/gemini-2.0-flash:streamGenerateContent?alt=sse&amp;key=…</span></span></pre></div>
             </div>
         </section>
-
-        <div id="editorWrapper">
-            <div id="synapEditor">
-                <h2>AI Assistant</h2>
-                <p>Click <strong>Text AI</strong> (✏️) in the toolbar to generate, rewrite, summarize, or translate — using the provider you picked above.</p>
-                <p>With <strong>GPT-4o</strong> you also get <strong>Image AI</strong> (🖼) to generate an image (uploaded to the server and inserted). <strong>Gemini is text-only here</strong>, so its image button is hidden.</p>
-                <p>Try it: select this paragraph, click <strong>Text AI</strong>, and ask for <em>"Summarize this in one sentence."</em></p>
-            </div>
-        </div>
 
         <section class="code-section" id="codeExample">
             <div class="code-head">
@@ -146,7 +148,7 @@
     </main>
 
     <footer class="site-footer">
-        <span>© Synapsoft Corp. · Synap Editor</span>
+        <span>© Synapsoft Corp. Synap Editor</span>
     </footer>
 
     <script>

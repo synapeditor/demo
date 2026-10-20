@@ -44,11 +44,12 @@ another process. Watch the console for the exact URL.
 
 Once the server is running, open:
 
-- **Demo index (all examples):** http://localhost:8137/
-- **Editor (classic mode):** http://localhost:8137/html/modes/classic.html
+- **Demo index:** http://localhost:8137/ — a live Classic mode editor at the top, the license
+  guide right under it (*License setup guide*), and every example in the left sidebar.
+- **Editor only (classic mode):** http://localhost:8137/html/modes/classic.html
 
-> **"Server required" demos won't run under this static flow.** Demos tagged *Server required*
-> on the index (Collaboration, Import, Export, AI Assistant, Image upload) talk to a separate
+> **"Server required" demos won't run under this static flow.** Demos under *Server Features*
+> in the sidebar (Collaboration, Import, Export, AI Assistant, Image upload) talk to a separate
 > demo server, so they stay blank when served by `npm start` alone. Everything else
 > works as-is. To run those, follow the demo-server setup in the project **README** — it is not
 > part of this static quick-start.
@@ -149,7 +150,8 @@ var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
 
 - [ ] Scaffolded with `npm create @synapeditor/demo` and `cd`'d into the folder
 - [ ] Added your license to `license.config.js`, **`editor.license.load.api` included**
-- [ ] Ran `npm start` and opened the printed `http://localhost:<port>` (not 127.0.0.1)
+- [ ] Ran `npm start` and opened the printed `http://localhost:<port>` (not 127.0.0.1) — the editor is
+      at the top of the page, under the *Synap Editor Demo* title
 - [ ] **No `Invalid License.` alert appeared** (wait ~10s; the check runs a few seconds after load)
 - [ ] Top menu bar (File / Edit / View …) and toolbar buttons are visible
 - [ ] The body is editable

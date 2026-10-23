@@ -11,9 +11,11 @@ function envClean(v) {
 
 const CONFIG = {
     PORT: process.env.PORT || 3080,
-    EXPORT_SERVER: process.env.EXPORT_SERVER || 'http://localhost:9090',
-    COLLABO_SERVER: process.env.COLLABO_SERVER || 'ws://localhost:1234',
-    CONVERTER_SERVER: process.env.CONVERTER_SERVER || 'http://localhost:8080',
+    // Backends are reached by IP, not 'localhost': on Node 20+ 'localhost' tries ::1 and
+    // 127.0.0.1 with a 250ms attempt each, and under concurrent load that times out (504).
+    EXPORT_SERVER: process.env.EXPORT_SERVER || 'http://127.0.0.1:9090',
+    COLLABO_SERVER: process.env.COLLABO_SERVER || 'ws://127.0.0.1:1234',
+    CONVERTER_SERVER: process.env.CONVERTER_SERVER || 'http://127.0.0.1:8080',
 
     // AI (OpenAI) — keys come from server/.env and never reach the browser.
     GPT_API_KEY: envClean(process.env.GPT_API_KEY),

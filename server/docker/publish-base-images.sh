@@ -6,8 +6,10 @@
 # automatically by `docker compose up`. Run this whenever a base image changes.
 #
 # Prerequisites:
-#   - The three *.tar files present in this directory
-#     (collabo-ws.tar, converter-api.tar, export-api.tar).
+#   - The *.tar files present in this directory (collabo-ws.tar, converter-api.tar).
+#     export-api is NOT published from here: it is built and pushed from the export_api
+#     repo (its own Dockerfile). A local export-api.tar is an old build; pushing it
+#     would overwrite the current image.
 #   - A GitHub PAT with `write:packages`, then log in once:
 #       echo "$GHCR_PAT" | docker login ghcr.io -u <github-user> --password-stdin
 #   - On the FIRST push, set each package's visibility to Public in the GitHub UI
@@ -36,6 +38,5 @@ publish() {
 
 publish collabo-ws.tar    collabo-ws
 publish converter-api.tar converter-api
-publish export-api.tar    export-api
 
-echo "Done. On first publish, set the three packages to Public in the GitHub UI."
+echo "Done. On first publish, set the packages to Public in the GitHub UI."

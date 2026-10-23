@@ -3,7 +3,7 @@ services:
     build:
       context: ./docker
       dockerfile: collabo.Dockerfile
-    image: collabo-ws-patched:node22
+    image: collabo-ws-patched:1.0.23
     container_name: collabo-ws
     ports:
       - "${COLLABO_PORT:-1234}:1234"
@@ -37,7 +37,7 @@ services:
     build:
       context: ./docker
       dockerfile: converter.Dockerfile
-    image: converter-api-patched:node22
+    image: converter-api-patched:1.0.1
     container_name: converter-api
     ports:
       - "${CONVERTER_PORT:-8080}:8080"

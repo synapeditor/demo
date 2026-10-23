@@ -61,13 +61,17 @@ server/
   `CONVERTER_PORT=18080` and `CONVERTER_SERVER=http://127.0.0.1:18080` in `.env` (see `.env.example`).
   Point the demo server at backends by `127.0.0.1`, not `localhost`: on Node 20+ `localhost`
   intermittently fails with 504 under concurrent requests. (The browser still opens `http://localhost:3080`.)
-- **Backend images** — the base images (`collabo-ws`, `converter-api`, `export-api`) are pulled from
-  `ghcr.io/synapeditor/*` (public). `docker compose up` pulls them and builds the patched
-  `collabo-ws-patched` / `converter-api-patched` images (tag `node22`) locally; both copy the base
-  image's app onto `node:22-bookworm-slim`. `export-api` runs as published (`:0.0.10`, Node 24).
-  If you ran the demo before this change, `docker compose up -d` picks up the new images on its own.
-  Maintainers republish collabo/converter with `docker/publish-base-images.sh`; export-api is built
-  and published from the `export_api` repo.
+- **Backend images** — all three run on Node 24 and are pulled from `ghcr.io/synapeditor/*` (public),
+  pinned to a version tag so a cached `:latest` never goes stale. `docker compose up` builds the
+  patched `collabo-ws-patched` / `converter-api-patched` images locally; `export-api` runs as published.
+
+  | Image | Tag | Built from |
+  |---|---|---|
+  | `collabo-ws` | `1.0.23` | `synapeditorcollabo` repo (its GitLab registry image, copied as-is) |
+  | `converter-api` | `1.0.1` | `editor-global-sdk` `feature/module-builder`, `build/converter` |
+  | `export-api` | `0.0.10` | `export_api` repo (its own Dockerfile) |
+
+  When a base image moves to a new tag, update the tag here and in `docker/*.Dockerfile`.
 - **Collabo patch** — the patched image makes a disconnected collaborator disappear immediately
   (upstream waits ~30s); see `docker/collabo.Dockerfile`.
 - **Windows / WSL2** — the converter needs `vsyscall=emulate`. Add to `C:\Users\<you>\.wslconfig`:

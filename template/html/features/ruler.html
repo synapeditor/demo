@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ruler — Synap Editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../assets/synapeditor-icon.png">
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script src="../../license.config.js"></script>
+    <script src="../../synapeditor.config.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/plugins/icons/basicColorIcons.js"></script>
+    <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="../../index.html" class="back">← Examples</a>
+        <a href="../../index.html" class="brand">
+            <img class="brand-logo" src="../../assets/synapeditor-logo.png" alt="Synap Editor">
+            <span class="ptag">DEMO</span>
+        </a>
+    </header>
+
+    <main class="demo-shell">
+        <div class="demo-head">
+            <span class="kicker">Feature</span>
+            <h1>Ruler</h1>
+            <p class="desc">Use the top ruler to precisely view and adjust indentation, tab positions, and margins.</p>
+            <div class="demo-meta">
+                <span class="pill">toolbar: ruler</span>
+            </div>
+        </div>
+
+        <div id="editorWrapper">
+            <div id="synapEditor">
+                <h2>Working with the Ruler</h2>
+                <p>The ruler along the top of the editor mirrors the real print layout. The units shown (cm) match the actual positions on the printed page, so the indents and margins you set here are exactly what you get on paper or in a PDF. Place the caret in any paragraph below and watch the indent markers on the ruler move to reflect that paragraph's settings.</p>
+                <p style="text-indent: 2em;">This paragraph uses a first-line indent. The top marker on the ruler controls where the first line begins, while the bottom marker controls the rest of the paragraph. Drag either marker and the text reflows instantly — useful for traditional manuscript styling where each new paragraph opens with an indented first line, as you can see continuing across these several sentences of running text.</p>
+                <p style="margin-left: 3em;">Here the whole paragraph is indented from the left margin. Left and right indent markers let you carve out a narrower column — handy for quotations, callouts, or nested explanations. Because the ruler measures in centimeters, you can align this block to a precise position and reproduce it consistently across a long document with many similar passages.</p>
+                <p style="margin-left: 3em; margin-right: 3em;">A symmetric left and right indent creates a centered, book-like text column. Try dragging the right indent marker inward and outward: the longer a paragraph runs, the more obvious the margin change becomes, which is why the ruler is easiest to judge with plenty of continuous text rather than a few short lines.</p>
+                <p>Finally, click anywhere along the ruler to drop a tab stop, then press <strong>Tab</strong> in the text to jump the caret to that exact position. Tab stops, indents, and margins together give you fine, repeatable control over page layout — the kind of precision long-form and print-bound documents depend on.</p>
+            </div>
+        </div>
+
+        <section class="code-section" id="codeExample">
+            <div class="code-head">
+                <h3>Configuration</h3>
+                <span class="meta">mode: classic · ruler</span>
+                <button class="copy-btn" type="button" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="5" y="5" width="9" height="9" rx="1.2"/>
+                        <path d="M3 11V3a1 1 0 0 1 1-1h7"/>
+                    </svg>
+                    <span class="label">Copy</span>
+                </button>
+            </div>
+            <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
+    <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span>
+        <span class="str">'new'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
+        <span class="str">'ruler'</span>
+    <span class="punc">]</span>
+<span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
+
+<span class="com">// Create editor instance</span>
+<span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditor'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="var">initialHtml</span><span class="punc">)</span><span class="punc">;</span></pre></div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span>© Synapsoft Corp. Synap Editor</span>
+    </footer>
+
+    <script>
+        var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
+            'editor.toolbar': [
+                'new', '|',
+                'ruler'
+            ]
+        });
+        window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
+
+        function copyCode(btn) {
+            var code = "var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {\n" +
+                "    'editor.toolbar': [\n" +
+                "        'new', '|',\n" +
+                "        'ruler'\n" +
+                "    ]\n" +
+                "});\n\n" +
+                "// Create editor instance\n" +
+                "var editor = new SynapEditor('synapEditor', config, initialHtml);";
+            navigator.clipboard.writeText(code).catch(function() {});
+            btn.classList.add('copied');
+            btn.querySelector('.label').textContent = 'Copied';
+            setTimeout(function() {
+                btn.classList.remove('copied');
+                btn.querySelector('.label').textContent = 'Copy';
+            }, 1400);
+        }
+    </script>
+    <script src="/assets/sidebar.js"></script>
+</body>
+</html>

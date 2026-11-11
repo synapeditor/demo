@@ -1,0 +1,71 @@
+name: Publish to npm
+
+on:
+  push:
+    branches: [main]
+
+# Prevent overlapping publishes if several pushes land quickly.
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # required for npm OIDC trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Raised from 20 to satisfy npm 12's engines. See "Upgrade npm" below.
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing (OIDC) requires npm >= 11.5.1, and npm 12 requires Node
+      # ^22.22.2 || ^24.15.0 || >=26.0.0, which is why node-version is pinned to 22
+      # above. The npm major is pinned here as well: "latest" would silently pull the
+      # next breaking major into the release path (npm 12 turned dependency lifecycle
+      # scripts off by default, and dropped Node 20).
+      - name: Upgrade npm
+        run: npm install -g npm@12
+
+      # npm versions are immutable: skip if this exact version already exists,
+      # so re-pushing the same version to main is a no-op instead of a failure.
+      - name: Check whether this version is already published
+        id: check
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Resolved $NAME@$VERSION"
+          # Assert on non-empty output (not just exit code): some npm builds exit 0
+          # with empty stdout for a missing version, which would wrongly skip publish.
+          EXISTING=$(npm view "$NAME@$VERSION" version 2>/dev/null || true)
+          if [ -n "$EXISTING" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::$NAME@$VERSION already on npm — skipping publish. Bump \"version\" in package.json to release."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # npm shows whatever README.md exists at publish time. Swap in the npm-specific
+      # readme so the package page points users to GitHub for the server backend, while
+      # the full README.md stays GitHub-only. The checkout is ephemeral, so no restore.
+      - name: Use the npm-specific README
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          if [ -f npm-readme.md ]; then
+            mv -f npm-readme.md README.md
+            echo "::notice::Using npm-readme.md for the npm package (full README.md stays on GitHub)."
+          else
+            echo "::error::npm-readme.md not found — aborting to avoid publishing the full README to npm."
+            exit 1
+          fi
+
+      # No NODE_AUTH_TOKEN: auth comes from the npm trusted publisher (OIDC),
+      # which also generates provenance automatically.
+      - name: Publish
+        if: steps.check.outputs.exists == 'false'
+        run: npm publish

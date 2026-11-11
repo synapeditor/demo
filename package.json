@@ -1,0 +1,41 @@
+{
+  "name": "@synapeditor/create-demo",
+  "version": "3.4.5",
+  "description": "Scaffolder for the SynapEditor demo — run `npm create @synapeditor/demo` to copy the interactive feature and mode demos into a new folder (not node_modules).",
+  "keywords": [
+    "synapeditor",
+    "synap-editor",
+    "create",
+    "create-demo",
+    "scaffold",
+    "demo",
+    "example",
+    "examples",
+    "wysiwyg",
+    "html",
+    "editor",
+    "rich-text-editor",
+    "javascript",
+    "web-editor",
+    "document-editor"
+  ],
+  "homepage": "https://www.synapeditor.com",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/synapeditor/demo.git"
+  },
+  "bin": {
+    "create-demo": "bin/index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "bin",
+    "template"
+  ]
+}

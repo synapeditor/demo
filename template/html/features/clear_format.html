@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clear Formatting — Synap Editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../assets/synapeditor-icon.png">
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script src="../../license.config.js"></script>
+    <script src="../../synapeditor.config.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/plugins/icons/basicColorIcons.js"></script>
+    <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="../../index.html" class="back">← Examples</a>
+        <a href="../../index.html" class="brand">
+            <img class="brand-logo" src="../../assets/synapeditor-logo.png" alt="Synap Editor">
+            <span class="ptag">DEMO</span>
+        </a>
+    </header>
+
+    <main class="demo-shell">
+        <div class="demo-head">
+            <span class="kicker">Feature</span>
+            <h1>Clear Formatting</h1>
+            <p class="desc">Remove all inline formatting from the selected area and revert to the default text style.</p>
+            <div class="demo-meta">
+                <span class="pill">toolbar: bold · italic · fontColor · fontBackgroundColor · removeRunStyle</span>
+            </div>
+        </div>
+
+        <div id="editorWrapper">
+            <div id="synapEditor">
+                <h2>Clear Formatting</h2>
+                <p>Quickly strip a tangle of fonts, sizes, colors, highlights, and decorations back to the default — handy after pasting from an external document.</p>
+                <p><span style="font-family: Georgia, serif; font-size: 19px; color: #c0392b; background: #fff4a3; font-weight: 700; text-decoration: underline;">Serif, large, red, highlighted, bold, underlined.</span> <span style="font-style: italic; color: #0a7d99; text-decoration: line-through;">Italic, teal, struck through.</span> <span style="font-family: 'Courier New', monospace; background: #e8f6f6; letter-spacing: 1px;">Monospaced, spaced out, tinted.</span></p>
+                <p><span style="font-family: 'Trebuchet MS', sans-serif; font-size: 15px; color: #7a4fd6; text-transform: uppercase; letter-spacing: .5px;">Uppercased violet lettering.</span> <span style="color:#16181b;">Normal text with a footnote<sup style="color:#c0392b;">[1]</sup> and a formula H<sub style="color:#0a7d99;">2</sub>O.</span> <span style="background: linear-gradient(transparent 58%, #ffe08a 58%);">A marker-pen highlight under the words.</span></p>
+                <p style="color:#6b727b;font-size:13px;">↑ Select the two styled paragraphs and click <strong>Clear Formatting</strong> to get ↓ the plain result below.</p>
+                <p>Serif, large, red, highlighted, bold, underlined. Italic, teal, struck through. Monospaced, spaced out, tinted. Uppercased violet lettering. Normal text with a footnote[1] and a formula H2O. A marker-pen highlight under the words.</p>
+            </div>
+        </div>
+
+        <section class="code-section" id="codeExample">
+            <div class="code-head">
+                <h3>Configuration</h3>
+                <span class="meta">mode: classic · clear formatting</span>
+                <button class="copy-btn" type="button" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="5" y="5" width="9" height="9" rx="1.2"/>
+                        <path d="M3 11V3a1 1 0 0 1 1-1h7"/>
+                    </svg>
+                    <span class="label">Copy</span>
+                </button>
+            </div>
+            <div class="code-block"><pre><span class="kw">var</span> <span class="var">config</span> <span class="punc">=</span> <span class="fn">Object.assign</span><span class="punc">(</span><span class="punc">{</span><span class="punc">}</span><span class="punc">,</span> <span class="var">synapEditorLicense</span><span class="punc">,</span> <span class="var">synapEditorConfig</span><span class="punc">,</span> <span class="punc">{</span>
+    <span class="str">'editor.toolbar'</span><span class="punc">:</span> <span class="punc">[</span>
+        <span class="str">'new'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
+        <span class="str">'fontFamilyWithText'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
+        <span class="str">'fontSizeWithText'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
+        <span class="str">'bold'</span><span class="punc">,</span> <span class="str">'italic'</span><span class="punc">,</span> <span class="str">'underline'</span><span class="punc">,</span> <span class="str">'strike'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
+        <span class="str">'fontColor'</span><span class="punc">,</span> <span class="str">'fontBackgroundColor'</span><span class="punc">,</span> <span class="str">'|'</span><span class="punc">,</span>
+        <span class="str">'removeRunStyle'</span>
+    <span class="punc">]</span>
+<span class="punc">}</span><span class="punc">)</span><span class="punc">;</span>
+
+<span class="com">// Create editor instance</span>
+<span class="kw">var</span> <span class="var">editor</span> <span class="punc">=</span> <span class="kw">new</span> <span class="fn">SynapEditor</span><span class="punc">(</span><span class="str">'synapEditor'</span><span class="punc">,</span> <span class="var">config</span><span class="punc">,</span> <span class="var">initialHtml</span><span class="punc">)</span><span class="punc">;</span></pre></div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span>© Synapsoft Corp. Synap Editor</span>
+    </footer>
+
+    <script>
+        var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
+            'editor.toolbar': [
+                'new', '|',
+                'fontFamilyWithText', '|',
+                'fontSizeWithText', '|',
+                'bold', 'italic', 'underline', 'strike', '|',
+                'fontColor', 'fontBackgroundColor', '|',
+                'removeRunStyle'
+            ]
+        });
+        window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
+
+        function copyCode(btn) {
+            var code = "var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {\n" +
+                "    'editor.toolbar': [\n" +
+                "        'new', '|',\n" +
+                "        'fontFamilyWithText', '|',\n" +
+                "        'fontSizeWithText', '|',\n" +
+                "        'bold', 'italic', 'underline', 'strike', '|',\n" +
+                "        'fontColor', 'fontBackgroundColor', '|',\n" +
+                "        'removeRunStyle'\n" +
+                "    ]\n" +
+                "});\n\n" +
+                "// Create editor instance\n" +
+                "var editor = new SynapEditor('synapEditor', config, initialHtml);";
+            navigator.clipboard.writeText(code).catch(function() {});
+            btn.classList.add('copied');
+            btn.querySelector('.label').textContent = 'Copied';
+            setTimeout(function() {
+                btn.classList.remove('copied');
+                btn.querySelector('.label').textContent = 'Copy';
+            }, 1400);
+        }
+    </script>
+    <script src="/assets/sidebar.js"></script>
+</body>
+</html>

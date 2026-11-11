@@ -1,0 +1,20 @@
+{
+  "name": "editor-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Standalone SynapEditor feature demo runner",
+  "scripts": {
+    "start": "node app/app.js"
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "dotenv": "^17.4.1",
+    "express": "^4.21.2",
+    "http-proxy-middleware": "^3.0.5",
+    "lodash": "^4.18.1",
+    "multer": "^2.0.2",
+    "request": "^2.88.2",
+    "unzip-stream": "^0.3.4",
+    "uuid": "^13.0.0"
+  }
+}

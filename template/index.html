@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Synap Editor Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="assets/synapeditor-icon.png">
+    <link rel="stylesheet" href="assets/styles.css">
+    <style>
+        /* Server-feature availability hints — added by the script at the bottom when a
+           required backend (or the demo server itself) isn't running. */
+        .toc .needs-server .kr { opacity: .45; }
+        .srv-warn { display:inline-flex; align-items:center; justify-content:center; min-width:24px; min-height:24px;
+            margin-left:7px; color:#b07a00; cursor:help; position:relative; line-height:1; }
+        .srv-warn svg { width:14px; height:14px; }
+        .srv-warn::after { content: attr(data-tip); position:absolute; left:50%; bottom:calc(100% + 9px);
+            transform:translateX(-50%); background:#1b2227; color:#fff; font-size:12px; font-weight:400;
+            line-height:1.45; padding:8px 11px; border-radius:8px; width:max-content; max-width:240px;
+            white-space:normal; text-align:left; box-shadow:0 8px 22px rgba(0,0,0,.24);
+            opacity:0; visibility:hidden; transition:opacity .12s; z-index:60; }
+        .srv-warn::before { content:''; position:absolute; left:50%; bottom:calc(100% + 3px);
+            transform:translateX(-50%); border:5px solid transparent; border-top-color:#1b2227;
+            opacity:0; visibility:hidden; transition:opacity .12s; z-index:60; }
+        .srv-warn:hover::after, .srv-warn:focus::after,
+        .srv-warn:hover::before, .srv-warn:focus::before { opacity:1; visibility:visible; }
+        /* Live editor right under the title — same width as .license-notice below it. */
+        .index-editor { box-sizing:border-box; width:calc(100% - 64px); max-width:1116px; margin:20px auto 0; }
+        .index-editor #editorWrapper { width:100%; max-width:none; }
+        .index-editor #editorWrapper:has(.editor-empty) { height:auto; }
+        .index-editor .editor-empty { margin:0; padding:28px 26px; font-size:14px; color:var(--se-text-muted); }
+        .index-editor .editor-empty code { font-family:var(--se-mono); font-size:12.5px; color:var(--se-primary-text); }
+        /* License guide folded into one line under the editor; the full steps open from "License setup guide". */
+        .license-notice.ln-compact { margin-top:16px; margin-bottom:48px; padding:10px 14px; align-items:flex-start; flex-direction:row; }
+        .ln-compact summary { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:4px 16px;
+            min-height:28px; font-size:13px; color:var(--se-text-muted); cursor:pointer; list-style:none; }
+        .ln-compact summary::-webkit-details-marker { display:none; }
+        .ln-compact .ln-title { margin:0; font-size:13px; }
+        .ln-compact .ln-toggle { color:var(--se-primary-text); font-weight:600; white-space:nowrap; }
+        .ln-compact .ln-toggle::before { content:'▸'; display:inline-block; margin-right:6px; transition:transform .12s; }
+        .ln-compact .ln-body[open] .ln-toggle::before { transform:rotate(90deg); }
+        .ln-compact .ln-body[open] summary { margin-bottom:14px; }
+        .ln-compact .ln-body[open] { padding-bottom:14px; }
+        .ln-compact code { white-space:nowrap; }
+        .license-notice.ln-compact summary code { background:none; padding:0; color:var(--se-primary-text); }
+    </style>
+    <script src="license.config.js"></script>
+    <script src="synapeditor.config.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/externals/formulaParser/formula-parser.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/externals/SEDocModelParser/SEDocModelParser.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/synapeditor.min.js"></script>
+    <script src="https://cdn.synapeditor.com/latest/plugins/icons/basicColorIcons.js"></script>
+    <link rel="stylesheet" href="https://cdn.synapeditor.com/latest/synapeditor.min.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="./index.html" class="brand">
+            <img class="brand-mark" src="assets/synapeditor-icon.png" alt="" aria-hidden="true">
+            <span class="brand-name">Synap <span class="brand-accent">Editor</span></span>
+            <span class="ptag">DEMO</span>
+        </a>
+        <div class="topbar-links">
+            <a class="topbar-link tl-npm" href="https://www.npmjs.com/package/@synapeditor/create-demo" target="_blank" rel="noopener" title="npm" aria-label="npm"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l13.837.019-.009 13.836h-3.464l.01-10.382h-3.456L12.04 19.17H5.113z"/></svg></a>
+            <a class="topbar-link tl-github" href="https://github.com/synapeditor/demo" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
+            <a class="topbar-link tl-home" href="https://www.synapeditor.com" target="_blank" rel="noopener" title="Homepage" aria-label="Homepage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3z"/></svg></a>
+        </div>
+    </header>
+
+    <main>
+        <section class="index-hero">
+            <h1>Synap <b>Editor</b> Demo</h1>
+            <span class="ver">v3.4.4</span>
+        </section>
+
+        <section class="index-editor" aria-label="Live editor (Classic mode)">
+            <div id="editorWrapper">
+                <div id="synapEditor">
+                    <h1>Try it here 👋</h1>
+                    <p>A web-based <b>WYSIWYG HTML editor</b> for your app. This is <b>Classic mode</b> — type, format, or paste anything here to try it.</p>
+                    <h3>Things to try</h3>
+                    <ul>
+                        <li><b>Paste from Microsoft Word</b> — headings, lists, tables and images come along.</li>
+                        <li><b>Insert a table</b> and drag its borders to resize rows and columns.</li>
+                        <li><b>Open Source View</b> (&lt;/&gt;) to see the HTML behind this page.</li>
+                        <li><b>Import a .docx, .xlsx or .pptx file</b> from the File menu (needs the demo server).</li>
+                    </ul>
+                    <blockquote><i>Each example in the sidebar opens a focused demo of one feature or editor mode.</i></blockquote>
+                </div>
+            </div>
+        </section>
+
+        <section class="license-notice ln-plain ln-compact" aria-label="License setup guide">
+            <div class="ln-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="7.5" cy="15.5" r="5.5"/>
+                    <path d="m21 2-9.6 9.6"/>
+                    <path d="m15.5 7.5 3 3L22 7l-3-3"/>
+                </svg>
+            </div>
+            <details class="ln-body" id="licenseHelp">
+                <summary>
+                    <span class="ln-line"><b class="ln-title">License</b> · Loaded from <code>license.config.js</code>, already filled in if you set up via synapeditor.com.</span>
+                    <span class="ln-toggle">License setup guide</span>
+                </summary>
+                <ol class="ln-steps">
+                    <li><b>Get a license</b> — an Evaluation / Issue license for local testing, or a Production license for your own domain.<br>Visit <a href="https://www.synapeditor.com" target="_blank" rel="noopener">synapeditor.com</a> or email <a href="mailto:support@synapeditor.co.kr">support@synapeditor.co.kr</a>.</li>
+                    <li><b>Fill in <code>license.config.js</code></b> — your company name, your key, and the <code>editor.license.load.api</code> block, all copied from the dashboard.<br>An Evaluation / Issue license is checked online on every load, so without that block the editor shows "Invalid License."</li>
+                    <li><b>Open it on localhost</b> — an Evaluation / Issue license works only on localhost; file://, 127.0.0.1 or another IP shows "Invalid License."<br>A Production license works on the domain it is registered to.</li>
+                </ol>
+                <div class="code-block ln-code"><pre><span class="com">// license.config.js — at the project root</span>
+<span class="kw">var</span> <span class="var">synapEditorLicense</span> <span class="punc">=</span> <span class="punc">{</span>
+    <span class="str">'editor.license'</span><span class="punc">:</span> <span class="punc">{</span>
+        <span class="var">company</span><span class="punc">:</span> <span class="str">'Your Company'</span><span class="punc">,</span>
+        <span class="var">key</span><span class="punc">:</span> <span class="punc">[</span><span class="str">'YOUR-LICENSE-KEY'</span><span class="punc">]</span>
+    <span class="punc">}</span><span class="punc">,</span>
+    <span class="com">// Required for an Evaluation / Issue license — paste both from the dashboard</span>
+    <span class="str">'editor.license.load.api'</span><span class="punc">:</span> <span class="punc">{</span> <span class="var">url</span><span class="punc">:</span> <span class="str">'https://www.synapeditor.com/api/v1/load-check'</span><span class="punc">,</span> <span class="var">apiKey</span><span class="punc">:</span> <span class="str">'se_test_...'</span> <span class="punc">}</span>
+<span class="punc">}</span><span class="punc">;</span></pre></div>
+            </details>
+        </section>
+
+        <section class="toc">
+            <div class="toc-grid">
+                <div class="cat" id="features">
+                    <div class="cat-head">
+                        <h2>Features</h2>
+                        <span class="count">12 items</span>
+                    </div>
+                    <ul>
+                        <li><a href="./html/features/bullets.html"><span class="bullet"></span><span class="kr">Bullets</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/features/case_conversion.html"><span class="bullet"></span><span class="kr">Case Conversion</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/features/fullscreen.html"><span class="bullet"></span><span class="kr">Fullscreen</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/features/preview.html"><span class="bullet"></span><span class="kr">Preview</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/features/source_view.html"><span class="bullet"></span><span class="kr">Source View</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/features/ruler.html"><span class="bullet"></span><span class="kr">Ruler</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/features/find_replace.html"><span class="bullet"></span><span class="kr">Find &amp; Replace</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/features/table.html"><span class="bullet"></span><span class="kr">Table</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/features/format_painter.html"><span class="bullet"></span><span class="kr">Format Painter</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/features/clear_format.html"><span class="bullet"></span><span class="kr">Clear Formatting</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/features/font_size.html"><span class="bullet"></span><span class="kr">Font Size Up/Down</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/features/shortcuts.html"><span class="bullet"></span><span class="kr">Keyboard Shortcuts</span><span class="arrow">→</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="cat" id="server">
+                    <div class="cat-head">
+                        <h2>Server Features</h2>
+                        <span class="count">5 items</span>
+                        <span class="req">Server required</span>
+                    </div>
+                    <ul>
+                        <li><a href="./html/server-features/ai_assistant.html"><span class="bullet"></span><span class="kr">AI Assistant</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/server-features/import.html"><span class="bullet"></span><span class="kr">Import (docx/xlsx/pptx)</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/server-features/export.html"><span class="bullet"></span><span class="kr">Export (docx/hwpx/hwp)</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/server-features/image-upload.html"><span class="bullet"></span><span class="kr">Image &amp; File Upload</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/server-features/collaboration.html"><span class="bullet"></span><span class="kr">Collaboration</span><span class="arrow">→</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="cat" id="modes">
+                    <div class="cat-head">
+                        <h2>Editor Modes</h2>
+                        <span class="count">5 items</span>
+                    </div>
+                    <ul>
+                        <li><a href="./html/modes/classic.html"><span class="bullet"></span><span class="kr">Classic mode</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/modes/inline.html"><span class="bullet"></span><span class="kr">Inline mode</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/modes/document.html"><span class="bullet"></span><span class="kr">Document mode</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/modes/preview_mode.html"><span class="bullet"></span><span class="kr">Preview mode</span><span class="arrow">→</span></a></li>
+                        <li><a href="./html/modes/iframe.html"><span class="bullet"></span><span class="kr">Iframe mode</span><span class="arrow">→</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="cat" id="ui">
+                    <div class="cat-head">
+                        <h2>UI Settings</h2>
+                        <span class="count">1 item</span>
+                    </div>
+                    <ul>
+                        <li><a href="./html/ui/table_handle.html"><span class="bullet"></span><span class="kr">Table Handle</span><span class="arrow">→</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span>© Synapsoft Corp. Synap Editor</span>
+    </footer>
+
+    <script>
+        // Same setup as html/modes/classic.html — but only once a license key is filled in.
+        // license.config.js ships empty, and this is the page people read to set it up, so an
+        // empty key shows a note here instead of the editor's "Invalid License." alert, and
+        // opens the license guide below, which is folded by default.
+        (function () {
+            var lic = synapEditorLicense['editor.license'] || {};
+            var hasKey = (lic.key || []).some(function (k) { return typeof k === 'string' && k.trim() !== ''; });
+            if (!hasKey) {
+                document.getElementById('editorWrapper').innerHTML =
+                    '<p class="editor-empty">Add your license to <code>license.config.js</code> (see below) and reload — the editor appears here.</p>';
+                document.getElementById('licenseHelp').open = true;
+                return;
+            }
+            var config = Object.assign({}, synapEditorLicense, synapEditorConfig, { 'editor.menu.show': true });
+            window.editor = new SynapEditor('synapEditor', config, document.getElementById('synapEditor').innerHTML);
+        })();
+    </script>
+    <script>
+    // Flag server-dependent demos whose backend isn't reachable. Asks the demo server
+    // (/__demo/health) which backends/keys are up; a 404 (= no demo server, e.g. opened
+    // statically from the npm package) flags all of them. Pure hint — links still work.
+    (function () {
+        var WARN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+        var NO_SERVER = 'Demo server not running — get the server stack from GitHub (not included in the npm package).';
+        // NOTE: this reasonFor() / NO_SERVER must stay identical to assets/server-check.js.
+        function reasonFor(file, h) {
+            if (!h) return NO_SERVER;
+            var b = h.backends || {}, k = h.keys || {};
+            switch (file) {
+                case 'import.html':        return b.converter ? null : 'Import needs the converter-api backend, which is not running.';
+                case 'export.html':        return (b.converter && b['export']) ? null : (!b.converter && !b['export']) ? 'Export needs converter-api + export-api, which are not running.' : !b.converter ? 'Export needs the converter-api backend, which is not running.' : 'Export needs the export-api backend, which is not running.';
+                case 'collaboration.html': return b.collabo ? null : 'Collaboration needs the collabo-ws backend, which is not running.';
+                case 'ai_assistant.html':  return (k.gpt || k.gemini) ? null : 'No AI key set in server/.env (GPT_API_KEY or GEMINI_URL).';
+                default:                   return null; /* image-upload needs only the demo server */
+            }
+        }
+        function apply(h) {
+            document.querySelectorAll('#server ul li a').forEach(function (a) {
+                var file = (a.getAttribute('href') || '').split('/').pop();
+                var reason = reasonFor(file, h);
+                if (!reason) return;
+                a.classList.add('needs-server');
+                var w = document.createElement('span');
+                w.className = 'srv-warn';
+                w.setAttribute('data-tip', reason);
+                w.setAttribute('tabindex', '0');
+                w.setAttribute('role', 'img');
+                w.setAttribute('aria-label', 'Warning: ' + reason);
+                w.innerHTML = WARN_SVG;
+                var arrow = a.querySelector('.arrow');
+                if (arrow) a.insertBefore(w, arrow); else a.appendChild(w);
+            });
+        }
+        function getHealth() {
+            var sim = null; try { sim = localStorage.getItem('seSimHealth'); } catch (e) {}
+            if (sim === 'off') return Promise.resolve(null);            // simulate: no demo server
+            if (sim) { try { return Promise.resolve(JSON.parse(sim)); } catch (e) {} } // simulate: given state
+            if (location.protocol === 'file:') return Promise.resolve(null);
+            var ctrl = ('AbortController' in window) ? new AbortController() : null;
+            var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 4000) : null;
+            return fetch('/__demo/health', { cache: 'no-store', signal: ctrl ? ctrl.signal : undefined })
+                .then(function (r) { if (timer) clearTimeout(timer); return r.ok ? r.json() : null; })
+                .then(function (h) { return (h && h.ok === true) ? h : null; })
+                .catch(function () { if (timer) clearTimeout(timer); return null; });
+        }
+        function run() { getHealth().then(apply); }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+    })();
+    </script>
+    <script src="/assets/sidebar.js"></script>
+</body>
+</html>

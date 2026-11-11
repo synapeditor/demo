@@ -1,0 +1,136 @@
+const express = require('express');
+const path = require('path');
+const { CONFIG, STATIC_ROOT, TEMP_ROOT } = require('./config');
+
+const uploadRoutes = require('./routes/upload');
+const importRoutes = require('./routes/import');
+const { router: exportRoutes, exportFileProxy, exportPbProxy } = require('./routes/export');
+const { collaboProxy, rejectPlainHttp } = require('./routes/collabo');
+const { setUploadedFileHeaders } = require('./helpers');
+const aiRoutes = require('./routes/ai');
+const { notFound, errorHandler } = require('./errors');
+
+const app = express();
+
+// =============================================================================
+// Proxy middleware (MUST be registered BEFORE bodyParser)
+// =============================================================================
+
+app.post('/exportFile', exportFileProxy);
+app.post('/exportPb', exportPbProxy);
+app.use('/collabo_ws', rejectPlainHttp);
+
+// =============================================================================
+// Body parsers (after proxy)
+// =============================================================================
+
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ extended: true }));
+
+// =============================================================================
+// Demo-server health probe
+// =============================================================================
+// A path that ONLY the demo server answers — a plain static file server (e.g. a
+// page opened from the npm package) returns 404 here. It also reports which
+// backends answer HTTP and which AI keys are set, so index.html can
+// flag the exact features whose server isn't running. Server-feature pages use it
+// (assets/server-check.js) to show a "get the server from GitHub" notice in the page.
+
+const http = require('http');
+const https = require('https');
+
+// Resolve "does this backend answer HTTP?" Any status counts, since the collabo
+// WebSocket server answers a plain GET too. A bare TCP connect is not enough: Docker
+// Desktop accepts connections on a published port before the app inside listens.
+function backendUp(urlStr, timeout) {
+    return new Promise((resolve) => {
+        let u;
+        try {
+            u = new URL(urlStr.replace(/^ws/, 'http'));
+        } catch (e) { return resolve(false); }
+        // agent: false, a fresh connection per probe. A kept-alive socket the backend
+        // has already closed fails the next probe with ECONNRESET.
+        const req = (u.protocol === 'https:' ? https : http).get(u, { agent: false }, (res) => {
+            res.resume();
+            resolve(true);
+        });
+        // Under amd64 emulation an answer can take over 1s. Stay below the 4s the pages
+        // wait for /__demo/health (index.html, assets/server-check.js).
+        req.setTimeout(timeout || 2500, () => req.destroy());
+        req.once('error', () => resolve(false));
+    });
+}
+
+// Intentional: localhost-only demo introspection. Exposes backend up/down + AI key
+// PRESENCE (booleans only, never values) so the index can hint which features are runnable.
+app.get('/__demo/health', async (req, res) => {
+    const [converter, exportApi, collabo] = await Promise.all([
+        backendUp(CONFIG.CONVERTER_SERVER),
+        backendUp(CONFIG.EXPORT_SERVER),
+        backendUp(CONFIG.COLLABO_SERVER)
+    ]);
+    res.json({
+        ok: true,
+        server: 'editor-demo',
+        backends: { converter, export: exportApi, collabo },
+        keys: {
+            gpt: !!CONFIG.GPT_API_KEY,
+            gemini: !!CONFIG.GEMINI_URL
+        }
+    });
+});
+
+// =============================================================================
+// API routes
+// =============================================================================
+
+app.use(uploadRoutes);
+app.use(importRoutes);
+app.use(exportRoutes);
+app.use(aiRoutes);
+
+// =============================================================================
+// Static serving
+// =============================================================================
+
+// Uploaded / imported media. setUploadedFileHeaders keeps a stored file from acting
+// as a page on this origin; /uploadFile already refuses the kinds that could.
+app.use('/tmp', express.static(TEMP_ROOT, { setHeaders: setUploadedFileHeaders }));
+
+// The main site at the SAME origin, so server-feature pages reuse the existing
+// assets and call same-origin APIs. The static site lives under template/
+// (STATIC_ROOT). Only known-safe paths are exposed — never the repo root — so
+// server/.env, .git and node_modules stay private.
+app.use('/assets', express.static(path.join(STATIC_ROOT, 'assets')));
+app.use('/html', express.static(path.join(STATIC_ROOT, 'html')));
+app.get('/license.config.js', (req, res) => res.sendFile(path.join(STATIC_ROOT, 'license.config.js')));
+app.get('/synapeditor.config.js', (req, res) => res.sendFile(path.join(STATIC_ROOT, 'synapeditor.config.js')));
+app.get(['/', '/index.html'], (req, res) => res.sendFile(path.join(STATIC_ROOT, 'index.html')));
+
+// =============================================================================
+// Error responses
+// =============================================================================
+// Last in the stack, so Express's own HTML 404 page and stack-trace error page never
+// answer. Every route above is reachable without authentication.
+
+app.use(notFound);
+app.use(errorHandler);
+
+// =============================================================================
+// Start server
+// =============================================================================
+
+const server = app.listen(CONFIG.PORT, () => {
+    console.log('[editor-demo] server started');
+    console.log('[editor-demo] url: http://localhost:' + CONFIG.PORT);
+    console.log('[editor-demo] CONVERTER_SERVER:', CONFIG.CONVERTER_SERVER);
+    console.log('[editor-demo] EXPORT_SERVER:', CONFIG.EXPORT_SERVER);
+    console.log('[editor-demo] COLLABO_SERVER:', CONFIG.COLLABO_SERVER);
+});
+
+// Attach WebSocket upgrade handler for collabo proxy
+server.on('upgrade', (req, socket, head) => {
+    if (req.url && req.url.startsWith('/collabo_ws')) {
+        collaboProxy.upgrade(req, socket, head);
+    }
+});

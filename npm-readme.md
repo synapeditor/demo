@@ -48,15 +48,19 @@ var synapEditorLicense = {
 
 ### If you see an `Invalid License.` alert
 
-The alert is the only signal; the editor logs nothing about the license to the console. The demo
-index (`http://localhost:8137/`) is the one exception: while `license.config.js` is empty it shows
-"Add your license to `license.config.js`" in place of the editor instead of the alert.
+The alert is the only on-screen signal; the editor logs nothing about the license to the console.
+For an alert about 5 seconds after load, the `load-check` request in the browser's Network tab tells
+the causes apart. The demo index (`http://localhost:8137/`) is the one exception: while
+`license.config.js` is empty it shows "Add your license to `license.config.js`" in place of the
+editor instead of the alert.
 
 | When the alert appears | Cause | Fix |
 |---|---|---|
 | Right after the page opens | `license.config.js` is still empty, or the key was not pasted exactly | Paste the license from the dashboard as-is |
 | Right after the page opens | You opened `127.0.0.1`, another IP, or the file directly (`file://`) | Open `http://localhost:<port>` |
-| About 5 seconds later, and the editor disappears | `editor.license.load.api` is empty | Paste the `load.api` block too |
+| About 5 seconds later, and the editor disappears (no `load-check` request) | `editor.license.load.api` is empty | Paste the `load.api` block too |
+| About 5 seconds later, and `load-check` answers `403` | The key is no longer valid: issuing an Evaluation license again retires the previous key | Copy both blocks from the dashboard again |
+| About 5 seconds later, and `load-check` fails | The browser cannot reach `www.synapeditor.com` (offline, firewall, or proxy) | Allow `https://www.synapeditor.com`, then reload |
 
 Questions: [synapeditor.com](https://www.synapeditor.com) or support@synapeditor.co.kr.
 

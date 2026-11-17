@@ -165,15 +165,21 @@ var config = Object.assign({}, synapEditorLicense, synapEditorConfig, {
 
 ## Troubleshooting
 
-The `Invalid License.` alert is the only signal. The released editor writes nothing about the
-license to the browser console, so don't wait for a console error. (With `'editor.lang': 'ko'` the
+The `Invalid License.` alert is the only on-screen signal. The released editor writes nothing about
+the license to the browser console, so don't wait for a console error. (With `'editor.lang': 'ko'` the
 same alert reads `유효하지 않은 라이선스입니다.`)
+
+An alert about 5 seconds after load has three causes that look the same on screen. Open the
+browser's developer tools, **Network** tab, reload, and find the `load-check` request: no request
+at all, a `403` answer, or a request that fails tells them apart (rows 3 to 5 below).
 
 | What you see | Cause | Fix |
 |---|---|---|
 | `Invalid License.` alert right after the page opens, no editor | `license.config.js` is still empty, or the key was not pasted exactly | Add your license, copied verbatim from the dashboard |
 | `Invalid License.` alert right after the page opens, URL is `127.0.0.1`, another IP, or `file://` | An Evaluation / Issue license is locked to the `localhost` hostname | Open `http://localhost:<port>` instead |
-| Editor appears, then ~5s later an `Invalid License.` alert and the editor disappears | `editor.license.load.api` is empty but your key is an Evaluation / Issue (LOAD-type) key | Paste both values from the dashboard, `load.api` included |
+| Editor appears, then ~5s later an `Invalid License.` alert and the editor disappears; no `load-check` request | `editor.license.load.api` is empty but your key is an Evaluation / Issue (LOAD-type) key | Paste both values from the dashboard, `load.api` included |
+| Same alert after ~5s, and the `load-check` request answers `403` | The key is no longer valid. Issuing an Evaluation license again on synapeditor.com retires the previous key at once | Copy both blocks from the dashboard again and replace the old values |
+| Same alert after ~5s, and the `load-check` request fails (no response, blocked, or a network error) | The browser cannot reach `www.synapeditor.com` (offline, firewall, or proxy) | Allow `https://www.synapeditor.com` from this machine, then reload |
 | A *Server required* demo opens a "Server required" notice | That demo needs the separate demo server | See **Optional: server features** below |
 
 ## Optional: server features (Import, Export, Collaboration)

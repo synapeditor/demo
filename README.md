@@ -142,12 +142,14 @@ var synapEditorLicense = {
 >
 > **Evaluation / Issue** licenses are locked to the `localhost` hostname; **Production** licenses are bound to a registered domain. Serve the demo from the host your license covers.
 >
-> **What an `Invalid License.` alert means.** The alert is the only signal: the released editor logs nothing about the license to the console. (The demo index is the one exception: with an empty `license.config.js` it shows "Add your license to `license.config.js`" in place of the editor instead of the alert.)
+> **What an `Invalid License.` alert means.** The alert is the only on-screen signal: the released editor logs nothing about the license to the console. For an alert about 5 seconds after load, the `load-check` request in the browser's Network tab tells the causes apart. (The demo index is the one exception: with an empty `license.config.js` it shows "Add your license to `license.config.js`" in place of the editor instead of the alert.)
 >
 > | When the alert appears | Cause |
 > |---|---|
 > | Right after the page opens | `license.config.js` is still empty, the key was not pasted exactly, or you opened the demo over `127.0.0.1`, another IP, or `file://` instead of `localhost` |
-> | About 5 seconds later, and the editor disappears | `editor.license.load.api` was left empty on an Evaluation / Issue license |
+> | About 5 seconds later, and the editor disappears (no `load-check` request) | `editor.license.load.api` was left empty on an Evaluation / Issue license |
+> | About 5 seconds later, and `load-check` answers `403` | The key is no longer valid: issuing an Evaluation license again retires the previous key. Copy both blocks from the dashboard again |
+> | About 5 seconds later, and `load-check` fails | The browser cannot reach `www.synapeditor.com` (offline, firewall, or proxy) |
 
 
 
